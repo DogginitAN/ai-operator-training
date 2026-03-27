@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { BookOpen, LayoutGrid, Archive, Sparkles, Sun, Moon } from 'lucide-react';
 import studentData from '@/data/student.json';
 import { loadTaskStatuses, saveTaskStatuses } from '@/lib/store';
-import type { Task, TaskStatus, Session, Resource } from '@/lib/store';
+import type { Task, TaskStatus, Session, Resource, CurriculumTheme, CurriculumReference } from '@/lib/store';
 import ProgressRing from '@/components/ProgressRing';
 import CurriculumTrack from '@/components/CurriculumTrack';
 import TaskBoard from '@/components/TaskBoard';
@@ -144,7 +144,13 @@ export default function Dashboard() {
 
       {/* Content */}
       <main className="max-w-4xl mx-auto px-6 py-8">
-        {activeTab === 'curriculum' && <CurriculumTrack sessions={studentData.curriculum as Session[]} />}
+        {activeTab === 'curriculum' && (
+          <CurriculumTrack
+            sessions={studentData.curriculum as Session[]}
+            themes={studentData.themes as CurriculumTheme[]}
+            references={studentData.references as CurriculumReference[]}
+          />
+        )}
         {activeTab === 'tasks' && <TaskBoard tasks={tasks} onMove={handleTaskMove} />}
         {activeTab === 'resources' && <ResourceLibrary resources={studentData.resources as Resource[]} />}
         {activeTab === 'principles' && <MantrasPanel mantras={studentData.mantras} />}

@@ -43,9 +43,37 @@ export interface Resource {
   session: string;
 }
 
+export interface ReferenceSection {
+  heading: string;
+  body?: string;
+  rows?: string[][];
+}
+
+export interface CurriculumReference {
+  id: string;
+  title: string;
+  subtitle: string;
+  sections: ReferenceSection[];
+}
+
+export interface ThemeItem {
+  type: 'session' | 'reference';
+  sessionId?: string;
+  id?: string;
+  title?: string;
+}
+
+export interface CurriculumTheme {
+  id: string;
+  title: string;
+  items: ThemeItem[];
+}
+
 export interface StoreData {
   student: Student;
   curriculum: Session[];
+  themes: CurriculumTheme[];
+  references: CurriculumReference[];
   tasks: Task[];
   resources: Resource[];
   mantras: string[];

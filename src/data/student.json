@@ -68,6 +68,83 @@
       "keyTakeaways": []
     }
   ],
+  "themes": [
+    {
+      "id": "basics",
+      "title": "The Basics",
+      "items": [
+        { "type": "reference", "id": "hw-overview", "title": "Hardware Overview" },
+        { "type": "reference", "id": "sw-overview", "title": "Software Overview" },
+        { "type": "session", "sessionId": "s1" },
+        { "type": "session", "sessionId": "s2" },
+        { "type": "session", "sessionId": "s3" },
+        { "type": "session", "sessionId": "s4" },
+        { "type": "session", "sessionId": "s5" }
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "hw-overview",
+      "title": "Hardware Overview",
+      "subtitle": "Recommended machine specs and setup for AI-native work",
+      "sections": [
+        {
+          "heading": "Recommended Machine",
+          "body": "Mac Mini M4 Pro (16 GB RAM, 512 GB SSD) is the sweet spot for AI-native operator work. Quiet, capable, and designed to stay on your desk 24/7. The unified memory architecture handles large Claude contexts without the thermal throttling you'd see on a MacBook under sustained load."
+        },
+        {
+          "heading": "Recommended Specs",
+          "rows": [
+            ["Model", "Mac Mini M4 Pro"],
+            ["Chip", "Apple M4 Pro"],
+            ["Memory", "16 GB unified RAM (minimum)"],
+            ["Storage", "512 GB SSD"],
+            ["Est. Cost", "$1,399 – $1,599"]
+          ]
+        },
+        {
+          "heading": "Required Peripherals",
+          "body": "The Mac Mini ships without a display, keyboard, or mouse. You'll need a monitor with HDMI or DisplayPort input. Reuse what you have or budget roughly $200 for a decent 1080p/1440p display. Any USB or Bluetooth keyboard and mouse works."
+        },
+        {
+          "heading": "Why Mac?",
+          "body": "Claude Desktop and Claude Code are both first-class on macOS. The macOS terminal is Unix-based, which maps cleanly to Claude Code's expectations and the broader developer toolchain (Homebrew, Git, Python, Node). Less friction than Windows for the terminal-heavy work introduced in Session 2 onward."
+        },
+        {
+          "heading": "Windows Note",
+          "body": "If you're on Windows (like Matt), everything in the curriculum works — Claude Desktop, Claude Code via PowerShell, Git, and MCP connectors. The main differences: terminal commands use PowerShell syntax, and you'll use winget or direct installers instead of Homebrew. The Setup Guide PDF covers the Windows-specific install paths in full."
+        }
+      ]
+    },
+    {
+      "id": "sw-overview",
+      "title": "Software Overview",
+      "subtitle": "The AI operator stack — what each tool does and how they connect",
+      "sections": [
+        {
+          "heading": "The Mental Model: Brain, Hands, Memory",
+          "body": "Every AI operator setup has three layers. Claude (via Desktop or the API) is the Brain — it thinks, reasons, writes, and plans. Claude Code is the Hands — it executes terminal commands, writes files, runs code, and builds things end-to-end. CLAUDE.md is the Memory — a plain text file that persists your business context, conventions, and preferences across every session. Master these three layers and you can automate almost anything."
+        },
+        {
+          "heading": "Claude Desktop",
+          "body": "The chat interface most people start with — but far more powerful than it looks. Claude Desktop supports Projects (persistent context that survives between sessions), Cowork mode (browser and filesystem control via the computer-use API), and MCP connectors that wire Claude into your real tools: Google Calendar, Gmail, Drive, Notion, and dozens more. Use it for thinking-heavy work, document analysis, strategy, and anything that benefits from a conversation thread."
+        },
+        {
+          "heading": "Claude Code",
+          "body": "A terminal-based agentic loop that can read your codebase, write and edit files, run shell commands, and build complete software from a plain-English prompt. You describe what you want; Claude Code plans, executes, checks its own output, and iterates. Session 2 covers this in depth. For now: it's the tool that makes 'build me an app' actually work."
+        },
+        {
+          "heading": "MCP Connectors",
+          "body": "Model Context Protocol (MCP) is the plugin system that lets Claude reach into your actual tools. With Google Calendar connected, Claude can read your schedule and book meetings. With Gmail, it can draft and search email. With Filesystem, it can read and write files on your machine. Each connector is installed once via Claude Desktop settings and is then available in every conversation going forward."
+        },
+        {
+          "heading": "Cowork Mode",
+          "body": "A special capability in Claude Desktop that gives Claude control of your browser and desktop apps. You can say 'go to our CRM and pull the last 5 provider applications' and it will navigate, click, read, and report back. Powerful for tasks that live in GUIs rather than APIs — no code required on your end."
+        }
+      ]
+    }
+  ],
   "tasks": [
     {
       "id": "t1",
