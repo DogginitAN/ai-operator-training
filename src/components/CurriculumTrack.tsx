@@ -199,10 +199,106 @@ const MAT_TYPE_CONFIG: Record<string, { icon: React.ElementType; color: string; 
 const MAT_ACTION_BTN = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold border transition-all duration-200 bg-brand-50 dark:bg-brand-950/20 text-brand-600 dark:text-brand-400 border-brand-100 dark:border-brand-800/30 hover:bg-gradient-to-r hover:from-brand-500 hover:to-violet-500 hover:text-white hover:border-transparent';
 
 function SessionMaterials({ sessionId }: { sessionId: string }) {
-  const resources = (studentData.resources as Resource[]).filter(
-    r => r.global || r.sessions.includes(sessionId)
+  const all = (studentData.resources as Resource[]).filter(
+    r => (r.sessions.includes(sessionId) || r.global) && r.category !== 'reference'
   );
-  if (resources.length === 0) return null;
+  if (all.length === 0) return null;
+
+  // Split into primary (lesson-plan + homework) and secondary (guide)
+  const CATEGORY_ORDER: Record<string, number> = { 'lesson-plan': 0, 'homework': 1 };
+  const primary = all
+    .filter(r => r.category === 'lesson-plan' || r.category === 'homework')
+    .sort((a, b) => (CATEGORY_ORDER[a.category] ?? 0) - (CATEGORY_ORDER[b.category] ?? 0));
+  const secondary = all.filter(r => r.category === 'guide');
+
+  const renderPrimaryCard = (resource: Resource) => {
+    const cfg = MAT_TYPE_CONFIG[resource.type] ?? MAT_TYPE_CONFIG.reference;
+    const Icon = cfg.icon;
+    const hasFile = resource.filename !== null;
+    const url = hasFile ? `/docs/${resource.filename}` : null;
+    const openFile = () => { if (url) window.open(url, '_blank', 'noopener,noreferrer'); };
+    const handleOpen = (e: React.MouseEvent) => { e.stopPropagation(); openFile(); };
+    const handleDownload = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (!resource.filename) return;
+      const link = document.createElement('a');
+      link.href = `/docs/${resource.filename}`;
+      link.download = resource.filename;
+      link.click();
+    };
+
+    return (
+      <div
+        key={resource.id}
+        onClick={hasFile ? openFile : undefined}
+        className={`bg-surface-50 dark:bg-night-900/40 rounded-xl border border-surface-200 dark:border-night-600 p-3 flex items-center gap-3 transition-all duration-200 ${
+          hasFile ? 'cursor-pointer hover:border-brand-300 dark:hover:border-brand-700/50' : ''
+        }`}
+      >
+        <div className={`w-9 h-9 rounded-lg ${cfg.bg} flex items-center justify-center flex-shrink-0`}>
+          <Icon size={16} className={cfg.color} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h4 className="font-medium text-surface-900 dark:text-night-100 text-sm leading-snug">{resource.title}</h4>
+          <p className="text-xs text-surface-300 dark:text-night-400 mt-0.5">{resource.description}</p>
+        </div>
+        {hasFile && (
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {resource.type === 'pdf' && (
+              <>
+                <button onClick={handleOpen} className={MAT_ACTION_BTN}>
+                  <Eye size={12} />
+                  Preview
+                </button>
+                <button onClick={handleDownload} className={MAT_ACTION_BTN}>
+                  <Download size={12} />
+                  Download
+                </button>
+              </>
+            )}
+            {resource.type === 'html' && (
+              <button onClick={handleOpen} className={MAT_ACTION_BTN}>
+                <ExternalLink size={12} />
+                Open
+              </button>
+            )}
+          </div>
+        )}
+        {!hasFile && (
+          <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-surface-300 dark:text-night-400 bg-surface-100 dark:bg-night-700 px-2.5 py-1 rounded-lg border border-surface-200 dark:border-night-600 flex-shrink-0">
+            {resource.type}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  const renderSecondaryRow = (resource: Resource) => {
+    const cfg = MAT_TYPE_CONFIG[resource.type] ?? MAT_TYPE_CONFIG.reference;
+    const Icon = cfg.icon;
+    const hasFile = resource.filename !== null;
+    const url = hasFile ? `/docs/${resource.filename}` : null;
+    const openFile = () => { if (url) window.open(url, '_blank', 'noopener,noreferrer'); };
+    const actionLabel = resource.type === 'pdf' ? 'Preview' : 'Open';
+
+    return (
+      <div
+        key={resource.id}
+        onClick={hasFile ? openFile : undefined}
+        className={`flex items-center gap-2.5 py-1.5 ${hasFile ? 'cursor-pointer group' : ''}`}
+      >
+        <Icon size={14} className={cfg.color} />
+        <span className="flex-1 text-xs font-medium text-surface-800 dark:text-night-100 truncate">
+          {resource.title}
+        </span>
+        {hasFile && (
+          <span className="text-xs text-brand-500 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 flex-shrink-0">
+            {actionLabel}
+          </span>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="border-t border-surface-100 dark:border-night-600 px-7 pt-5 pb-7">
@@ -210,75 +306,26 @@ function SessionMaterials({ sessionId }: { sessionId: string }) {
         <FolderOpen size={13} />
         Session Materials
       </div>
-      <div className="space-y-2">
-        {resources.map(resource => {
-          const cfg = MAT_TYPE_CONFIG[resource.type] ?? MAT_TYPE_CONFIG.reference;
-          const Icon = cfg.icon;
-          const hasFile = resource.filename !== null;
-          const url = hasFile ? `/docs/${resource.filename}` : null;
 
-          const openFile = () => {
-            if (url) window.open(url, '_blank', 'noopener,noreferrer');
-          };
-          const handleOpen = (e: React.MouseEvent) => { e.stopPropagation(); openFile(); };
-          const handleDownload = (e: React.MouseEvent) => {
-            e.stopPropagation();
-            if (!resource.filename) return;
-            const link = document.createElement('a');
-            link.href = `/docs/${resource.filename}`;
-            link.download = resource.filename;
-            link.click();
-          };
+      {primary.length > 0 && (
+        <div className="space-y-2">
+          {primary.map(renderPrimaryCard)}
+        </div>
+      )}
 
-          return (
-            <div
-              key={resource.id}
-              onClick={hasFile ? openFile : undefined}
-              className={`bg-surface-50 dark:bg-night-900/40 rounded-xl border border-surface-200 dark:border-night-600 p-3 flex items-center gap-3 transition-all duration-200 ${
-                hasFile ? 'cursor-pointer hover:border-brand-300 dark:hover:border-brand-700/50' : ''
-              }`}
-            >
-              <div className={`w-9 h-9 rounded-lg ${cfg.bg} flex items-center justify-center flex-shrink-0`}>
-                <Icon size={16} className={cfg.color} />
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-surface-900 dark:text-night-100 text-sm leading-snug">{resource.title}</h4>
-                <p className="text-xs text-surface-300 dark:text-night-400 mt-0.5">{resource.description}</p>
-              </div>
-
-              {hasFile && (
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  {resource.type === 'pdf' && (
-                    <>
-                      <button onClick={handleOpen} className={MAT_ACTION_BTN}>
-                        <Eye size={12} />
-                        Preview
-                      </button>
-                      <button onClick={handleDownload} className={MAT_ACTION_BTN}>
-                        <Download size={12} />
-                        Download
-                      </button>
-                    </>
-                  )}
-                  {resource.type === 'html' && (
-                    <button onClick={handleOpen} className={MAT_ACTION_BTN}>
-                      <ExternalLink size={12} />
-                      Open
-                    </button>
-                  )}
-                </div>
-              )}
-
-              {!hasFile && (
-                <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-surface-300 dark:text-night-400 bg-surface-100 dark:bg-night-700 px-2.5 py-1 rounded-lg border border-surface-200 dark:border-night-600 flex-shrink-0">
-                  {resource.type}
-                </span>
-              )}
-            </div>
-          );
-        })}
-      </div>
+      {secondary.length > 0 && (
+        <>
+          {primary.length > 0 && (
+            <div className="border-t border-surface-200 dark:border-night-600 my-3" />
+          )}
+          <p className="text-[10px] font-mono text-surface-300 dark:text-night-400 uppercase tracking-wider mb-2">
+            Quick References
+          </p>
+          <div>
+            {secondary.map(renderSecondaryRow)}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -484,6 +531,18 @@ function ReferenceContent({ reference }: { reference: CurriculumReference }) {
           </div>
         ))}
       </div>
+
+      {reference.filename && (
+        <div className="px-7 py-5 border-t border-surface-100 dark:border-night-600">
+          <button
+            onClick={() => window.open(`/docs/${reference.filename}`, '_blank', 'noopener,noreferrer')}
+            className="w-full py-3 rounded-xl text-sm font-semibold border transition-all duration-200 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800/40 bg-brand-50 dark:bg-brand-950/20 hover:bg-gradient-to-r hover:from-brand-500 hover:to-violet-500 hover:text-white hover:border-transparent flex items-center justify-center gap-2"
+          >
+            <ExternalLink size={15} />
+            View Full Reference Page
+          </button>
+        </div>
+      )}
     </div>
   );
 }

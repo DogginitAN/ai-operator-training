@@ -43,6 +43,7 @@ export interface Resource {
   tags: string[];
   sessions: string[];
   global: boolean;
+  category: 'lesson-plan' | 'homework' | 'guide' | 'reference';
 }
 
 export interface ReferenceSection {
@@ -55,6 +56,7 @@ export interface CurriculumReference {
   id: string;
   title: string;
   subtitle: string;
+  filename: string | null;
   sections: ReferenceSection[];
 }
 
