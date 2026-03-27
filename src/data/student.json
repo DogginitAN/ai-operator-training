@@ -19,7 +19,7 @@
         "Claude Desktop with connectors = Claude has hands on your machine",
         "Cowork mode handles desktop automation (file ops, browser, apps)",
         "Projects + CLAUDE.md = persistent memory across conversations",
-        "Context window degrades past 75% — use session handoffs",
+        "Context window degrades past 75% \u2014 use session handoffs",
         "Caps Lock = voice input for hands-free interaction"
       ]
     },
@@ -49,7 +49,7 @@
       "id": "s4",
       "number": 4,
       "title": "The HouseAccount Agent Map",
-      "subtitle": "Provider Sales, Customer Intake, Pricing Estimate, Concierge — what to automate vs. keep human",
+      "subtitle": "Provider Sales, Customer Intake, Pricing Estimate, Concierge \u2014 what to automate vs. keep human",
       "date": null,
       "status": "locked",
       "duration": null,
@@ -73,13 +73,36 @@
       "id": "basics",
       "title": "The Basics",
       "items": [
-        { "type": "reference", "id": "hw-overview", "title": "Hardware Overview" },
-        { "type": "reference", "id": "sw-overview", "title": "Software Overview" },
-        { "type": "session", "sessionId": "s1" },
-        { "type": "session", "sessionId": "s2" },
-        { "type": "session", "sessionId": "s3" },
-        { "type": "session", "sessionId": "s4" },
-        { "type": "session", "sessionId": "s5" }
+        {
+          "type": "reference",
+          "id": "hw-overview",
+          "title": "Hardware Overview"
+        },
+        {
+          "type": "reference",
+          "id": "sw-overview",
+          "title": "Software Overview"
+        },
+        {
+          "type": "session",
+          "sessionId": "s1"
+        },
+        {
+          "type": "session",
+          "sessionId": "s2"
+        },
+        {
+          "type": "session",
+          "sessionId": "s3"
+        },
+        {
+          "type": "session",
+          "sessionId": "s4"
+        },
+        {
+          "type": "session",
+          "sessionId": "s5"
+        }
       ]
     }
   ],
@@ -96,11 +119,26 @@
         {
           "heading": "Recommended Specs",
           "rows": [
-            ["Model", "Mac Mini M4 Pro"],
-            ["Chip", "Apple M4 Pro"],
-            ["Memory", "16 GB unified RAM (minimum)"],
-            ["Storage", "512 GB SSD"],
-            ["Est. Cost", "$1,399 – $1,599"]
+            [
+              "Model",
+              "Mac Mini M4 Pro"
+            ],
+            [
+              "Chip",
+              "Apple M4 Pro"
+            ],
+            [
+              "Memory",
+              "16 GB unified RAM (minimum)"
+            ],
+            [
+              "Storage",
+              "512 GB SSD"
+            ],
+            [
+              "Est. Cost",
+              "$1,399 \u2013 $1,599"
+            ]
           ]
         },
         {
@@ -113,22 +151,22 @@
         },
         {
           "heading": "Windows Note",
-          "body": "If you're on Windows (like Matt), everything in the curriculum works — Claude Desktop, Claude Code via PowerShell, Git, and MCP connectors. The main differences: terminal commands use PowerShell syntax, and you'll use winget or direct installers instead of Homebrew. The Setup Guide PDF covers the Windows-specific install paths in full."
+          "body": "If you're on Windows (like Matt), everything in the curriculum works \u2014 Claude Desktop, Claude Code via PowerShell, Git, and MCP connectors. The main differences: terminal commands use PowerShell syntax, and you'll use winget or direct installers instead of Homebrew. The Setup Guide PDF covers the Windows-specific install paths in full."
         }
       ]
     },
     {
       "id": "sw-overview",
       "title": "Software Overview",
-      "subtitle": "The AI operator stack — what each tool does and how they connect",
+      "subtitle": "The AI operator stack \u2014 what each tool does and how they connect",
       "sections": [
         {
           "heading": "The Mental Model: Brain, Hands, Memory",
-          "body": "Every AI operator setup has three layers. Claude (via Desktop or the API) is the Brain — it thinks, reasons, writes, and plans. Claude Code is the Hands — it executes terminal commands, writes files, runs code, and builds things end-to-end. CLAUDE.md is the Memory — a plain text file that persists your business context, conventions, and preferences across every session. Master these three layers and you can automate almost anything."
+          "body": "Every AI operator setup has three layers. Claude (via Desktop or the API) is the Brain \u2014 it thinks, reasons, writes, and plans. Claude Code is the Hands \u2014 it executes terminal commands, writes files, runs code, and builds things end-to-end. CLAUDE.md is the Memory \u2014 a plain text file that persists your business context, conventions, and preferences across every session. Master these three layers and you can automate almost anything."
         },
         {
           "heading": "Claude Desktop",
-          "body": "The chat interface most people start with — but far more powerful than it looks. Claude Desktop supports Projects (persistent context that survives between sessions), Cowork mode (browser and filesystem control via the computer-use API), and MCP connectors that wire Claude into your real tools: Google Calendar, Gmail, Drive, Notion, and dozens more. Use it for thinking-heavy work, document analysis, strategy, and anything that benefits from a conversation thread."
+          "body": "The chat interface most people start with \u2014 but far more powerful than it looks. Claude Desktop supports Projects (persistent context that survives between sessions), Cowork mode (browser and filesystem control via the computer-use API), and MCP connectors that wire Claude into your real tools: Google Calendar, Gmail, Drive, Notion, and dozens more. Use it for thinking-heavy work, document analysis, strategy, and anything that benefits from a conversation thread."
         },
         {
           "heading": "Claude Code",
@@ -140,7 +178,7 @@
         },
         {
           "heading": "Cowork Mode",
-          "body": "A special capability in Claude Desktop that gives Claude control of your browser and desktop apps. You can say 'go to our CRM and pull the last 5 provider applications' and it will navigate, click, read, and report back. Powerful for tasks that live in GUIs rather than APIs — no code required on your end."
+          "body": "A special capability in Claude Desktop that gives Claude control of your browser and desktop apps. You can say 'go to our CRM and pull the last 5 provider applications' and it will navigate, click, read, and report back. Powerful for tasks that live in GUIs rather than APIs \u2014 no code required on your end."
         }
       ]
     }
@@ -148,74 +186,66 @@
   "tasks": [
     {
       "id": "t1",
-      "title": "Install Git for Windows",
-      "description": "Download from git-scm.com, install with defaults ('Add Git to PATH' stays checked), verify with 'git --version' in a fresh PowerShell window.",
+      "title": "Step 1: Install Git for Windows",
+      "description": "Download from git-scm.com, install with defaults, verify with git --version and claude --version in a fresh PowerShell. This is the prerequisite \u2014 Claude Code needs Git to run on Windows.",
       "session": "s1",
       "status": "todo",
       "priority": "high"
     },
     {
       "id": "t2",
-      "title": "Verify Claude Code in terminal",
-      "description": "Fresh PowerShell → 'claude --version'. If not recognized, run: irm https://claude.ai/install.ps1 | iex — then close and reopen terminal.",
+      "title": "Step 2: Create \"Building with AI\" Project",
+      "description": "Claude Desktop \u2192 Projects \u2192 New \u2192 \"Building with AI\". Add instructions describing HouseAccount, your role, and that you are on Windows. This is the Memory layer \u2014 persistent context across every future conversation.",
       "session": "s1",
       "status": "todo",
       "priority": "high"
     },
     {
       "id": "t3",
-      "title": "Build tip calculator (Code tab)",
-      "description": "Claude Desktop → Code tab → 'Build a tip calculator app with bill splitting. Clean design, mobile-friendly. Save to Desktop and open in browser.'",
+      "title": "Step 3: Plan the app in Claude Chat",
+      "description": "Inside your new project, ask Claude to help you plan a tip calculator app \u2014 layout, inputs, edge cases. Have it write you the exact prompt to paste into Claude Code. This is the Brain layer \u2014 thinking before building.",
       "session": "s1",
       "status": "todo",
       "priority": "high"
     },
     {
       "id": "t4",
-      "title": "Build tip calculator (Terminal)",
-      "description": "PowerShell → mkdir $HOME\\ai-demo → cd $HOME\\ai-demo → claude → same prompt. Experience the terminal workflow difference.",
+      "title": "Step 4: Set up project folder in terminal",
+      "description": "PowerShell \u2192 mkdir $HOME\\tip-calculator \u2192 cd $HOME\\tip-calculator. Two commands \u2014 create the folder where Claude Code will build your app.",
       "session": "s1",
       "status": "todo",
       "priority": "medium"
     },
     {
       "id": "t5",
-      "title": "Create 'HouseAccount Builder' project",
-      "description": "Claude Desktop → Projects → New → 'HouseAccount Builder'. Add instructions describing HA, your role, team, the 4 agents, and that you're on Windows.",
+      "title": "Step 5: Build the app in Claude Code (terminal)",
+      "description": "Start claude in the terminal, paste the prompt from Step 3. Watch Claude write the code, save the file, and open a working app in your browser. This is the Hands layer \u2014 AI executing on your machine.",
       "session": "s1",
       "status": "todo",
-      "priority": "medium"
+      "priority": "high"
     },
     {
       "id": "t6",
-      "title": "3 real tasks per day in Claude",
-      "description": "Provider emails, customer analysis, document review — actual HouseAccount work. Use Chat or Cowork, whichever feels natural.",
+      "title": "Step 6: Iterate in the Code tab (Desktop)",
+      "description": "Open Claude Desktop \u2192 Code tab \u2192 ask it to add dark mode, polish the design, add a receipt feature. Experience the feedback loop: describe \u2192 build \u2192 refine.",
       "session": "s1",
       "status": "todo",
       "priority": "medium"
     },
     {
       "id": "t7",
-      "title": "Upload a dense document for analysis",
-      "description": "Drop in a vendor contract, long email chain, or competitor's terms. Ask Claude to extract the 3 things that matter and flag anything unusual.",
+      "title": "Step 7: Daily reps \u2014 3 real tasks per day",
+      "description": "Provider emails, customer situations, document review \u2014 actual HouseAccount work in Claude. Plus try Caps Lock voice input, upload a dense document, and use the calendar connector.",
       "session": "s1",
       "status": "todo",
-      "priority": "low"
-    },
-    {
-      "id": "t8",
-      "title": "Try Caps Lock voice input",
-      "description": "Hold Caps Lock → talk a real problem → let go. Use it for at least one actual task this week. Notice how different it feels.",
-      "session": "s1",
-      "status": "todo",
-      "priority": "low"
+      "priority": "medium"
     }
   ],
   "resources": [
     {
       "id": "setup-guide",
       "title": "AI Operator Setup Guide",
-      "description": "Hardware, subscriptions, Claude Code install, MCP setup — zero to running",
+      "description": "Hardware, subscriptions, Claude Code install, MCP setup \u2014 zero to running",
       "type": "pdf",
       "filename": "AI_Operator_Setup_Guide.pdf",
       "session": "s1"
