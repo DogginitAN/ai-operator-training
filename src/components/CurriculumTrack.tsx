@@ -2,9 +2,10 @@
 import { useState } from 'react';
 import {
   Check, Clock, Lock, Lightbulb, ChevronDown, ChevronUp,
-  Monitor, Layers,
+  Monitor, Layers, FolderOpen, FileText, BookOpen, ExternalLink, Eye, Download,
 } from 'lucide-react';
-import type { Session, CurriculumTheme, CurriculumReference, ThemeItem } from '@/lib/store';
+import type { Session, CurriculumTheme, CurriculumReference, ThemeItem, Resource } from '@/lib/store';
+import studentData from '@/data/student.json';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -187,6 +188,101 @@ function ThemeSection({
   );
 }
 
+// ─── session materials ────────────────────────────────────────────────────────
+
+const MAT_TYPE_CONFIG: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
+  pdf:       { icon: FileText,     color: 'text-red-500',    bg: 'bg-red-50 dark:bg-red-950/30'       },
+  html:      { icon: ExternalLink, color: 'text-blue-500',   bg: 'bg-blue-50 dark:bg-blue-950/30'     },
+  reference: { icon: BookOpen,     color: 'text-violet-500', bg: 'bg-violet-50 dark:bg-violet-950/30' },
+};
+
+const MAT_ACTION_BTN = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold border transition-all duration-200 bg-brand-50 dark:bg-brand-950/20 text-brand-600 dark:text-brand-400 border-brand-100 dark:border-brand-800/30 hover:bg-gradient-to-r hover:from-brand-500 hover:to-violet-500 hover:text-white hover:border-transparent';
+
+function SessionMaterials({ sessionId }: { sessionId: string }) {
+  const resources = (studentData.resources as Resource[]).filter(
+    r => r.session === sessionId || r.session === 'all'
+  );
+  if (resources.length === 0) return null;
+
+  return (
+    <div className="border-t border-surface-100 dark:border-night-600 px-7 pt-5 pb-7">
+      <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-violet-500 mb-3">
+        <FolderOpen size={13} />
+        Session Materials
+      </div>
+      <div className="space-y-2">
+        {resources.map(resource => {
+          const cfg = MAT_TYPE_CONFIG[resource.type] ?? MAT_TYPE_CONFIG.reference;
+          const Icon = cfg.icon;
+          const hasFile = resource.filename !== null;
+          const url = hasFile ? `/docs/${resource.filename}` : null;
+
+          const openFile = () => {
+            if (url) window.open(url, '_blank', 'noopener,noreferrer');
+          };
+          const handleOpen = (e: React.MouseEvent) => { e.stopPropagation(); openFile(); };
+          const handleDownload = (e: React.MouseEvent) => {
+            e.stopPropagation();
+            if (!resource.filename) return;
+            const link = document.createElement('a');
+            link.href = `/docs/${resource.filename}`;
+            link.download = resource.filename;
+            link.click();
+          };
+
+          return (
+            <div
+              key={resource.id}
+              onClick={hasFile ? openFile : undefined}
+              className={`bg-surface-50 dark:bg-night-900/40 rounded-xl border border-surface-200 dark:border-night-600 p-3 flex items-center gap-3 transition-all duration-200 ${
+                hasFile ? 'cursor-pointer hover:border-brand-300 dark:hover:border-brand-700/50' : ''
+              }`}
+            >
+              <div className={`w-9 h-9 rounded-lg ${cfg.bg} flex items-center justify-center flex-shrink-0`}>
+                <Icon size={16} className={cfg.color} />
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <h4 className="font-medium text-surface-900 dark:text-night-100 text-sm leading-snug">{resource.title}</h4>
+                <p className="text-xs text-surface-300 dark:text-night-400 mt-0.5">{resource.description}</p>
+              </div>
+
+              {hasFile && (
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {resource.type === 'pdf' && (
+                    <>
+                      <button onClick={handleOpen} className={MAT_ACTION_BTN}>
+                        <Eye size={12} />
+                        Preview
+                      </button>
+                      <button onClick={handleDownload} className={MAT_ACTION_BTN}>
+                        <Download size={12} />
+                        Download
+                      </button>
+                    </>
+                  )}
+                  {resource.type === 'html' && (
+                    <button onClick={handleOpen} className={MAT_ACTION_BTN}>
+                      <ExternalLink size={12} />
+                      Open
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {!hasFile && (
+                <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-surface-300 dark:text-night-400 bg-surface-100 dark:bg-night-700 px-2.5 py-1 rounded-lg border border-surface-200 dark:border-night-600 flex-shrink-0">
+                  {resource.type}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── session content ──────────────────────────────────────────────────────────
 
 const SESSION_BADGE: Record<string, string> = {
@@ -314,6 +410,8 @@ function SessionContent({ session }: { session: Session }) {
           </p>
         </div>
       )}
+
+      <SessionMaterials sessionId={session.id} />
     </div>
   );
 }
