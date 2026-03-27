@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Operator Coaching — Session 1 Lesson Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    padding: 2.5rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+  }
+
+  .header .sub {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .header .meta {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .header .meta span {
+    background: var(--surface);
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  /* Mantras section */
+  .mantras {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .mantras h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+  }
+
+  .mantra {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .mantra:last-child { border-bottom: none; }
+
+  .mantra-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .mantra-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+
+  .mantra-context {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+  }
+
+  /* Timeline */
+  .timeline { margin-bottom: 1rem; }
+
+  .block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .block-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .block-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 5px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .block-time.setup { background: var(--blue-dim); color: var(--blue); }
+  .block-time.mental { background: var(--purple-dim); color: var(--purple); }
+  .block-time.exercise { background: var(--green-dim); color: var(--green); }
+  .block-time.wrap { background: var(--accent-dim); color: var(--accent); }
+
+  .block-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .block-body { padding: 1.2rem 1.5rem; }
+
+  .block-body p {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .block-body p:last-child { margin-bottom: 0; }
+
+  .say {
+    background: var(--surface-2);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .say::before {
+    content: "SAY:";
+    display: block;
+    font-style: normal;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .do {
+    background: var(--green-dim);
+    border-left: 3px solid var(--green);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95rem;
+  }
+
+  .do::before {
+    content: "DO:";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ask {
+    background: var(--blue-dim);
+    border-left: 3px solid var(--blue);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95rem;
+  }
+
+  .ask::before {
+    content: "ASK HIM:";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .warning {
+    background: var(--red-dim);
+    border-left: 3px solid var(--red);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.9rem;
+  }
+
+  .warning::before {
+    content: "AVOID:";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--red);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0.75rem 0;
+  }
+
+  ul {
+    padding-left: 1.2rem;
+    margin: 0.5rem 0;
+  }
+
+  li {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    background: var(--surface-2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  strong { font-weight: 600; }
+
+  .footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Session 1: Becoming an AI Operator</h1>
+  <div class="sub">Coaching lesson plan for Matt — HouseAccount</div>
+  <div class="meta">
+    <span>Friday 10:00 AM</span>
+    <span>~60 minutes</span>
+    <span>Session 1 of ongoing</span>
+  </div>
+</div>
+
+<!-- ─── MANTRAS ─── -->
+<div class="mantras">
+  <h2>Key Statements — Repeat These Throughout</h2>
+
+  <div class="mantra">
+    <span class="mantra-num">01</span>
+    <div>
+      <div class="mantra-text">"The models are intelligence. When you're doing something that requires thinking, that's a signal to test a model with it."</div>
+      <div class="mantra-context">This reframes AI from "tool" to "coworker." Every time he catches himself reasoning through a problem alone — drafting, analyzing, deciding — that's an opportunity to hand it to Claude.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num">02</span>
+    <div>
+      <div class="mantra-text">"Brain, Hands, Memory. Claude thinks. Claude Code acts. CLAUDE.md remembers."</div>
+      <div class="mantra-context">The three-layer model. Repeat this every time you introduce a new concept so it anchors to the same framework.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num">03</span>
+    <div>
+      <div class="mantra-text">"If you're doing it more than twice, it should be a prompt. If it's a prompt you run more than twice, it should be automated."</div>
+      <div class="mantra-context">The automation ladder: manual → prompt → saved prompt → script → agent. He doesn't need to get to "agent" on day one. Just start noticing the repetition.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num">04</span>
+    <div>
+      <div class="mantra-text">"Context is everything. A model with no context is smart but useless. A model with your business context is a teammate."</div>
+      <div class="mantra-context">This motivates writing CLAUDE.md files, creating Projects, and feeding Claude real documents. The model's ceiling is gated by what you give it to work with.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num">05</span>
+    <div>
+      <div class="mantra-text">"You're not learning a tool. You're building a new reflex."</div>
+      <div class="mantra-context">The outcome of coaching isn't "Matt knows Claude." It's "Matt's first instinct is to delegate to AI before doing it manually." That takes reps, not tutorials.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num">06</span>
+    <div>
+      <div class="mantra-text">"The best AI operator isn't the best prompter. It's the person who knows what to hand off and what to keep."</div>
+      <div class="mantra-context">Judgment > technique. Knowing WHEN to use AI matters more than knowing HOW. This is why the founder has to learn it themselves — it's a judgment call that requires domain expertise.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TIMELINE ─── -->
+<div class="timeline">
+
+<!-- BLOCK 1 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time setup">0–10 min</span>
+    <span class="block-title">Setup Check & Calibration</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> Confirm his tools work, understand where he's starting from.</p>
+
+    <div class="ask">Walk me through what you got set up from the guide. What worked? What didn't? What did you try on your own?</div>
+
+    <p>This tells you immediately whether he's at "I installed everything and played around" or "I skimmed the PDF." Adjust the rest of the call accordingly.</p>
+
+    <div class="do">If anything isn't installed, fix it now. Share screen and walk through it together. Don't let broken tooling eat the call — get to <code>claude</code> running in his terminal before moving on.</div>
+
+    <div class="ask">What does your typical day look like at HouseAccount? Not the ideal — the actual. Where do you spend your time?</div>
+
+    <p>Listen for: repetitive tasks, decision bottlenecks, things that require him personally, things that shouldn't require him personally. You're building a mental map of where AI fits.</p>
+  </div>
+</div>
+
+<!-- BLOCK 2 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time mental">10–20 min</span>
+    <span class="block-title">The Mental Model — Intelligence on Tap</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> Shift his frame from "AI as tool" to "AI as intelligence I can direct."</p>
+
+    <div class="say">Think about what a model actually is. It's not a search engine. It's not autocomplete. It's a compressed version of human reasoning that you can invoke instantly, at zero marginal cost, on any problem. When you find yourself <em>thinking</em> — analyzing, comparing, drafting, deciding — that's exactly when you should be testing a model with that same problem.</div>
+
+    <div class="say">Here's the shift: most people ask "can AI do this?" The AI-native operator asks "why would I do this myself?"</div>
+
+    <p><strong>The Delegation Test</strong> — walk him through this framework:</p>
+    <ul>
+      <li><strong>Does it require thinking?</strong> → Claude can probably do it, or at least get you 80% there</li>
+      <li><strong>Is it repetitive?</strong> → It should definitely be a prompt, maybe a script</li>
+      <li><strong>Does it require YOUR specific judgment?</strong> → You review, Claude drafts</li>
+      <li><strong>Does it require real-time human relationship?</strong> → That stays with you. Everything else is negotiable.</li>
+    </ul>
+
+    <div class="say">The four things that stay human: relationships, taste, judgment on edge cases, and final accountability. Everything else is fair game.</div>
+  </div>
+</div>
+
+<!-- BLOCK 3 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time exercise">20–35 min</span>
+    <span class="block-title">Exercise 1: Real Problem, Live</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> He watches you solve a REAL HouseAccount problem with Claude, then does one himself.</p>
+
+    <div class="ask">Give me something real. A provider email you need to respond to. A pricing question. A customer situation. Something you'd normally spend 10-15 minutes on.</div>
+
+    <p><strong>YOUR demo (5 min):</strong> Take whatever he gives you and solve it live in Claude Desktop. Narrate your thinking out loud:</p>
+    <ul>
+      <li>"I'm going to paste this email and give Claude context about who the provider is..."</li>
+      <li>"Watch how I'm not asking it to 'write an email' — I'm giving it the situation and letting it decide the approach..."</li>
+      <li>"See how it got 90% right? I'm going to tweak this one line and send it. That took 45 seconds instead of 10 minutes."</li>
+    </ul>
+
+    <div class="say">I didn't prompt it perfectly. I just gave it the problem and enough context. The model fills in the gaps. Your job isn't to write perfect prompts — it's to get the problem into the model's context window.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>HIS turn (5 min):</strong> Now hand him the keyboard.</p>
+
+    <div class="do">Have him pick a second real task — something he was going to do today anyway. Watch him do it in Claude. Coach in real-time: "give it more context about why this matters" or "try telling it the tone you want" or "just paste the whole email chain, don't summarize."</div>
+
+    <div class="warning">Don't over-coach the prompt. The instinct will be to help him write the "right" prompt. Let him fumble. The learning is in seeing that even a rough prompt gets useful output. Perfectionism about prompting is the #1 thing that prevents adoption.</div>
+  </div>
+</div>
+
+<!-- BLOCK 4 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time exercise">35–45 min</span>
+    <span class="block-title">Exercise 2: Building Context (CLAUDE.md)</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> He creates his first Project and CLAUDE.md — the "memory" layer that makes Claude a HouseAccount expert.</p>
+
+    <div class="say">Right now, Claude is smart but it knows nothing about HouseAccount. Every time you start a conversation, it's a blank slate. That's like hiring a brilliant consultant and never giving them any background docs. CLAUDE.md is the onboarding packet.</div>
+
+    <div class="do">
+      Open Claude Desktop → Projects → Create "HouseAccount." Together, write the project instructions. Have him dictate while you type (or vice versa). Cover:<br><br>
+      • What HouseAccount does in 2-3 sentences<br>
+      • Who the customers are (homeowners) and providers<br>
+      • The team structure (who does what)<br>
+      • The four agents they've scoped (Provider Sales, Customer Intake, Pricing Estimate, Concierge)<br>
+      • Current pain points or bottlenecks<br>
+      • Any terminology specific to HouseAccount
+    </div>
+
+    <p>Then test it immediately:</p>
+
+    <div class="do">Inside that Project, ask: "Based on what you know about HouseAccount, what's the single highest-leverage process I should automate first and why?" — show him how the context changes the quality of the response.</div>
+
+    <div class="say">See the difference? Same model, same intelligence — but now it's reasoning about YOUR business, not generic advice. Context is the multiplier. The more you feed it, the better it gets.</div>
+  </div>
+</div>
+
+<!-- BLOCK 5 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time exercise">45–52 min</span>
+    <span class="block-title">Exercise 3: The Batch Mindset</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> Introduce the pattern of batching repetitive work through Claude.</p>
+
+    <div class="say">Here's where the compounding starts. You just used Claude on one email. But what if you have 15 provider responses to draft? Or 8 customer intake forms to review? Or pricing estimates for 20 jobs? This is where the economics flip — the model doesn't get tired, doesn't slow down, and costs you nothing extra.</div>
+
+    <div class="ask">What's something at HouseAccount where you or your team do the same type of task repeatedly? Provider outreach? Customer follow-ups? Quote reviews?</div>
+
+    <p>Whatever he says, sketch the pattern together:</p>
+    <ul>
+      <li><strong>Step 1:</strong> Do one manually with Claude (like we just did)</li>
+      <li><strong>Step 2:</strong> Save the prompt that worked as a Project instruction or note</li>
+      <li><strong>Step 3:</strong> Next time, paste in the new data and reuse the same approach</li>
+      <li><strong>Step 4:</strong> Eventually, this becomes a script that Claude Code runs on a batch of inputs</li>
+    </ul>
+
+    <div class="say">You don't automate first. You do it once, learn what works, then batch it. Manual → Prompt → Batch → Automated. That's the ladder.</div>
+  </div>
+</div>
+
+<!-- BLOCK 6 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time wrap">52–60 min</span>
+    <span class="block-title">Homework & Next Steps</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> He leaves with specific things to do this week, not just concepts.</p>
+
+    <div class="say">The goal this week isn't to build anything. It's to change the reflex. Every time you catch yourself doing something that requires thinking — stop, and try handing it to Claude first. Even if it takes longer the first time. You're training the muscle, not optimizing for speed yet.</div>
+
+    <p><strong>His homework (this week):</strong></p>
+    <ul>
+      <li><strong>3 real tasks per day in Claude.</strong> Not toy examples — actual work. Provider emails, customer analysis, process documentation, anything. Doesn't matter if the output is perfect. The reps matter.</li>
+      <li><strong>Keep a "delegation log."</strong> A simple note (even in Apple Notes) — every time you use Claude, write one line: what you asked, how useful the response was (1-5), and what you'd do differently. This builds self-awareness about where AI fits in YOUR workflow.</li>
+      <li><strong>Expand the HouseAccount Project.</strong> Every time Claude gives you something useful, add the relevant context back into the Project instructions. It compounds.</li>
+      <li><strong>Try Claude Code on one thing.</strong> Even if it's just <code>claude</code> in a folder with a CSV. Ask it to analyze something. Get used to the terminal flow.</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>Schedule Session 2</strong> for next week. Agenda will be driven by his delegation log — what worked, what didn't, and where to push deeper. By session 2, he'll have real opinions about where AI fits vs. doesn't in his workflow.</p>
+
+    <div class="say">By next Friday, the goal is that reaching for Claude feels as natural as reaching for Google. Not because you've memorized prompts — because your brain has started to pattern-match on "this is a Claude moment."</div>
+  </div>
+</div>
+
+</div><!-- /timeline -->
+
+<!-- ─── BONUS: HOUSEACCOUNT-SPECIFIC HOOKS ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time mental">BONUS</span>
+    <span class="block-title">HouseAccount-Specific Angles (Use If Time Allows)</span>
+  </div>
+  <div class="block-body">
+    <p>If he mentions any of these, lean in — they're high-leverage for his business:</p>
+
+    <ul>
+      <li><strong>Provider matching:</strong> "Imagine feeding Claude every past job — type, zip code, rating, price, completion time. It can draft matching logic that's better than a rules engine because it understands nuance."</li>
+      <li><strong>Intake scoping:</strong> "The Customer Intake Agent you've scoped — Claude is already great at this. Give it a photo + description + job type and it'll produce a structured scope of work. You could prototype that in Claude Desktop today."</li>
+      <li><strong>Pricing estimates:</strong> "If you have historical pricing data, Claude can identify patterns humans miss — like which zip codes run 20% higher for plumbing but not for electrical."</li>
+      <li><strong>The Concierge:</strong> "This is what OpenClaw becomes later. A persistent, always-on presence that knows HouseAccount's context and can handle homeowner questions, route to the right provider, escalate when needed."</li>
+    </ul>
+
+    <div class="warning">Don't go too deep on the agent architecture today. He needs the mental model and the daily habit first. The agent map is a Session 3-4 conversation when he has enough experience to have opinions about what should be automated.</div>
+  </div>
+</div>
+
+<div class="footer">
+  Session 1 of ongoing coaching · Prepared for Andrew · March 2026
+</div>
+
+</body>
+</html>

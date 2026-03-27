@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1 Homework — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 2rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    padding: 2rem 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .section-num.prereq { background: var(--red-dim); color: var(--red); }
+  .section-num.path-a { background: var(--green-dim); color: var(--green); }
+  .section-num.path-b { background: var(--blue-dim); color: var(--blue); }
+  .section-num.project { background: var(--purple-dim); color: var(--purple); }
+  .section-num.daily { background: var(--accent-dim); color: var(--accent); }
+  .section-num.ref { background: var(--cyan-dim); color: var(--cyan); }
+
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  .step {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 0.75rem 0;
+  }
+
+  .step-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem;
+  }
+
+  .step-label.do { color: var(--green); }
+  .step-label.type { color: var(--blue); }
+  .step-label.expect { color: var(--purple); }
+  .step-label.note { color: var(--accent); }
+  .step-label.warn { color: var(--red); }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    background: var(--bg);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    display: inline;
+    word-break: break-all;
+  }
+
+  .code-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    background: var(--bg);
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin: 0.5rem 0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+
+  .path-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .path-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .path-badge.a { background: var(--green-dim); color: var(--green); }
+  .path-badge.b { background: var(--blue-dim); color: var(--blue); }
+
+  ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.35rem; }
+
+  strong { font-weight: 600; }
+
+  .callout {
+    background: var(--accent-dim);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95rem;
+  }
+
+  .footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Homework: Build Your First App</h1>
+  <div class="sub">Session 1 follow-up — due before Thursday April 3rd</div>
+</div>
+
+<!-- ─── PREREQ: GIT ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num prereq">PREREQ</span>
+    <span class="section-title">Install Git for Windows (required for Claude Code)</span>
+  </div>
+  <div class="section-body">
+    <p>Claude Code needs Git installed to work on Windows. You started this on the call — here's the full walkthrough to make sure it's done.</p>
+
+    <div class="step">
+      <div class="step-label do">STEP 1 — DOWNLOAD</div>
+      Go to <strong>git-scm.com/download/win</strong> and download the installer. It should auto-detect your system (64-bit).
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 2 — INSTALL</div>
+      Run the installer. Click <strong>Next</strong> on every screen — the defaults are all fine. The important thing is that <strong>"Add Git to PATH"</strong> stays checked (it's checked by default, don't uncheck it).
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 3 — VERIFY</div>
+      <strong>Close</strong> your PowerShell / terminal completely, then open a fresh one. Type:
+      <div class="code-block">git --version</div>
+      You should see something like <code>git version 2.47.1.windows.1</code>. If you see that, Git is installed.
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 4 — VERIFY CLAUDE CODE</div>
+      In that same fresh terminal, type:
+      <div class="code-block">claude --version</div>
+      If this works, you're good. If it says "not recognized," run the installer again:
+      <div class="code-block">irm https://claude.ai/install.ps1 | iex</div>
+      Then <strong>close and reopen</strong> your terminal and try <code>claude --version</code> again.
+    </div>
+
+    <div class="callout">
+      <strong>The #1 Windows gotcha:</strong> After installing anything, you MUST close and reopen your terminal for it to take effect. This is a Windows PATH thing — it's not you, it's Windows.
+    </div>
+  </div>
+</div>
+
+<!-- ─── ASSIGNMENT INTRO ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">ASSIGNMENT</span>
+    <span class="section-title">Build a Tip Calculator App</span>
+  </div>
+  <div class="section-body">
+    <p>You're going to build a working web app — a tip calculator — using Claude. No coding knowledge required. Claude writes all the code. You just tell it what you want.</p>
+
+    <p>There are <strong>two ways</strong> to do this. Try both so you get a feel for the difference:</p>
+
+    <div class="path-toggle">
+      <span class="path-badge a">Path A — Claude Code window in Claude Desktop</span>
+    </div>
+    <p>This is the code tab you saw during our call (top of Claude Desktop, next to Chat and Cowork). It's the easiest entry point — no terminal needed.</p>
+
+    <div class="path-toggle">
+      <span class="path-badge b">Path B — Claude Code in your terminal (PowerShell)</span>
+    </div>
+    <p>This is the terminal version we started setting up. More powerful, more flexible, and where you'll eventually live. But Path A is totally fine to start.</p>
+  </div>
+</div>
+
+<!-- ─── PATH A ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num path-a">PATH A</span>
+    <span class="section-title">Build It in the Claude Code Window (Claude Desktop)</span>
+  </div>
+  <div class="section-body">
+
+    <div class="step">
+      <div class="step-label do">STEP 1</div>
+      Open <strong>Claude Desktop</strong>. At the top, click the <strong>Code</strong> tab (next to Chat and Cowork).
+    </div>
+
+    <div class="step">
+      <div class="step-label type">STEP 2 — TYPE THIS PROMPT</div>
+      <div class="code-block">Build me a simple single-page web app — a tip calculator. I want to enter a bill amount and select a tip percentage (15%, 18%, 20%, 25%, or custom). It should show the tip amount and total. Clean design, works on mobile. Use HTML, CSS, and JavaScript in a single file. Save it to my Desktop and open it in my browser when you're done.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label expect">WHAT SHOULD HAPPEN</div>
+      Claude will create an HTML file, write all the code, save it to your Desktop, and open it in your browser. You'll have a working tip calculator. The whole thing takes about 60 seconds.
+    </div>
+
+    <div class="step">
+      <div class="step-label note">THEN TRY THIS</div>
+      Once it's built, ask Claude to modify it:
+      <div class="code-block">Add a "split the bill" feature — let me enter how many people are splitting and show the per-person amount.</div>
+      This shows you the iteration loop — you describe what you want changed, Claude modifies the code, and you see the result immediately.
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── PATH B ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num path-b">PATH B</span>
+    <span class="section-title">Build It in Your Terminal (PowerShell)</span>
+  </div>
+  <div class="section-body">
+    <p>This is the same exercise but from the terminal. Once you're comfortable here, you have the full power of Claude Code at your fingertips.</p>
+
+    <div class="step">
+      <div class="step-label do">STEP 1 — OPEN POWERSHELL</div>
+      Press <strong>Win + X</strong>, then click <strong>Terminal</strong> (or <strong>Windows PowerShell</strong>). You should see a command prompt.
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 2 — CREATE A PROJECT FOLDER</div>
+      Type these two commands, pressing Enter after each:
+      <div class="code-block">mkdir $HOME\ai-demo
+cd $HOME\ai-demo</div>
+      This creates a folder called <code>ai-demo</code> in your user directory and moves into it.
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 3 — START CLAUDE CODE</div>
+      <div class="code-block">claude</div>
+      First time: it'll open your browser to authenticate. Log in with your Claude account (same one as the Max subscription). Once authenticated, you'll see Claude Code's interactive prompt in your terminal.
+    </div>
+
+    <div class="step">
+      <div class="step-label type">STEP 4 — TYPE THIS PROMPT</div>
+      Inside Claude Code, type:
+      <div class="code-block">Build me a simple single-page web app — a tip calculator. I want to enter a bill amount and select a tip percentage (15%, 18%, 20%, 25%, or custom). It should show the tip amount and total. Clean design, works on mobile. Save it as index.html in this directory and open it in my browser.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label expect">WHAT SHOULD HAPPEN</div>
+      Claude Code will create the file, write the code, and open it in your browser. Same result as Path A, but you did it from the terminal.
+    </div>
+
+    <div class="step">
+      <div class="step-label note">THEN TRY</div>
+      <div class="code-block">Add a "split the bill" feature — let me enter how many people and show per-person amount. Also add a dark mode toggle.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label note">USEFUL COMMANDS INSIDE CLAUDE CODE</div>
+      <ul>
+        <li><code>/help</code> — shows all available commands</li>
+        <li><code>/compact</code> — compresses conversation history (use if it starts feeling slow)</li>
+        <li><code>Esc</code> — cancel what it's currently doing</li>
+        <li>Type <code>exit</code> to leave Claude Code and go back to normal terminal</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── TROUBLESHOOTING ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num prereq">HELP</span>
+    <span class="section-title">If Something Goes Wrong</span>
+  </div>
+  <div class="section-body">
+    <p><strong>"claude is not recognized"</strong> — Close your terminal completely, reopen it, try again. If still broken, run the installer again:</p>
+    <div class="code-block">irm https://claude.ai/install.ps1 | iex</div>
+    <p>Then close and reopen terminal.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>"Git Bash not found"</strong> — Make sure Git is installed (Step 1 above). If it is installed but Claude Code still can't find it, you can paste this into Claude Chat and ask for help — screenshot the error message and drop it in.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>Claude Code asks to allow permissions</strong> — Say yes / always allow. Same as we did on the call with Desktop Commander. You can tighten permissions later.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>The app opens but looks wrong or doesn't work</strong> — Just tell Claude: "The calculator isn't working correctly — [describe what's wrong]." It'll fix its own code. This is normal. Iteration is the workflow.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>Anything else breaks</strong> — Screenshot the error, paste it into Claude Chat (not Code), and say "I'm trying to use Claude Code to build an app and hit this error. What should I do?" Claude is excellent at troubleshooting itself.</p>
+  </div>
+</div>
+
+<!-- ─── PROJECT ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num project">BONUS</span>
+    <span class="section-title">Create a "Building" Project in Claude Chat</span>
+  </div>
+  <div class="section-body">
+    <p>We created the <strong>AI Native Operator Training</strong> project during the call for tracking our sessions. Now create a second project dedicated to building things.</p>
+
+    <div class="step">
+      <div class="step-label do">CREATE THE PROJECT</div>
+      In Claude Desktop → open the sidebar → <strong>Projects</strong> → <strong>Create New Project</strong> → Start from scratch.<br><br>
+      Name it: <strong>HouseAccount Builder</strong>
+    </div>
+
+    <div class="step">
+      <div class="step-label type">ADD PROJECT INSTRUCTIONS</div>
+      In the project instructions, paste something like:
+      <div class="code-block">This project is for building tools, apps, and prototypes for HouseAccount.
+
+HouseAccount is a home services marketplace that connects homeowners with service providers (plumbers, electricians, etc). We have a team of advocates who manage the process.
+
+When building things in this project:
+- Keep it simple and functional first, then iterate
+- Use HTML/CSS/JS for web tools (single file when possible)
+- Explain what you're doing so I can learn
+- I'm on Windows using PowerShell</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label note">WHY THIS MATTERS</div>
+      Next time you want to prototype something — a quote comparison tool, a provider scorecard, an intake form — you start a conversation inside this project and Claude already knows the context. This is the <strong>Memory</strong> layer we talked about. Brain, Hands, Memory.
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── DAILY REPS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">DAILY</span>
+    <span class="section-title">This Week's Reps (Before Thursday)</span>
+  </div>
+  <div class="section-body">
+    <p>The app is the main homework. But try to work these into your week too:</p>
+
+    <ul>
+      <li><strong>3 real tasks per day in Claude.</strong> Provider emails, customer situations, document review — actual work, not toy examples. Use Chat or Cowork, whichever feels natural.</li>
+      <li><strong>Try Caps Lock voice input</strong> at least once. Hold Caps Lock, talk your problem, let go. Notice how different it feels to speak your request vs. type it.</li>
+      <li><strong>Upload something dense.</strong> A vendor contract, a long email chain, a competitor's pricing page. Ask Claude to extract the 3 things that matter and flag anything unusual.</li>
+      <li><strong>Use the calendar connector.</strong> Ask Claude to look at your week and tell you where you have gaps, or prep you for tomorrow's meetings.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Remember:</strong> You're not learning a tool. You're building a reflex. Every time you catch yourself doing something that requires thinking — stop and try handing it to Claude first. Even if it takes longer the first time. The reps matter more than the results right now.
+    </div>
+  </div>
+</div>
+
+<!-- ─── QUICK REF ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num ref">REF</span>
+    <span class="section-title">Quick Reference</span>
+  </div>
+  <div class="section-body">
+    <ul>
+      <li><strong>Caps Lock (hold)</strong> — voice input in Claude Desktop</li>
+      <li><strong>Hammer icon</strong> — confirms Desktop Commander / connectors are active</li>
+      <li><strong>Chat</strong> — thinking, writing, analyzing, brainstorming</li>
+      <li><strong>Cowork</strong> — Claude acts on your desktop (files, browser, apps)</li>
+      <li><strong>Code</strong> — Claude writes and runs code</li>
+      <li><strong>Projects</strong> — persistent context that carries across conversations</li>
+      <li><strong>Context window</strong> — the conversation memory. Gets weaker past ~75%. Start a new chat when it feels sluggish. Use a session handoff to carry context forward.</li>
+      <li><strong>Opus 4.6</strong> — smartest model, use for complex work</li>
+      <li><strong>Sonnet 4.6</strong> — faster, good for simpler tasks</li>
+      <li><strong>PowerShell commands:</strong></li>
+    </ul>
+    <div class="code-block">mkdir $HOME\folder-name          # create a folder
+cd $HOME\folder-name             # move into it
+claude                           # start Claude Code
+claude --version                 # check Claude Code is installed
+git --version                    # check Git is installed
+irm https://claude.ai/install.ps1 | iex   # reinstall Claude Code</div>
+  </div>
+</div>
+
+<div class="footer">
+  Session 1 Homework · AI Native Operator Training · Andrew Nolan · March 2026<br>
+  Next session: Thursday April 3rd, 1:00 PM
+</div>
+
+</body>
+</html>
