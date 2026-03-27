@@ -200,7 +200,7 @@ const MAT_ACTION_BTN = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-
 
 function SessionMaterials({ sessionId }: { sessionId: string }) {
   const resources = (studentData.resources as Resource[]).filter(
-    r => r.session === sessionId || r.session === 'all'
+    r => r.global || r.sessions.includes(sessionId)
   );
   if (resources.length === 0) return null;
 

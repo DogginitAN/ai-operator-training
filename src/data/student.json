@@ -248,7 +248,9 @@
       "description": "Hardware, subscriptions, Claude Code install, MCP setup \u2014 zero to running",
       "type": "pdf",
       "filename": "AI_Operator_Setup_Guide.pdf",
-      "session": "s1"
+      "tags": ["setup-guide", "onboarding"],
+      "sessions": ["s1"],
+      "global": false
     },
     {
       "id": "homework-s1",
@@ -256,7 +258,9 @@
       "description": "Git install, tip calculator (two paths), HouseAccount Builder project, daily reps",
       "type": "html",
       "filename": "session1_homework.html",
-      "session": "s1"
+      "tags": ["homework"],
+      "sessions": ["s1"],
+      "global": false
     },
     {
       "id": "lesson-plan-s1",
@@ -264,7 +268,9 @@
       "description": "Coaching plan: demos, mental model, exercises, homework structure",
       "type": "html",
       "filename": "lesson_plan.html",
-      "session": "s1"
+      "tags": ["lesson-plan"],
+      "sessions": ["s1"],
+      "global": false
     },
     {
       "id": "ref-commands",
@@ -272,7 +278,9 @@
       "description": "Essential terminal commands, Claude Code shortcuts, and troubleshooting",
       "type": "html",
       "filename": "powershell_quick_reference.html",
-      "session": "all"
+      "tags": ["reference", "terminal", "windows"],
+      "sessions": [],
+      "global": true
     }
   ],
   "mantras": [

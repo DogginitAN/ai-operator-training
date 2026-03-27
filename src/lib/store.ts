@@ -40,7 +40,9 @@ export interface Resource {
   description: string;
   type: string;
   filename: string | null;
-  session: string;
+  tags: string[];
+  sessions: string[];
+  global: boolean;
 }
 
 export interface ReferenceSection {
