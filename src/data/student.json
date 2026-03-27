@@ -270,9 +270,9 @@
       "id": "ref-commands",
       "title": "Windows PowerShell Quick Reference",
       "description": "Essential terminal commands, Claude Code shortcuts, and troubleshooting",
-      "type": "reference",
-      "filename": null,
-      "session": "s1"
+      "type": "html",
+      "filename": "powershell_quick_reference.html",
+      "session": "all"
     }
   ],
   "mantras": [

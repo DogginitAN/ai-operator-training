@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows PowerShell Quick Reference — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  .header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
+  .section-num.prereq  { background: var(--red-dim);    color: var(--red);    }
+  .section-num.daily   { background: var(--accent-dim); color: var(--accent); }
+  .section-num.ref     { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.path-a  { background: var(--green-dim);  color: var(--green);  }
+  .section-num.project { background: var(--purple-dim); color: var(--purple); }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .step { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.75rem 0; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .step-label.do     { color: var(--green);  }
+  .step-label.type   { color: var(--blue);   }
+  .step-label.expect { color: var(--purple); }
+  .step-label.note   { color: var(--accent); }
+  .step-label.warn   { color: var(--red);    }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); display: inline; word-break: break-all; }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .lightbulb { background: var(--purple-dim); border-left: 3px solid var(--purple); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; color: var(--purple); }
+  .lightbulb::before { content: "💡 THE LIGHTBULB:"; display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.35rem; }
+  strong { font-weight: 600; }
+  .cmd-row { display: flex; gap: 1rem; align-items: baseline; padding: 0.45rem 0; border-bottom: 1px solid var(--border); }
+  .cmd-row:last-child { border-bottom: none; }
+  .cmd { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--cyan); flex-shrink: 0; min-width: 220px; }
+  .cmd-desc { font-size: 0.9rem; color: var(--text-muted); }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Windows PowerShell Quick Reference</h1>
+  <div class="sub">Essential commands for AI operator work</div>
+</div>
+
+
+<!-- ─── BASICS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num ref">BASICS</span>
+    <span class="section-title">Core PowerShell Commands</span>
+  </div>
+  <div class="section-body">
+    <p>The ten commands you'll use every session. Learn these first — everything else builds on them.</p>
+    <div class="step">
+      <div class="cmd-row"><span class="cmd">pwd</span><span class="cmd-desc">Print working directory — shows where you currently are</span></div>
+      <div class="cmd-row"><span class="cmd">ls</span><span class="cmd-desc">List files and folders in the current directory</span></div>
+      <div class="cmd-row"><span class="cmd">cd path</span><span class="cmd-desc">Change directory — move to a different folder</span></div>
+      <div class="cmd-row"><span class="cmd">cd ..</span><span class="cmd-desc">Go up one level to the parent folder</span></div>
+      <div class="cmd-row"><span class="cmd">mkdir folder-name</span><span class="cmd-desc">Create a new directory</span></div>
+      <div class="cmd-row"><span class="cmd">cp source dest</span><span class="cmd-desc">Copy a file from one location to another</span></div>
+      <div class="cmd-row"><span class="cmd">mv source dest</span><span class="cmd-desc">Move or rename a file</span></div>
+      <div class="cmd-row"><span class="cmd">rm file</span><span class="cmd-desc">Delete a file (no Recycle Bin — permanent)</span></div>
+      <div class="cmd-row"><span class="cmd">cat file</span><span class="cmd-desc">Print file contents to the terminal</span></div>
+      <div class="cmd-row"><span class="cmd">clear</span><span class="cmd-desc">Clear the terminal screen</span></div>
+    </div>
+    <div class="callout"><strong>$HOME shortcut:</strong> Use <code>$HOME\folder-name</code> anywhere to reference your user directory (e.g. <code>C:\Users\Matt</code>). No need to type the full path.</div>
+  </div>
+</div>
+
+
+<!-- ─── CLAUDE CODE ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num path-a">CLAUDE CODE</span>
+    <span class="section-title">Claude Code Commands &amp; Controls</span>
+  </div>
+  <div class="section-body">
+    <p>Everything you need to start, control, and get the most out of a Claude Code session in the terminal.</p>
+    <div class="step">
+      <div class="step-label do">STARTING A SESSION</div>
+      <div class="code-block">claude                          # start new session in current folder
+claude --resume                 # resume your last session
+claude -p "your prompt here"    # one-shot: run prompt, no interactive session</div>
+    </div>
+    <div class="step">
+      <div class="step-label type">IN-SESSION CONTROLS</div>
+      <div class="cmd-row"><span class="cmd">y / yes</span><span class="cmd-desc">Approve the action Claude is about to take</span></div>
+      <div class="cmd-row"><span class="cmd">n / no</span><span class="cmd-desc">Reject the action — Claude will try a different approach</span></div>
+      <div class="cmd-row"><span class="cmd">/help</span><span class="cmd-desc">Show all available slash commands in the current session</span></div>
+      <div class="cmd-row"><span class="cmd">/clear</span><span class="cmd-desc">Clear conversation history (keeps files, resets context)</span></div>
+      <div class="cmd-row"><span class="cmd">Ctrl+C</span><span class="cmd-desc">Stop the current operation immediately</span></div>
+    </div>
+    <div class="step">
+      <div class="step-label note">PERSISTENT CONTEXT</div>
+      Drop a <code>CLAUDE.md</code> file in your project root. Claude Code reads it automatically at the start of every session. Put your business context, preferences, and conventions there — it's the Memory layer for your projects.
+    </div>
+    <div class="step">
+      <div class="step-label expect">VERSION CHECK</div>
+      <div class="code-block">claude --version
+git --version</div>
+    </div>
+    <div class="lightbulb">Claude Code is most powerful when it knows where it is. Always <code>cd</code> into your project folder before running <code>claude</code>. It reads your files, understands your structure, and makes decisions in context.</div>
+  </div>
+</div>
+
+
+<!-- ─── INSTALL & UPDATE ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num prereq">INSTALL</span>
+    <span class="section-title">Install &amp; Update</span>
+  </div>
+  <div class="section-body">
+    <p>The full setup sequence for a fresh Windows machine. Do these in order.</p>
+    <div class="step">
+      <div class="step-label do">1 — INSTALL GIT (prerequisite)</div>
+      Go to <strong>git-scm.com/download/win</strong>, download the installer, run it with defaults. Make sure <strong>"Add Git to PATH"</strong> stays checked. Claude Code requires Git to run on Windows.
+    </div>
+    <div class="step">
+      <div class="step-label do">2 — INSTALL CLAUDE CODE</div>
+      <div class="code-block">irm https://claude.ai/install.ps1 | iex</div>
+      Paste this into PowerShell and press Enter. It downloads and installs the Claude Code CLI.
+    </div>
+    <div class="step">
+      <div class="step-label type">3 — VERIFY (fresh terminal required)</div>
+      Close PowerShell completely, open a new one, then run:
+      <div class="code-block">git --version
+claude --version</div>
+      Both should return version numbers. If <code>claude</code> isn't recognized, run the install command again and reopen the terminal.
+    </div>
+    <div class="step">
+      <div class="step-label note">4 — UPDATE CLAUDE CODE</div>
+      <div class="code-block">claude update</div>
+      Or re-run the install script — it overwrites to the latest version.
+    </div>
+    <div class="callout"><strong>Windows rule:</strong> After installing anything that modifies PATH, you <em>must</em> close and reopen your terminal. This is not optional — it's how Windows loads the new PATH.</div>
+  </div>
+</div>
+
+
+<!-- ─── CLAUDE DESKTOP ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num project">CLAUDE DESKTOP</span>
+    <span class="section-title">Claude Desktop Features &amp; Shortcuts</span>
+  </div>
+  <div class="section-body">
+    <p>The chat interface — but far more capable than it looks. These are the features that matter for operator work.</p>
+    <div class="step">
+      <div class="step-label do">PROJECTS — THE MEMORY LAYER</div>
+      Claude Desktop → sidebar → <strong>Projects</strong>. Create a project for each context (e.g. "Building with AI", "HouseAccount Operations"). Every conversation inside a project shares persistent instructions. Without a project, every chat starts from zero.
+    </div>
+    <div class="step">
+      <div class="step-label type">CAPS LOCK — VOICE INPUT</div>
+      Hold <strong>Caps Lock</strong> to speak, release to send. Works in any conversation. Use it for anything where typing the full prompt would slow you down.
+    </div>
+    <div class="step">
+      <div class="step-label do">COWORK MODE</div>
+      Gives Claude control of your browser and desktop apps. Say "open our CRM and pull the last 5 provider applications" — Claude navigates, clicks, reads, and reports back. Best for tasks that live in GUIs rather than APIs.
+    </div>
+    <div class="step">
+      <div class="step-label type">CODE TAB</div>
+      A visual interface to Claude Code — same power as the terminal, without the terminal. Use it for building and iterating on apps when you prefer a chat-style flow.
+    </div>
+    <div class="step">
+      <div class="step-label note">MCP CONNECTORS</div>
+      Settings → Integrations. Connect Google Calendar, Gmail, Drive, Notion, and others. Once connected, Claude can read your schedule, search your email, and create documents — in every future conversation.
+    </div>
+    <div class="step">
+      <div class="step-label expect">SESSION HANDOFFS</div>
+      Context window degrades past ~75% full. Before starting a new session on a long project, ask Claude: <em>"Summarize what we built and what's next so I can paste this into a fresh session."</em> Paste it at the start of your next conversation.
+    </div>
+    <div class="step">
+      <div class="step-label do">MODEL SELECTION</div>
+      <div class="cmd-row"><span class="cmd">Claude Opus 4.5</span><span class="cmd-desc">Smartest — use for complex reasoning, architecture, analysis</span></div>
+      <div class="cmd-row"><span class="cmd">Claude Sonnet 4.5</span><span class="cmd-desc">Fast and capable — use for most everyday tasks</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── TROUBLESHOOTING ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">TROUBLESHOOTING</span>
+    <span class="section-title">When Something Goes Wrong</span>
+  </div>
+  <div class="section-body">
+    <p>The five most common issues and how to fix them.</p>
+    <div class="step">
+      <div class="step-label warn">"claude" is not recognized</div>
+      Close your terminal completely and open a new one. If still broken, reinstall:
+      <div class="code-block">irm https://claude.ai/install.ps1 | iex</div>
+      Then close and reopen the terminal again.
+    </div>
+    <div class="divider"></div>
+    <div class="step">
+      <div class="step-label warn">"git" is not recognized</div>
+      Git isn't installed or the PATH wasn't updated. Go to <strong>git-scm.com/download/win</strong>, reinstall, and reopen your terminal. Screenshot the error and paste it into Claude Chat if you get stuck.
+    </div>
+    <div class="divider"></div>
+    <div class="step">
+      <div class="step-label note">Claude asking for permissions on every action</div>
+      Say <strong>Yes</strong> or <strong>Always allow</strong>. Claude Code asks before touching your filesystem — it's a safety feature. You can tighten these settings later once you're comfortable with the workflow.
+    </div>
+    <div class="divider"></div>
+    <div class="step">
+      <div class="step-label warn">Responses getting slow or losing context</div>
+      Your context window is getting full. Use <code>/clear</code> to reset the conversation (files stay intact), or start a new session with a handoff summary. Don't try to continue in a degraded context — start fresh.
+    </div>
+    <div class="divider"></div>
+    <div class="step">
+      <div class="step-label note">Anything else</div>
+      Screenshot the error, paste it into Claude Chat, and say: <em>"I hit this error in PowerShell. What should I do?"</em> Claude will diagnose and walk you through the fix.
+    </div>
+    <div class="callout"><strong>The meta-skill:</strong> When something breaks, your first instinct should be to ask Claude to fix it. That IS the reflex we're building.</div>
+  </div>
+</div>
+
+
+<div class="footer">
+  Windows PowerShell Quick Reference · AI Native Operator Training · Andrew Nolan · 2026
+</div>
+
+</body>
+</html>
