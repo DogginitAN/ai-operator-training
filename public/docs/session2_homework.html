@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 2 Homework — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  .header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
+  .section-num.prereq  { background: var(--red-dim);    color: var(--red);    }
+  .section-num.step    { background: var(--blue-dim);   color: var(--blue);   }
+  .section-num.build   { background: var(--green-dim);  color: var(--green);  }
+  .section-num.iterate { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.daily   { background: var(--accent-dim); color: var(--accent); }
+  .section-num.ref     { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.path-a  { background: var(--green-dim);  color: var(--green);  }
+  .section-num.path-b  { background: var(--blue-dim);   color: var(--blue);   }
+  .section-num.project { background: var(--purple-dim); color: var(--purple); }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .step { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.75rem 0; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .step-label.do     { color: var(--green); }
+  .step-label.type   { color: var(--blue); }
+  .step-label.expect { color: var(--purple); }
+  .step-label.note   { color: var(--accent); }
+  .step-label.warn   { color: var(--red); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); display: inline; word-break: break-all; }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .lightbulb { background: var(--purple-dim); border-left: 3px solid var(--purple); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; color: var(--purple); }
+  .lightbulb::before { content: "💡 THE LIGHTBULB:"; display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.35rem; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+  .cmd-list { list-style: none; padding: 0; margin: 0.5rem 0; }
+  .cmd-list li { display: flex; gap: 1rem; align-items: baseline; padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+  .cmd-list li:last-child { border-bottom: none; }
+  .cmd-list li code { flex-shrink: 0; }
+  .cmd-list li span { color: var(--text-muted); font-size: 0.9rem; }
+  .sub-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; color: var(--cyan); margin: 1rem 0 0.4rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Homework: Build, Manage, Repeat</h1>
+  <div class="sub">Session 2 follow-up — due before next session</div>
+</div>
+
+
+<!-- ─── SECTION 1: BUILD ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num path-a">BUILD</span>
+    <span class="section-title">Build a Second HouseAccount Tool — Solo</span>
+  </div>
+  <div class="section-body">
+    <p>You built a tool with Andrew on the call. Now build one on your own. Full loop, no training wheels. Pick something your team actually needs.</p>
+
+    <div class="step">
+      <div class="step-label do">STEP 1 — PICK YOUR TOOL</div>
+      Think about what annoyed you this week at HouseAccount. A form that doesn't exist? A comparison you do manually? A tracker that lives in your head? Some ideas: a provider scorecard, a job cost estimator, a customer follow-up tracker, a competitor pricing comparison page. Pick something small enough to build in 30 minutes but real enough to be useful.
+    </div>
+
+    <div class="step">
+      <div class="step-label type">STEP 2 — PLAN IT IN CHAT FIRST</div>
+      Open the HouseAccount Builder project in Claude Desktop. Describe what you want to build and why. Ask Claude to help you think through inputs, outputs, and edge cases. Then ask: "Write me the exact prompt I should paste into Claude Code to build this as a single-page web app."
+      <div class="code-block">Help me plan a tool for HouseAccount that [describe what it does]. The user is [who]. It needs to [list requirements]. Think through the inputs, outputs, and edge cases. Then write me the exact Claude Code prompt to build it as a single-page web app with HTML, CSS, and JavaScript.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 3 — BUILD IT IN CLAUDE CODE</div>
+      <div class="code-block">mkdir $HOME\houseaccount-tool-2
+cd $HOME\houseaccount-tool-2
+claude --dangerously-skip-permissions</div>
+      Paste the prompt from Step 2. Let Claude Code run. Don't interrupt — watch it plan, write, and deliver.
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 4 — ITERATE AT LEAST 3 TIMES</div>
+      Once it's working, ask for changes. Add a feature, fix the design, handle an edge case. Each round teaches you the describe → build → refine loop.
+      <div class="code-block">Add a field for [something you forgot]
+Make the results color-coded based on [criteria]
+Make it work on mobile and add a reset button</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label note">STEP 5 — MANAGE YOUR CONTEXT</div>
+      After each iteration, check your context usage:
+      <div class="code-block">/status</div>
+      If you're past 50%, compress:
+      <div class="code-block">/compact</div>
+      If you're approaching 75% or things feel slow, start a fresh session. Claude Code will pick up the project from the files on disk.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── SECTION 2: CONTEXT SKILLS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num path-b">CONTEXT SKILLS</span>
+    <span class="section-title">Practice Context Window Management</span>
+  </div>
+  <div class="section-body">
+    <p>These skills feel tedious to practice but they prevent the #1 problem every AI operator hits: context degradation. Build the habit now before it costs you.</p>
+
+    <div class="step">
+      <div class="step-label do">STEP 1 — SESSION HANDOFFS — DO AT LEAST 2 THIS WEEK</div>
+      At the end of any productive Claude Chat conversation, before starting a new topic or when the chat is getting long, ask Claude:
+      <div class="code-block">Summarize this entire conversation — what we discussed, what was decided, what was built, and what's still open. Format it as a session handoff I can paste into a fresh chat.</div>
+      Copy the output. Start a new chat (inside the same Project if relevant). Paste the handoff. Continue working. Fresh context, zero lost knowledge.
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 2 — /compact — USE IT AT LEAST 3 TIMES</div>
+      Every time you're in Claude Code this week, make a habit of checking <code>/status</code>. When you cross 50%, run <code>/compact</code>. Do this at least 3 times across your sessions. The goal is to make it automatic — like checking your mirrors when driving.
+    </div>
+
+    <div class="step">
+      <div class="step-label note">STEP 3 — RULES OF THUMB</div>
+      <ul>
+        <li>Claude Code: <code>/status</code> is your fuel gauge. Compact at 50%. New session at 75%.</li>
+        <li>Chat: new conversation every 30–40 exchanges, or when it feels sluggish.</li>
+        <li>Projects: new chat inside the same Project = fresh context + same persistent memory.</li>
+        <li>Never paste a whole document when you can paste the relevant section.</li>
+        <li><code>claude --resume</code> in terminal picks up your last Code session.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── SECTION 3: MEMORY ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num project">MEMORY</span>
+    <span class="section-title">Build Your Project's Memory</span>
+  </div>
+  <div class="section-body">
+
+    <div class="step">
+      <div class="step-label do">STEP 1 — WRITE A CLAUDE.md FOR HOUSEACCOUNT BUILDER</div>
+      Open your houseaccount-tool folder in the terminal and run:
+      <div class="code-block">claude --dangerously-skip-permissions</div>
+      Then:
+      <div class="code-block">/init</div>
+      This generates a CLAUDE.md file. Edit it — either directly or by telling Claude Code what to add. Include:
+      <ul>
+        <li>What HouseAccount does (2–3 sentences)</li>
+        <li>Who the customers are (homeowners) and providers (plumbers, electricians, etc)</li>
+        <li>What tools you've built so far and what they do</li>
+        <li>Your preferences: Windows, PowerShell, single-file HTML apps, keep it simple</li>
+        <li>Any HouseAccount terminology (advocate, job types, etc)</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <div class="step-label note">STEP 2 — WHY THIS MATTERS</div>
+      Every time you start Claude Code in this folder, it reads CLAUDE.md before you say anything. It's the project's memory — onboarding that happens automatically. The more you put in, the less you have to explain each session. This is the "Memory" in Brain, Hands, Memory.
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 3 — EXPAND HOUSEACCOUNT BUILDER PROJECT IN CLAUDE DESKTOP</div>
+      Go to your HouseAccount Builder project in Claude Desktop. Update the project instructions with anything new from this week — pricing ranges you've learned, provider quality criteria, customer segments, common job types. Feed the memory. It compounds.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── SECTION 4: DAILY ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">DAILY</span>
+    <span class="section-title">This Week's Reps</span>
+  </div>
+  <div class="section-body">
+    <ul>
+      <li><strong>3 real tasks per day in Claude.</strong> Actual HouseAccount work. Provider communications, document review, meeting prep, customer analysis.</li>
+      <li><strong>Start a 'batch list.'</strong> Every time you do something one-at-a-time that you have 10+ of, write it down. Provider emails, quote reviews, intake processing — anything repetitive. We'll use this list in Session 3.</li>
+      <li><strong>Try the plan→build→iterate loop on something small.</strong> Even if it's just a personal tool — a grocery list app, a workout tracker, a meeting agenda template. The reps build the reflex.</li>
+      <li><strong>Use voice input (Caps Lock) for at least one complex task.</strong> Describe a messy problem out loud and see how Claude handles the unstructured input.</li>
+    </ul>
+    <div class="callout">The reflex we're building: when you think "I wish we had a tool that does X" — your next move is to open Claude Code and build it. Not research it. Not put it on a roadmap. Build it. The distance between idea and working prototype is now a conversation.</div>
+  </div>
+</div>
+
+
+<!-- ─── SECTION 5: REF ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num ref">REF</span>
+    <span class="section-title">Quick Reference — Claude Code Commands</span>
+  </div>
+  <div class="section-body">
+    <ul class="cmd-list">
+      <li><code>claude</code> <span>— Start Claude Code</span></li>
+      <li><code>claude --dangerously-skip-permissions</code> <span>— Auto-approve mode (personal machine)</span></li>
+      <li><code>claude --resume</code> <span>— Resume last session</span></li>
+      <li><code>/status</code> <span>— Check context window usage</span></li>
+      <li><code>/compact</code> <span>— Compress conversation (free up context)</span></li>
+      <li><code>/init</code> <span>— Generate CLAUDE.md for this folder</span></li>
+      <li><code>/help</code> <span>— Show all commands</span></li>
+      <li><code>/clear</code> <span>— Clear conversation, stay in session</span></li>
+      <li><code>Shift+Tab x2</code> <span>— Toggle plan mode</span></li>
+      <li><code>Esc</code> <span>— Cancel current operation</span></li>
+      <li><code>exit</code> <span>— Leave Claude Code</span></li>
+    </ul>
+    <div class="divider"></div>
+    <div class="sub-label">SESSION HANDOFF TEMPLATE</div>
+    <div class="code-block">Summarize this entire conversation:
+
+What we discussed
+What was decided
+What was built (include file names and locations)
+What's still open or unfinished
+Any context I'd need to continue this in a fresh session
+Format as a compact handoff document.</div>
+  </div>
+</div>
+
+
+<!-- ─── SECTION 6: HELP ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num prereq">HELP</span>
+    <span class="section-title">If Something Goes Wrong</span>
+  </div>
+  <div class="section-body">
+    <p><strong>"Claude Code feels slow or confused"</strong> — Run <code>/status</code>. If you're past 60%, run <code>/compact</code>. If past 80%, start a fresh session: <code>exit</code>, then <code>claude --dangerously-skip-permissions</code> in the same folder. Claude reads the files on disk, so your project is still there.</p>
+    <div class="divider"></div>
+    <p><strong>"Claude Code keeps asking for permission"</strong> — You probably launched without the flag. Exit and relaunch with: <code>claude --dangerously-skip-permissions</code></p>
+    <div class="divider"></div>
+    <p><strong>"The app Claude built doesn't work or looks wrong"</strong> — Don't restart. Just tell Claude what's wrong: "The calculator shows NaN when I enter a number" or "The layout is broken on mobile." It fixes its own code. Iteration is the workflow.</p>
+    <div class="divider"></div>
+    <p><strong>"Context handoff didn't work / new chat doesn't have the context"</strong> — Make sure you pasted the handoff text into the new chat. If using a Project, start the new chat INSIDE the project (not outside it). Project instructions carry over; conversation history doesn't.</p>
+    <div class="divider"></div>
+    <p><strong>"/compact didn't free much space"</strong> — Compact works best when there's a lot of back-and-forth conversation to compress. If most of your context is file contents, compact won't help as much. In that case, start a fresh session.</p>
+    <div class="divider"></div>
+    <p><strong>"Anything else breaks"</strong> — Screenshot the error, paste into Claude Chat (not Code), say: "I'm trying to [what you were doing] and hit this error. What should I do?" Claude is excellent at troubleshooting itself.</p>
+  </div>
+</div>
+
+
+<div class="footer">
+  Session 2 Homework · AI Native Operator Training · Andrew Nolan · March 2026<br>
+  Next session: TBD — Context as Infrastructure
+</div>
+
+</body>
+</html>

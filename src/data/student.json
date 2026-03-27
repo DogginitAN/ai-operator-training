@@ -241,6 +241,62 @@
       "session": "s1",
       "status": "todo",
       "priority": "medium"
+    },
+    {
+      "id": "t8",
+      "title": "Step 1: Build a second HouseAccount tool solo",
+      "description": "Full loop: plan in Chat (HouseAccount Builder project) \u2192 build in Claude Code with --dangerously-skip-permissions \u2192 iterate 3+ times \u2192 manage context with /status and /compact.",
+      "session": "s2",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t9",
+      "title": "Step 2: Practice 2 session handoffs",
+      "description": "End a productive Chat conversation with a handoff summary. Start a new chat, paste it in, continue working. Do this at least twice this week.",
+      "session": "s2",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t10",
+      "title": "Step 3: Use /compact at least 3 times",
+      "description": "Every Claude Code session: check /status regularly. When past 50%, run /compact. Build the habit of monitoring context usage like checking your mirrors.",
+      "session": "s2",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t11",
+      "title": "Step 4: Write CLAUDE.md for HouseAccount",
+      "description": "In your project folder, run /init in Claude Code. Edit the generated CLAUDE.md with HouseAccount context \u2014 what the company does, who the team is, tools built, your preferences.",
+      "session": "s2",
+      "status": "todo",
+      "priority": "medium"
+    },
+    {
+      "id": "t12",
+      "title": "Step 5: Expand HouseAccount Builder project context",
+      "description": "Update the Claude Desktop project instructions with pricing ranges, provider quality criteria, customer segments, common job types. Feed the memory \u2014 it compounds.",
+      "session": "s2",
+      "status": "todo",
+      "priority": "medium"
+    },
+    {
+      "id": "t13",
+      "title": "Step 6: Start a batch list",
+      "description": "Note every time you do something one-at-a-time that you have 10+ of \u2014 provider emails, quote reviews, intake processing. We\u2019ll build on this list in Session 3.",
+      "session": "s2",
+      "status": "todo",
+      "priority": "medium"
+    },
+    {
+      "id": "t14",
+      "title": "Step 7: Daily reps \u2014 3 real tasks per day",
+      "description": "Actual HouseAccount work in Claude. Provider communications, document review, meeting prep. Plus try the plan\u2192build\u2192iterate loop on at least one small personal tool.",
+      "session": "s2",
+      "status": "todo",
+      "priority": "medium"
     }
   ],
   "resources": [
@@ -309,6 +365,28 @@
       "sessions": [],
       "global": false,
       "category": "reference"
+    },
+    {
+      "id": "lesson-plan-s2",
+      "title": "Session 2 Lesson Plan",
+      "description": "Claude Code deep dive, context window management, building real tools",
+      "type": "html",
+      "filename": "session2_lesson_plan.html",
+      "tags": ["lesson-plan"],
+      "sessions": ["s2"],
+      "global": false,
+      "category": "lesson-plan"
+    },
+    {
+      "id": "homework-s2",
+      "title": "Session 2 Homework",
+      "description": "Solo build, context management practice, CLAUDE.md, batch list",
+      "type": "html",
+      "filename": "session2_homework.html",
+      "tags": ["homework"],
+      "sessions": ["s2"],
+      "global": false,
+      "category": "homework"
     }
   ],
   "mantras": [

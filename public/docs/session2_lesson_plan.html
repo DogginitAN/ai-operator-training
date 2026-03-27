@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Operator Coaching — Session 2 Lesson Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    padding: 2.5rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+  }
+
+  .header .sub {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .header .meta {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .header .meta span {
+    background: var(--surface);
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  /* Arc banner */
+  .arc-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .arc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.9rem;
+  }
+
+  .arc-flow {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .arc-step {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .arc-step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .arc-step-num.s1 { background: var(--blue-dim);   color: var(--blue);   }
+  .arc-step-num.s2 { background: var(--cyan-dim);   color: var(--cyan);   }
+  .arc-step-num.s3 { background: var(--green-dim);  color: var(--green);  }
+  .arc-step-num.s4 { background: var(--purple-dim); color: var(--purple); }
+  .arc-step-num.s5 { background: var(--accent-dim); color: var(--accent); }
+
+  .arc-arrow {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    padding: 0 0.1rem;
+  }
+
+  /* Mantras section */
+  .mantras {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .mantras h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .mantra {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .mantra:last-child { border-bottom: none; }
+
+  .mantra-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .mantra-num.new {
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .mantra-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+
+  .mantra-context {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+  }
+
+  /* Timeline */
+  .timeline { margin-bottom: 1rem; }
+
+  .block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .block-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .block-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 5px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .block-time.setup    { background: var(--blue-dim);   color: var(--blue);   }
+  .block-time.demo     { background: var(--cyan-dim);   color: var(--cyan);   }
+  .block-time.mental   { background: var(--purple-dim); color: var(--purple); }
+  .block-time.exercise { background: var(--green-dim);  color: var(--green);  }
+  .block-time.wrap     { background: var(--accent-dim); color: var(--accent); }
+  .block-time.bonus    { background: var(--purple-dim); color: var(--purple); }
+
+  .block-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .block-body { padding: 1.2rem 1.5rem; }
+
+  .block-body p {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .block-body p:last-child { margin-bottom: 0; }
+
+  .say {
+    background: var(--surface-2);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .say::before {
+    content: "SAY:";
+    display: block;
+    font-style: normal;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .do {
+    background: var(--green-dim);
+    border-left: 3px solid var(--green);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95rem;
+  }
+
+  .do::before {
+    content: "DO:";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ask {
+    background: var(--blue-dim);
+    border-left: 3px solid var(--blue);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95rem;
+  }
+
+  .ask::before {
+    content: "ASK HIM:";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .warning {
+    background: var(--red-dim);
+    border-left: 3px solid var(--red);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.9rem;
+  }
+
+  .warning::before {
+    content: "AVOID:";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--red);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0.75rem 0;
+  }
+
+  ul {
+    padding-left: 1.2rem;
+    margin: 0.5rem 0;
+  }
+
+  li {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    background: var(--surface-2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  strong { font-weight: 600; }
+
+  .footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Session 2: Claude Code &amp; The Build Reflex</h1>
+  <div class="sub">Coaching lesson plan for Matt — HouseAccount</div>
+  <div class="meta">
+    <span>Thursday 1:00 PM</span>
+    <span>~60–70 minutes</span>
+    <span>Session 2 of ongoing</span>
+  </div>
+</div>
+
+<!-- ─── ARC BANNER ─── -->
+<div class="arc-banner">
+  <div class="arc-label">Session Arc — Terminal Comfort → Context Mastery → Real Build → Batch Thinking</div>
+  <div class="arc-flow">
+    <div class="arc-step">
+      <span class="arc-step-num s1">s1</span>
+      Homework Review
+    </div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step">
+      <span class="arc-step-num s2">s2</span>
+      Claude Code Deep Dive
+    </div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step">
+      <span class="arc-step-num s3">s3</span>
+      Context Window Skills
+    </div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step">
+      <span class="arc-step-num s4">s4</span>
+      Build a Real Tool
+    </div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step">
+      <span class="arc-step-num s5">s5</span>
+      Batch + Homework
+    </div>
+  </div>
+</div>
+
+<!-- ─── MANTRAS ─── -->
+<div class="mantras">
+  <h2>Key Statements — Reinforce From Session 1 + New</h2>
+
+  <div class="mantra">
+    <span class="mantra-num">01</span>
+    <div>
+      <div class="mantra-text">"The models are intelligence. When you're doing something that requires thinking, that's a signal to test a model with it."</div>
+      <div class="mantra-context">Repeat from Session 1. Check if this has started to feel true for him after a week of reps.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num">02</span>
+    <div>
+      <div class="mantra-text">"Brain, Hands, Memory. Claude thinks. Claude Code acts. CLAUDE.md remembers."</div>
+      <div class="mantra-context">Today we make 'Hands' concrete. He'll use Claude Code for real, not just watch.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num">03</span>
+    <div>
+      <div class="mantra-text">"Context is everything. A model with no context is smart but useless. A model with your business context is a teammate."</div>
+      <div class="mantra-context">Today we make this tangible — he'll literally watch context fill up and learn to manage it.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num new">04 NEW</span>
+    <div>
+      <div class="mantra-text">"Plan with your brain. Build with Claude's hands. The quality of the plan determines the quality of the build."</div>
+      <div class="mantra-context">The new mantra for Session 2. The planning phase is where founder domain expertise matters most. Claude Code builds what you describe — the better the description, the better the output.</div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <span class="mantra-num">05</span>
+    <div>
+      <div class="mantra-text">"If you're doing it more than twice, it should be a prompt. If it's a prompt you run more than twice, it should be automated."</div>
+      <div class="mantra-context">Plant the batch mindset seed again. After today he'll have built two things — start noticing patterns.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TIMELINE ─── -->
+<div class="timeline">
+
+<!-- BLOCK 1 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time setup">0–10 min</span>
+    <span class="block-title">Homework Review &amp; Setup Verification</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> Confirm his tools work, understand how his week went, and surface what he learned from the reps.</p>
+
+    <div class="ask">Walk me through your week. What did you use Claude for? What worked? What surprised you? Where did you get stuck?</div>
+
+    <p>Listen for: Is he reaching for Claude instinctively or still defaulting to manual? Has he started to notice patterns in what works? Did he keep a delegation log? Even a mental one counts.</p>
+
+    <div class="do">Verify Claude Code works. Have him open PowerShell and run: <code>git --version</code> then <code>claude --version</code>. If either fails, fix it now — don't let broken tooling eat the session. If both work, have him type <code>claude</code> and confirm he can authenticate and see the Claude Code prompt.</div>
+
+    <div class="ask">Did you build the tip calculator? Show me. Which path did you use — the Code tab, the terminal, or both? What was that like?</div>
+
+    <p>If he built it, celebrate it. That's his first app. If he didn't get to it, no judgment — but note it. The homework completion rate tells you how much the reflex is forming.</p>
+
+    <div class="do">Quick check: is he still using one long conversation for everything, or has he started fresh chats? This tells you whether context management will be new information or confirming something he's already noticed.</div>
+
+    <div class="warning">Don't spend more than 10 minutes here. The homework review is calibration, not the lesson. Get the signal you need and move on.</div>
+  </div>
+</div>
+
+<!-- BLOCK 2 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time demo">10–25 min</span>
+    <span class="block-title">Claude Code Deep Dive</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> Get him fully comfortable in the terminal before building anything. He needs to feel confident launching, navigating, and controlling Claude Code.</p>
+
+    <div class="say">Last session you saw Claude Code briefly. Today we're going to live in it. This is the tool that turns 'I wish we had a tool that does X' into a working prototype in minutes. But first, let's make sure you're comfortable with the controls.</div>
+
+    <div class="do">Have him create a fresh project folder and launch Claude Code:<br><br>
+<code>mkdir $HOME\session2-demo</code><br>
+<code>cd $HOME\session2-demo</code><br>
+<code>claude --dangerously-skip-permissions</code><br><br>
+Explain what <code>--dangerously-skip-permissions</code> does: "Normally Claude Code asks permission before every file write, every command, every action. That's good for untrusted environments. On your personal machine, for tasks you trust, this flag tells it to just go. You'll use this most of the time for personal work."</div>
+
+    <div class="say">This flag is called 'dangerously' on purpose — it's a reminder that you're giving Claude full autonomy. On your own machine, for your own work, that's fine. On a shared server or with sensitive systems, you'd leave it off and approve each action.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Walk through the essential commands live — have him type each one:</strong></p>
+
+    <div class="do">Inside Claude Code, have him run each of these:<br><br>
+<code>/help</code> — show all commands. Point out the ones that matter: <code>/compact</code>, <code>/status</code>, <code>/init</code>, <code>/clear</code><br>
+<code>/status</code> — shows context window usage. "This is your fuel gauge. We're going to watch this number all session."<br>
+<code>Shift+Tab x2</code> — toggles plan mode. "In plan mode, Claude thinks and plans but doesn't execute. Useful when you want to review the approach before it starts writing code."<br>
+<code>Esc</code> — cancels whatever Claude is currently doing. "Your emergency brake."<br>
+<code>exit</code> — leaves Claude Code back to normal terminal.</div>
+
+    <div class="do">Still inside Claude Code, run <code>/init</code>. This creates a CLAUDE.md file in the current folder. Open it and look at it together.</div>
+
+    <div class="say">This file is the project's memory. Every time you start Claude Code in this folder, it reads CLAUDE.md first — before you say anything. It's like onboarding a new coworker: 'Here's what this project is, here's how we do things, here's what matters.' We'll write a real one for HouseAccount later.</div>
+
+    <div class="warning">Don't get bogged down in CLAUDE.md content right now. The point is that he knows it exists and what it does. The deep dive on project context is Session 3.</div>
+  </div>
+</div>
+
+<!-- BLOCK 3 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time exercise">25–40 min</span>
+    <span class="block-title">The Context Window — Your Most Important Resource</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> Make context window management a tangible, practiced skill — not an abstract concept. He should leave this block able to check context usage, compact, and do session handoffs without thinking.</p>
+
+    <div class="say">Here's the thing nobody tells you about AI: every conversation has a shelf life. The context window is Claude's working memory — everything you've said, everything Claude has said, every file it's read, every tool call. It all takes up space. When it fills up, Claude doesn't crash — it just gets worse. It starts forgetting things from earlier in the conversation, missing details, giving generic answers when it was being specific before. This is the number one thing that trips up new operators. So we're going to learn to manage it.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Exercise 1: Watch the context fill in Claude Code</strong></p>
+
+    <div class="do">In the Claude Code session from Block 2, have him do a few things — create a file, edit it, ask Claude a question about it. Then run <code>/status</code>. Show him the context usage percentage.</div>
+
+    <div class="say">See that number? That's how full your working memory is. Now watch what happens when we read something big.</div>
+
+    <div class="do">Have Claude Code read a large file — if he has a contract or long document on his machine, use that. Otherwise, ask Claude to generate a 200-line file and then read it back. Run <code>/status</code> again.</div>
+
+    <div class="say">One big file just jumped the number by 10–15%. Now imagine a 90-minute session where you're reading files, writing code, iterating back and forth. You hit 80% faster than you think.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Exercise 2: /compact in action</strong></p>
+
+    <div class="do">With the context partially full, run <code>/compact</code>. Have him watch what happens. Then run <code>/status</code> again to see the before/after.</div>
+
+    <div class="say">Compact summarizes everything that happened and throws away the raw conversation. You lose the exact words but keep the meaning. The rules of thumb: check <code>/status</code> periodically, compact at 50%, start thinking about a new session at 75%.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Exercise 3: Session handoffs in Chat</strong></p>
+
+    <div class="do">Switch to Claude Desktop Chat. Open a conversation — can be an existing one or start a quick one. After a few exchanges, ask Claude:<br><br>
+<em>"Summarize this entire conversation — what we discussed, what was decided, what's still open, and any context I'd need to continue this work in a new session. Format it as a session handoff I can paste into a fresh chat."</em><br><br>
+Show him the output. Then start a NEW chat, paste the handoff, and continue. Show him that Claude picks up right where it left off.</div>
+
+    <div class="say">This is how you work on long projects without degradation. Fresh context window, but Claude knows everything from the last session. Do this every time a conversation gets long or when you're switching between work streams. The handoff takes 30 seconds and saves you from fighting a confused model.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Exercise 4: Recognizing the symptoms</strong></p>
+
+    <div class="say">I want you to know what context degradation looks like so you can catch it before it gets bad. The warning signs: Claude starts repeating itself. It forgets instructions you gave earlier. It gives generic responses when it was being specific before. It contradicts something it said 20 messages ago. When you notice any of these — you're past the point where you should have compacted or started fresh.</div>
+
+    <p>The rules of thumb to internalize:</p>
+    <ul>
+      <li>In Claude Code: <code>/status</code> is your fuel gauge. Compact at 50%. New session at 75%.</li>
+      <li>In Chat: start a new conversation after 30–40 exchanges, or when it feels sluggish. Always do a handoff if the work needs to continue.</li>
+      <li>In Projects: the project instructions persist automatically, but the conversation still fills up. New chat inside the same project = fresh context + same project memory.</li>
+      <li>Never paste an entire long document if you can paste just the relevant section. Context is expensive real estate.</li>
+      <li><code>claude --resume</code> in the terminal picks up your last Claude Code session — useful when you closed the terminal but want to continue.</li>
+    </ul>
+
+    <div class="warning">Don't rush this block. Context management is more important than any tool he builds today. If he leaves Session 2 with the habit of checking <code>/status</code> and doing handoffs, that's a bigger win than building the perfect app.</div>
+  </div>
+</div>
+
+<!-- BLOCK 4 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time exercise">40–60 min</span>
+    <span class="block-title">Build a Real HouseAccount Tool</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> Apply everything — Claude Code fluency, <code>--dangerously-skip-permissions</code>, the plan→build→iterate loop, AND context management in real-time. He builds something real for his business.</p>
+
+    <div class="say">Alright. You know the terminal, you know how to manage context. Now let's build something real for HouseAccount. Not a tip calculator — something your team could actually use next week.</div>
+
+    <div class="ask">Give me a problem. What's something your team does manually that's annoying, repetitive, or slow? A form, a calculator, a tracker, a comparison tool — anything. I'll help you scope it and we'll build it.</div>
+
+    <p>Let him pick. Likely candidates based on Session 1 context:</p>
+    <ul>
+      <li><strong>Provider Quote Checker</strong> — paste a quote, enter job type + zip code, see if price is in range</li>
+      <li><strong>Customer Intake Form</strong> — homeowner describes their project, selects job type, outputs structured brief for a provider</li>
+      <li><strong>Job Status Tracker</strong> — dashboard showing active jobs, assigned providers, status</li>
+    </ul>
+
+    <p>If he can't pick, steer toward the Provider Quote Checker — it's the right complexity for a 20-minute build with clear HouseAccount value.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>Phase 1: Plan in Chat (5 min)</strong></p>
+
+    <div class="do">Open the HouseAccount Builder project in Claude Desktop Chat. Have Matt describe the tool he wants to Claude. Coach him on the planning prompt:<br><br>
+<em>"I want to build a [tool]. Here's what it needs to do: [requirements]. The user is [who]. Help me think through the inputs, outputs, edge cases, and layout. Then write me the exact prompt I should paste into Claude Code to build this as a single-page web app."</em><br><br>
+Let Claude do the planning. Review the output together. This is where Matt's domain expertise matters — he knows what fields a quote needs, what job types exist, what zip codes HouseAccount serves.</div>
+
+    <div class="say">See what just happened? You described a business problem. Claude turned it into a technical spec. You didn't need to know how to code — you needed to know your business. That's the operator skill: translation.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Phase 2: Build in Claude Code (10 min)</strong></p>
+
+    <div class="do">Have Matt create a project folder, launch Claude Code, and paste the prompt from Phase 1:<br><br>
+<code>mkdir $HOME\houseaccount-tool</code><br>
+<code>cd $HOME\houseaccount-tool</code><br>
+<code>claude --dangerously-skip-permissions</code><br><br>
+Then paste the build prompt. Let Claude Code run. Don't interrupt. Let him watch it plan, write files, and open the result in the browser.</div>
+
+    <p>This should take about 60–90 seconds. The working app appearing in his browser from a pasted paragraph is the moment.</p>
+
+    <div class="say">That's a working prototype. From a paragraph. No developer, no sprint planning, no two-week estimate. You described what you needed, and it exists now.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Phase 3: Iterate + Context Management (10 min)</strong></p>
+
+    <div class="do">Now iterate. Have Matt ask for changes — more features, better design, edge case handling. Encourage 3–4 rounds of iteration:<br><br>
+"Add a field for square footage"<br>
+"Make the results color-coded — green for under average, red for over"<br>
+"Add a reset button and make it work on mobile"<br>
+"Add an export button that copies the result to clipboard"<br><br>
+After each round, have him check <code>/status</code>. When it crosses 50%, have him <code>/compact</code>. If it approaches 75%, do a session handoff to a fresh Claude Code session.</div>
+
+    <div class="say">Notice what just happened — you went through the full cycle. Plan in Chat, build in Code, iterate until it's right, manage context along the way. This is the workflow for everything from here on.</div>
+
+    <div class="warning">Don't over-polish the tool. The point is the workflow, not the app. 3–4 iterations is enough. If he wants to keep going, that's homework.</div>
+  </div>
+</div>
+
+<!-- BLOCK 5 -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time wrap">60–70 min</span>
+    <span class="block-title">The Batch Mindset + Homework</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Goal:</strong> Plant the batch thinking seed deeper, and give him concrete homework that builds on today's skills.</p>
+
+    <div class="say">One more concept before we wrap. You just built a tool that handles one quote. How many quotes does your team review in a week?</div>
+
+    <p>Whatever the number is — 10, 50, 100 — the follow-up is:</p>
+
+    <div class="say">What if you pasted a CSV with all 50 and got a table back in 10 seconds? That's the batch mindset. You built the tool for one. The jump to many is trivial once the logic exists. Start noticing this pattern in your week: every time you do something one at a time, ask yourself 'do I have 10 more of these?'</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Homework (this week):</strong></p>
+    <ul>
+      <li>Build a second HouseAccount tool on your own. Full loop: plan in Chat (inside HouseAccount Builder project), build in Claude Code with <code>--dangerously-skip-permissions</code>, iterate at least 3 times, check <code>/status</code> at least twice, <code>/compact</code> at least once.</li>
+      <li>Practice 2 session handoffs in Chat this week. End a productive conversation with a handoff summary, start a new chat, paste it in, continue. Build the muscle.</li>
+      <li>Run <code>/compact</code> at least 3 times in Claude Code sessions. Get used to checking <code>/status</code> as a habit.</li>
+      <li>Write or refine the CLAUDE.md in your HouseAccount Builder project folder using <code>/init</code>. Add context about HouseAccount — what the company does, who the team is, what tools you're building and why.</li>
+      <li>Continue daily reps — 3 real tasks per day in Claude. Keep expanding the HouseAccount project instructions in Claude Desktop.</li>
+      <li>Start a 'batch list' — note every time you do something one-at-a-time that could be batched. We'll build on this in Session 3.</li>
+    </ul>
+
+    <div class="say">By next session, the goal is two things: first, you can launch Claude Code, build something, and manage the context window without thinking about it. Second, you start seeing your business through the lens of 'what should be a tool?' That's the build reflex.</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Schedule Session 3:</strong></p>
+
+    <div class="say">Session 3 is Context as Infrastructure — CLAUDE.md deep dive, project architecture, saved prompts, and the batch processing workflow. We'll take the tools you've built and turn them into repeatable processes.</div>
+  </div>
+</div>
+
+</div><!-- /timeline -->
+
+<!-- ─── BONUS ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time bonus">BONUS</span>
+    <span class="block-title">HouseAccount-Specific Angles (If Time Allows)</span>
+  </div>
+  <div class="block-body">
+    <p>If he mentions any of these or there's extra time, lean in:</p>
+    <ul>
+      <li><strong>Provider response templates:</strong> "You wrote one response to a provider. You have 15 more. Let's batch those." Show him how to give Claude 15 provider emails and get 15 drafted responses back in one prompt.</li>
+      <li><strong>Quote comparison:</strong> If the tool he built was the quote checker, show him how to give Claude Code a CSV of historical pricing data and have it identify patterns — which zip codes run high, which job types have the most variance.</li>
+      <li><strong>Intake form → provider brief pipeline:</strong> "The intake form you built collects structured data. What if that data automatically became a provider brief? That's two tools connected. That's a workflow, not a tool."</li>
+      <li><strong>CLAUDE.md for HouseAccount:</strong> If time, start writing a real CLAUDE.md together with pricing ranges, job types, provider quality criteria. Preview of Session 3.</li>
+    </ul>
+
+    <div class="warning">Don't deep-dive on batch processing or automation yet. That's Sessions 3 and 4. Today is about building the terminal comfort, context management habit, and the plan→build→iterate loop.</div>
+  </div>
+</div>
+
+<!-- ─── QUICK REFERENCE ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time setup">REF</span>
+    <span class="block-title">Quick Reference — Commands for This Session</span>
+  </div>
+  <div class="block-body">
+    <ul>
+      <li><code>claude</code> — start Claude Code in current directory</li>
+      <li><code>claude --dangerously-skip-permissions</code> — start with auto-approve (personal machine only)</li>
+      <li><code>claude --resume</code> — resume last Claude Code session</li>
+      <li><code>/status</code> — show context window usage (your fuel gauge)</li>
+      <li><code>/compact</code> — compress conversation to free context space</li>
+      <li><code>/init</code> — generate CLAUDE.md in current project folder</li>
+      <li><code>/help</code> — show all available commands</li>
+      <li><code>/clear</code> — clear conversation and start fresh (within same session)</li>
+      <li><code>Shift+Tab x2</code> — toggle plan mode (think before acting)</li>
+      <li><code>Esc</code> — cancel current operation</li>
+      <li><code>exit</code> — leave Claude Code, back to normal terminal</li>
+      <li><strong>Session handoff prompt:</strong> "Summarize this conversation — what we discussed, decided, built, and what's still open. Format as a handoff I can paste into a fresh chat."</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  Session 2 of ongoing coaching &middot; Prepared for Andrew &middot; March 2026
+</div>
+
+</body>
+</html>
