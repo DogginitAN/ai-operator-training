@@ -4,9 +4,30 @@ import { Check, Clock, Lock, ChevronDown, ChevronRight, Lightbulb } from 'lucide
 import type { Session } from '@/lib/store';
 
 const STATUS_STYLES = {
-  completed: { icon: Check, bg: 'bg-green-50', border: 'border-green-200', iconBg: 'bg-green-100', iconColor: 'text-green-600', badge: 'bg-green-100 text-green-700' },
-  upcoming: { icon: Clock, bg: 'bg-brand-50', border: 'border-brand-300', iconBg: 'bg-brand-100', iconColor: 'text-brand-600', badge: 'bg-brand-100 text-brand-700' },
-  locked: { icon: Lock, bg: 'bg-surface-50', border: 'border-surface-200', iconBg: 'bg-surface-100', iconColor: 'text-surface-300', badge: 'bg-surface-100 text-surface-300' },
+  completed: {
+    icon: Check,
+    bg: 'bg-green-50 dark:bg-green-950/20',
+    border: 'border-green-200 dark:border-green-800/50',
+    iconBg: 'bg-green-100 dark:bg-green-900/40',
+    iconColor: 'text-green-600 dark:text-green-400',
+    badge: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  },
+  upcoming: {
+    icon: Clock,
+    bg: 'bg-brand-50 dark:bg-brand-950/20',
+    border: 'border-brand-300 dark:border-brand-700/40',
+    iconBg: 'bg-brand-100 dark:bg-brand-900/30',
+    iconColor: 'text-brand-600 dark:text-brand-400',
+    badge: 'bg-brand-100 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400',
+  },
+  locked: {
+    icon: Lock,
+    bg: 'bg-surface-50 dark:bg-night-800',
+    border: 'border-surface-200 dark:border-night-600',
+    iconBg: 'bg-surface-100 dark:bg-night-700',
+    iconColor: 'text-surface-300 dark:text-night-400',
+    badge: 'bg-surface-100 text-surface-300 dark:bg-night-700 dark:text-night-400',
+  },
 };
 
 function SessionCard({ session }: { session: Session }) {
@@ -20,7 +41,7 @@ function SessionCard({ session }: { session: Session }) {
       <div className="flex items-center gap-4 p-5" onClick={() => isClickable && setExpanded(!expanded)}>
         {/* Number + Icon */}
         <div className="flex items-center gap-3">
-          <span className="text-xs font-mono font-semibold text-surface-300 w-5">{String(session.number).padStart(2, '0')}</span>
+          <span className="text-xs font-mono font-semibold text-surface-300 dark:text-night-400 w-5">{String(session.number).padStart(2, '0')}</span>
           <div className={`w-10 h-10 rounded-xl ${style.iconBg} flex items-center justify-center`}>
             <Icon size={18} className={style.iconColor} />
           </div>
@@ -28,40 +49,40 @@ function SessionCard({ session }: { session: Session }) {
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-surface-900 text-[15px]">{session.title}</h3>
+            <h3 className="font-semibold text-surface-900 dark:text-night-100 text-[15px]">{session.title}</h3>
             <span className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full ${style.badge}`}>
               {session.status === 'completed' ? 'DONE' : session.status === 'upcoming' ? 'NEXT' : 'LOCKED'}
             </span>
           </div>
-          <p className="text-sm text-surface-300 mt-0.5">{session.subtitle}</p>
+          <p className="text-sm text-surface-300 dark:text-night-400 mt-0.5">{session.subtitle}</p>
         </div>
 
         {/* Date + Chevron */}
         <div className="flex items-center gap-3">
           {session.date && (
-            <span className="text-xs font-mono text-surface-300">
+            <span className="text-xs font-mono text-surface-300 dark:text-night-400">
               {new Date(session.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </span>
           )}
-          {session.duration && <span className="text-xs font-mono text-surface-300">{session.duration}</span>}
-          {isClickable && (expanded ? <ChevronDown size={16} className="text-surface-300" /> : <ChevronRight size={16} className="text-surface-300" />)}
+          {session.duration && <span className="text-xs font-mono text-surface-300 dark:text-night-400">{session.duration}</span>}
+          {isClickable && (expanded ? <ChevronDown size={16} className="text-surface-300 dark:text-night-400" /> : <ChevronRight size={16} className="text-surface-300 dark:text-night-400" />)}
         </div>
       </div>
 
       {/* Expanded content */}
       {expanded && isClickable && (session.notes || session.keyTakeaways.length > 0) && (
-        <div className="px-5 pb-5 pt-0 border-t border-surface-200/50">
+        <div className="px-5 pb-5 pt-0 border-t border-surface-200/50 dark:border-night-600/50">
           {session.notes && (
-            <p className="text-sm text-surface-800 leading-relaxed mt-4">{session.notes}</p>
+            <p className="text-sm text-surface-800 dark:text-night-100 leading-relaxed mt-4">{session.notes}</p>
           )}
           {session.keyTakeaways.length > 0 && (
             <div className="mt-4 space-y-2">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-brand-600 uppercase tracking-wide">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wide">
                 <Lightbulb size={13} />
                 Key Takeaways
               </div>
               {session.keyTakeaways.map((t, i) => (
-                <div key={i} className="flex items-start gap-2.5 text-sm text-surface-800">
+                <div key={i} className="flex items-start gap-2.5 text-sm text-surface-800 dark:text-night-100">
                   <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-400 flex-shrink-0" />
                   {t}
                 </div>

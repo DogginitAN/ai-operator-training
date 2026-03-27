@@ -10,7 +10,7 @@ export default function ProgressRing({ completed, total, size = 80 }: { complete
   return (
     <div className="relative" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="#e4e8f1" strokeWidth={stroke} />
+        <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="var(--ring-track)" strokeWidth={stroke} />
         <circle
           cx={size/2} cy={size/2} r={radius} fill="none"
           stroke="url(#progressGradient)" strokeWidth={stroke}
@@ -25,7 +25,7 @@ export default function ProgressRing({ completed, total, size = 80 }: { complete
         </defs>
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-lg font-bold text-surface-900">{completed}/{total}</span>
+        <span className="text-lg font-bold text-surface-900 dark:text-night-100">{completed}/{total}</span>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -35,6 +36,14 @@ module.exports = {
           800: '#2d3142',
           900: '#1e2030',
           950: '#13141f',
+        },
+        night: {
+          100: '#e4e4eb',
+          400: '#7a7a90',
+          600: '#252532',
+          700: '#1c1c24',
+          800: '#141419',
+          900: '#0c0c10',
         }
       },
       fontFamily: {
