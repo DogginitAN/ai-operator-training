@@ -1,7 +1,14 @@
 'use client';
 import { useState, useRef } from 'react';
 import { CheckCircle2 } from 'lucide-react';
-import type { Task, TaskStatus } from '@/lib/store';
+import type { Task, TaskStatus, Session } from '@/lib/store';
+
+function defaultSessionId(sessions: Session[], tasks: Task[]): string {
+  const upcoming = sessions.find(s => s.status === 'upcoming' && tasks.some(t => t.session === s.id));
+  if (upcoming) return upcoming.id;
+  const lastCompleted = [...sessions].reverse().find(s => s.status === 'completed' && tasks.some(t => t.session === s.id));
+  return lastCompleted ? lastCompleted.id : 'all';
+}
 
 const COLUMNS: { key: TaskStatus; label: string; color: string; dotColor: string }[] = [
   { key: 'todo',        label: 'To Do',       color: 'text-surface-300 dark:text-night-400', dotColor: 'bg-surface-300 dark:bg-night-400' },
@@ -119,10 +126,28 @@ function TaskCard({
   );
 }
 
-export default function TaskBoard({ tasks, onMove }: { tasks: Task[]; onMove: (id: string, status: TaskStatus) => void }) {
+export default function TaskBoard({
+  tasks,
+  sessions,
+  onMove,
+}: {
+  tasks: Task[];
+  sessions: Session[];
+  onMove: (id: string, status: TaskStatus) => void;
+}) {
+  const [activeSession, setActiveSession] = useState<string>(() => defaultSessionId(sessions, tasks));
   const dragId = useRef<string | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverCol, setDragOverCol] = useState<TaskStatus | null>(null);
+
+  // Sessions that have at least one task, in curriculum order
+  const sessionTabs = sessions.filter(s => tasks.some(t => t.session === s.id));
+
+  const filteredTasks = activeSession === 'all'
+    ? tasks
+    : tasks.filter(t => t.session === activeSession);
+
+  const activeSessionData = sessions.find(s => s.id === activeSession);
 
   const handleDragOver = (e: React.DragEvent, colKey: TaskStatus) => {
     e.preventDefault();
@@ -147,9 +172,55 @@ export default function TaskBoard({ tasks, onMove }: { tasks: Task[]; onMove: (i
   };
 
   return (
+    <>
+      {/* Session filter tabs */}
+      <div className="flex items-center gap-2 mb-6">
+        {sessionTabs.map(s => {
+          const openCount = tasks.filter(t => t.session === s.id && t.status !== 'done').length;
+          const isActive = activeSession === s.id;
+          return (
+            <button
+              key={s.id}
+              onClick={() => setActiveSession(s.id)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all duration-150 ${
+                isActive
+                  ? 'bg-gradient-to-r from-brand-500 to-violet-500 text-white shadow-sm'
+                  : 'text-surface-400 dark:text-night-400 hover:text-surface-700 dark:hover:text-night-200 bg-white dark:bg-night-800 border border-surface-200 dark:border-night-600'
+              }`}
+            >
+              S{s.number}
+              {openCount > 0 && (
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                  isActive
+                    ? 'bg-white/20 text-white'
+                    : 'bg-surface-100 dark:bg-night-700 text-surface-400 dark:text-night-400'
+                }`}>{openCount}</span>
+              )}
+            </button>
+          );
+        })}
+        <button
+          onClick={() => setActiveSession('all')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all duration-150 ${
+            activeSession === 'all'
+              ? 'bg-gradient-to-r from-brand-500 to-violet-500 text-white shadow-sm'
+              : 'text-surface-400 dark:text-night-400 hover:text-surface-700 dark:hover:text-night-200 bg-white dark:bg-night-800 border border-surface-200 dark:border-night-600'
+          }`}
+        >
+          All
+        </button>
+      </div>
+
+      {/* Active session label */}
+      {activeSessionData && (
+        <p className="text-[10px] font-mono font-semibold uppercase tracking-wider text-surface-300 dark:text-night-400 mb-5">
+          Session {activeSessionData.number} — {activeSessionData.title}
+        </p>
+      )}
+
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
       {COLUMNS.map(col => {
-        const colTasks = tasks.filter(t => t.status === col.key);
+        const colTasks = filteredTasks.filter(t => t.status === col.key);
         const isOver = dragOverCol === col.key;
 
         return (
@@ -203,5 +274,6 @@ export default function TaskBoard({ tasks, onMove }: { tasks: Task[]; onMove: (i
         );
       })}
     </div>
+    </>
   );
 }

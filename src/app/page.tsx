@@ -151,7 +151,7 @@ export default function Dashboard() {
             references={studentData.references as CurriculumReference[]}
           />
         )}
-        {activeTab === 'tasks' && <TaskBoard tasks={tasks} onMove={handleTaskMove} />}
+        {activeTab === 'tasks' && <TaskBoard tasks={tasks} sessions={studentData.curriculum as Session[]} onMove={handleTaskMove} />}
         {activeTab === 'resources' && <ResourceLibrary resources={studentData.resources as Resource[]} />}
         {activeTab === 'principles' && <MantrasPanel mantras={studentData.mantras} />}
       </main>
