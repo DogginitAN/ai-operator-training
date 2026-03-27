@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hardware Overview — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  .header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
+  .section-num.prereq { background: var(--red-dim); color: var(--red); }
+  .section-num.step { background: var(--blue-dim); color: var(--blue); }
+  .section-num.build { background: var(--green-dim); color: var(--green); }
+  .section-num.iterate { background: var(--cyan-dim); color: var(--cyan); }
+  .section-num.daily { background: var(--accent-dim); color: var(--accent); }
+  .section-num.ref { background: var(--cyan-dim); color: var(--cyan); }
+  .section-num.project { background: var(--purple-dim); color: var(--purple); }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .step { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.75rem 0; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .step-label.device { color: var(--cyan); }
+  .step-label.note { color: var(--accent); }
+  .step-label.specs { color: var(--purple); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); display: inline; word-break: break-all; }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; background: var(--bg); padding: 1.2rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.5; white-space: pre; overflow-x: auto; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.35rem; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+  .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1.5rem; margin: 0.6rem 0; }
+  .specs-row { display: flex; gap: 0.5rem; font-size: 0.9rem; }
+  .specs-key { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; min-width: 80px; padding-top: 0.15rem; }
+  .specs-val { color: var(--text); font-weight: 500; }
+  .cost-table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.9rem; }
+  .cost-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; color: var(--text-muted); padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+  .cost-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+  .cost-table tr:last-child td { border-bottom: none; }
+  .cost-table tr:nth-child(odd) { background: var(--surface-2); }
+  .cost-table tr:nth-child(even) { background: transparent; }
+  .cost-table .total td { font-weight: 700; color: var(--cyan); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Hardware Overview</h1>
+  <div class="sub">Matt's AI operator setup — devices, specs, and how they connect</div>
+</div>
+
+<!-- ─── YOUR DEVICES ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num ref">YOUR DEVICES</span>
+    <span class="section-title">The Three-Device Setup</span>
+  </div>
+  <div class="section-body">
+
+    <div class="step">
+      <div class="step-label device">WINDOWS PC LAPTOP — CURRENT MACHINE</div>
+      <p><strong>Role:</strong> Primary daily driver — Claude Desktop, browser, email, HouseAccount ops</p>
+      <p><strong>Software:</strong> Claude Desktop + all MCP connectors (Desktop Commander, Filesystem, Google Calendar/Drive/Gmail, Chrome extension)</p>
+      <p><strong>Cost:</strong> Already owned</p>
+      <div class="callout"><strong>Note:</strong> All Session 1–3 work happens here. PowerShell terminal for Claude Code.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label device">MAC MINI M4 PRO — THE ALWAYS-ON HUB</div>
+      <p><strong>Role:</strong> 24/7 server — runs OpenClaw, scheduled agents, message gateway</p>
+      <div class="step-label specs" style="margin-top: 0.8rem; margin-bottom: 0.4rem;">SPECS</div>
+      <div class="specs-grid">
+        <div class="specs-row"><span class="specs-key">Model</span><span class="specs-val">Mac Mini M4 Pro</span></div>
+        <div class="specs-row"><span class="specs-key">Chip</span><span class="specs-val">Apple M4 Pro</span></div>
+        <div class="specs-row"><span class="specs-key">Memory</span><span class="specs-val">16 GB unified RAM</span></div>
+        <div class="specs-row"><span class="specs-key">Storage</span><span class="specs-val">512 GB SSD</span></div>
+        <div class="specs-row"><span class="specs-key">Cost</span><span class="specs-val">~$1,399 – $1,599 (one-time)</span></div>
+      </div>
+      <div class="callout"><strong>Note:</strong> Stays on your desk, always powered on, always connected. This is the machine that makes AI "always-on" — it runs while you sleep. Introduced in Session 5.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label device">IPHONE — MOBILE ACCESS</div>
+      <p><strong>Role:</strong> Mobile access — Claude app for voice/chat on the go, Telegram and Discord for messaging gateway</p>
+      <p><strong>Apps:</strong> Claude iOS app, Telegram, Discord</p>
+      <p><strong>Cost:</strong> Already owned</p>
+      <div class="callout"><strong>Note:</strong> Once OpenClaw is running on the Mac Mini, you can message your AI assistant from Telegram or Discord on your phone — same context, same intelligence, no laptop needed.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── COST SUMMARY ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">COST SUMMARY</span>
+    <span class="section-title">What You Need to Buy</span>
+  </div>
+  <div class="section-body">
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Windows PC laptop</td><td>Already owned</td></tr>
+        <tr><td>iPhone</td><td>Already owned</td></tr>
+        <tr><td>Mac Mini M4 Pro (16 GB, 512 GB)</td><td>~$1,399 – $1,599 one-time</td></tr>
+        <tr><td>Monitor for Mac Mini (any HDMI/DP)</td><td>~$150 – $250 one-time (or reuse existing)</td></tr>
+        <tr><td>Keyboard + Mouse (any USB/BT)</td><td>~$50 – $100 one-time (or reuse existing)</td></tr>
+        <tr class="total"><td><strong>Total new hardware</strong></td><td><strong>~$1,600 – $1,950</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Timing note:</strong> The Mac Mini is a Session 5 purchase. You don't need it until we get to always-on infrastructure. Everything through Session 4 runs on your existing Windows PC.</div>
+  </div>
+</div>
+
+<!-- ─── HOW IT ALL CONNECTS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num project">HOW IT ALL CONNECTS</span>
+    <span class="section-title">The Three-Device Architecture</span>
+  </div>
+  <div class="section-body">
+    <p>Your Windows PC is where you work day-to-day. The Mac Mini lives on your desk and runs 24/7 — it's the always-on infrastructure that handles scheduled agents and the messaging gateway. Your iPhone is how you reach both from anywhere.</p>
+    <div class="code-block">┌─────────────────────────────────────────────────────────────────┐
+│                        MATT'S AI SETUP                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   WINDOWS PC (Daily Driver)          iPHONE (Mobile)            │
+│   ├── Claude Desktop                 ├── Claude App             │
+│   │   ├── Chat / Cowork / Code       ├── Telegram               │
+│   │   ├── Desktop Commander          └── Discord                │
+│   │   ├── Google Calendar/Drive/Gmail        │                  │
+│   │   └── Chrome Extension                   │                  │
+│   └── PowerShell + Claude Code CLI           │                  │
+│              │                                │                  │
+│              │         ┌─────────────────────┘                  │
+│              │         │                                         │
+│              ▼         ▼                                         │
+│        ┌─────────────────────────┐                              │
+│        │   MAC MINI (Always-On)  │                              │
+│        │   ├── OpenClaw Hub      │                              │
+│        │   │   ├── Telegram Bot  │                              │
+│        │   │   ├── Discord Bot   │                              │
+│        │   │   └── SMS Gateway   │                              │
+│        │   ├── Claude Code CLI   │                              │
+│        │   ├── Scheduled Agents  │                              │
+│        │   └── Always-On 24/7    │                              │
+│        └─────────────────────────┘                              │
+│                                                                  │
+│   ─── Direct use    ─── via OpenClaw messaging gateway          │
+└─────────────────────────────────────────────────────────────────┘</div>
+    <div class="callout">The key insight: your Windows PC is where you work. The Mac Mini is where your AI lives. Your phone is how you reach it from anywhere. OpenClaw is the bridge that connects them all.</div>
+  </div>
+</div>
+
+<div class="footer">
+  Hardware Overview · AI Native Operator Training · Andrew Nolan · 2026
+</div>
+
+</body>
+</html>

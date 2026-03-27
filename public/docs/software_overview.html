@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Overview — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  .header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
+  .section-num.prereq { background: var(--red-dim); color: var(--red); }
+  .section-num.path-a { background: var(--green-dim); color: var(--green); }
+  .section-num.path-b { background: var(--blue-dim); color: var(--blue); }
+  .section-num.daily { background: var(--accent-dim); color: var(--accent); }
+  .section-num.ref { background: var(--cyan-dim); color: var(--cyan); }
+  .section-num.project { background: var(--purple-dim); color: var(--purple); }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .step { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.75rem 0; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .step-label.tool { color: var(--green); }
+  .step-label.note { color: var(--accent); }
+  .step-label.install { color: var(--blue); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); display: inline; word-break: break-all; }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; background: var(--bg); padding: 1.2rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.5; white-space: pre; overflow-x: auto; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.35rem; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+  .cost-table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.9rem; }
+  .cost-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; color: var(--text-muted); padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+  .cost-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+  .cost-table tr:last-child td { border-bottom: none; }
+  .cost-table tr:nth-child(odd) { background: var(--surface-2); }
+  .cost-table tr:nth-child(even) { background: transparent; }
+  .cost-table .total td { font-weight: 700; color: var(--cyan); border-top: 1px solid var(--border); }
+  .connector-list { list-style: none; padding: 0; margin: 0.5rem 0; }
+  .connector-list li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+  .connector-list li:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Software Overview</h1>
+  <div class="sub">The complete AI operator stack — what each tool does and what it costs</div>
+</div>
+
+<!-- ─── SUBSCRIPTIONS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num prereq">SUBSCRIPTIONS</span>
+    <span class="section-title">What You're Paying For</span>
+  </div>
+  <div class="section-body">
+    <div class="step">
+      <div class="step-label tool">CLAUDE MAX 5X — $100/MONTH</div>
+      <p><strong>What you get:</strong> Claude Desktop (Chat, Cowork, Code tab), Claude Code CLI, all MCP connectors, Opus 4.6 + Sonnet 4.6 models, Projects, extended context windows</p>
+      <p><strong>Why Max:</strong> The 5x usage multiplier means you won't hit rate limits during work sessions. Standard Pro ($20/mo) works for light use but you'll get throttled doing real operator work.</p>
+      <p><strong>Where:</strong> <code>claude.ai/upgrade</code></p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── THE BRAIN ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num path-a">THE BRAIN</span>
+    <span class="section-title">Claude Desktop</span>
+  </div>
+  <div class="section-body">
+    <p>The interface most people start with — but far more powerful than a chat window. Claude Desktop has four distinct modes, each suited to different kinds of work.</p>
+
+    <div class="step">
+      <div class="step-label tool">CHAT MODE</div>
+      <p><strong>What:</strong> Conversational AI — thinking, writing, analyzing, brainstorming</p>
+      <p><strong>Use for:</strong> Strategy, document review, email drafting, research, problem-solving</p>
+      <p><strong>Cost:</strong> Included with subscription</p>
+    </div>
+
+    <div class="step">
+      <div class="step-label tool">COWORK MODE</div>
+      <p><strong>What:</strong> Claude controls your browser and desktop apps — clicks, navigates, reads screens</p>
+      <p><strong>Use for:</strong> CRM lookups, form filling, GUI-based workflows, browser automation</p>
+      <p><strong>Cost:</strong> Included with subscription</p>
+    </div>
+
+    <div class="step">
+      <div class="step-label tool">CODE TAB</div>
+      <p><strong>What:</strong> Claude Code embedded in the Claude Desktop window — no terminal needed</p>
+      <p><strong>Use for:</strong> Quick builds, file creation, code iteration when you don't want to open a terminal</p>
+      <p><strong>Cost:</strong> Included with subscription</p>
+    </div>
+
+    <div class="step">
+      <div class="step-label tool">PROJECTS</div>
+      <p><strong>What:</strong> Persistent context containers — instructions + documents that carry across every conversation inside the project</p>
+      <p><strong>Use for:</strong> HouseAccount context, CLAUDE.md files, business-specific AI memory</p>
+      <p><strong>Cost:</strong> Included with subscription</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── THE HANDS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num path-b">THE HANDS</span>
+    <span class="section-title">Claude Code CLI</span>
+  </div>
+  <div class="section-body">
+    <div class="step">
+      <div class="step-label tool">CLAUDE CODE (TERMINAL)</div>
+      <p><strong>What:</strong> Agentic coding loop that runs in PowerShell/Terminal. Reads your files, writes code, runs commands, builds complete software, fixes its own mistakes.</p>
+      <div class="step-label install" style="margin-top: 0.8rem; margin-bottom: 0.3rem;">INSTALL</div>
+      <p><strong>Windows:</strong> <code>irm https://claude.ai/install.ps1 | iex</code></p>
+      <p><strong>Mac:</strong> <code>npm install -g @anthropic-ai/claude-code</code></p>
+      <p><strong>Requires:</strong> Git, Node.js 18+</p>
+      <div class="divider"></div>
+      <p><strong>Key commands:</strong></p>
+      <ul>
+        <li><code>claude</code> — start a session</li>
+        <li><code>/init</code> — create CLAUDE.md in current project</li>
+        <li><code>/compact</code> — compress context when window fills up</li>
+        <li><code>Shift+Tab x2</code> — enter plan mode (review before executing)</li>
+      </ul>
+      <p style="margin-top: 0.6rem;"><strong>Cost:</strong> Included with subscription</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── THE MEMORY ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num project">THE MEMORY</span>
+    <span class="section-title">Connectors &amp; Context</span>
+  </div>
+  <div class="section-body">
+    <p>MCP connectors wire Claude into your actual tools. Install each once in Claude Desktop settings — they're available in every conversation from that point on.</p>
+    <ul class="connector-list">
+      <li><strong>Desktop Commander</strong> — Read/write files, run terminal commands, system info. Claude's hands on your machine.</li>
+      <li><strong>Filesystem</strong> — Direct file access within allowed directories. Reads docs, CSVs, code files.</li>
+      <li><strong>Google Calendar</strong> — Read schedule, create events, check availability. "What's on my calendar tomorrow?"</li>
+      <li><strong>Google Drive</strong> — Access docs, sheets, slides. "Find the Q1 pricing spreadsheet."</li>
+      <li><strong>Gmail</strong> — Read, search, draft emails. "Summarize my unread emails from providers."</li>
+      <li><strong>Chrome Extension</strong> — Claude can see and interact with your browser tabs in Cowork mode.</li>
+    </ul>
+    <div class="callout"><strong>Cost for all connectors:</strong> Free (included with Claude Desktop)</div>
+  </div>
+</div>
+
+<!-- ─── THE INFRASTRUCTURE ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">THE INFRASTRUCTURE</span>
+    <span class="section-title">Always-On (Session 5)</span>
+  </div>
+  <div class="section-body">
+
+    <div class="step">
+      <div class="step-label tool">OPENCLAW</div>
+      <p><strong>What:</strong> Open-source messaging gateway that connects Claude to Telegram, Discord, SMS, and more</p>
+      <p><strong>Runs on:</strong> Mac Mini (always-on)</p>
+      <p><strong>Cost:</strong> Free (open source)</p>
+      <p><strong>Why:</strong> Turns Claude from "something you open on your laptop" into "something you can text from anywhere"</p>
+    </div>
+
+    <div class="step">
+      <div class="step-label tool">TELEGRAM BOT</div>
+      <p><strong>What:</strong> Your personal AI assistant in Telegram — message it from your phone, get Claude-powered responses</p>
+      <p><strong>Cost:</strong> Free</p>
+      <p><strong>Requires:</strong> OpenClaw running on Mac Mini</p>
+    </div>
+
+    <div class="step">
+      <div class="step-label tool">DISCORD BOT</div>
+      <p><strong>What:</strong> Same as Telegram but in Discord — useful if your team is there</p>
+      <p><strong>Cost:</strong> Free</p>
+      <p><strong>Requires:</strong> OpenClaw running on Mac Mini</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── COST SUMMARY ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num ref">COST SUMMARY</span>
+    <span class="section-title">The Full Stack</span>
+  </div>
+  <div class="section-body">
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Cost</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Claude Max 5x</td><td>$100/month</td><td>Subscription</td></tr>
+        <tr><td>Claude Desktop</td><td>Included</td><td>—</td></tr>
+        <tr><td>Claude Code CLI</td><td>Included</td><td>—</td></tr>
+        <tr><td>All MCP Connectors</td><td>Free</td><td>—</td></tr>
+        <tr><td>Git for Windows</td><td>Free</td><td>One-time install</td></tr>
+        <tr><td>Node.js</td><td>Free</td><td>One-time install</td></tr>
+        <tr><td>OpenClaw</td><td>Free</td><td>Open source</td></tr>
+        <tr><td>Telegram Bot</td><td>Free</td><td>—</td></tr>
+        <tr><td>Discord Bot</td><td>Free</td><td>—</td></tr>
+        <tr class="total"><td><strong>Monthly total</strong></td><td><strong>$100/month</strong></td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="callout">Your entire AI operator stack costs $100/month. Everything else is free. The Mac Mini hardware (~$1,500) is the only other cost, and that's a Session 5 purchase.</div>
+  </div>
+</div>
+
+<!-- ─── HOW THE STACK FITS TOGETHER ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num project">HOW THE STACK FITS TOGETHER</span>
+    <span class="section-title">Architecture Diagram</span>
+  </div>
+  <div class="section-body">
+    <div class="code-block">┌─────────────────────────────────────────────────────────────────┐
+│                    THE AI OPERATOR STACK                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   YOU (Brain + Judgment + Taste)                                │
+│     │                                                            │
+│     ▼                                                            │
+│   ┌──────────────────────────────────────────┐                  │
+│   │  CLAUDE DESKTOP          $100/mo         │                  │
+│   │  ├── Chat      (Brain — thinking)        │                  │
+│   │  ├── Cowork    (Hands — GUI control)     │                  │
+│   │  └── Code Tab  (Hands — building)        │                  │
+│   └──────────────┬───────────────────────────┘                  │
+│                  │                                               │
+│   ┌──────────────▼───────────────────────────┐                  │
+│   │  CONNECTORS                    Free      │                  │
+│   │  ├── Desktop Commander (files, terminal) │                  │
+│   │  ├── Google Calendar/Drive/Gmail         │                  │
+│   │  └── Chrome Extension (browser)          │                  │
+│   └──────────────┬───────────────────────────┘                  │
+│                  │                                               │
+│   ┌──────────────▼───────────────────────────┐                  │
+│   │  CLAUDE CODE CLI               Free      │                  │
+│   │  (Terminal — full agentic coding)        │                  │
+│   └──────────────┬───────────────────────────┘                  │
+│                  │                                               │
+│   ┌──────────────▼───────────────────────────┐                  │
+│   │  PROJECTS + CLAUDE.md          Free      │                  │
+│   │  (Memory — persistent context)           │                  │
+│   └──────────────┬───────────────────────────┘                  │
+│                  │                                               │
+│           ┌──────▼──────┐                                       │
+│           │  SESSION 5  │                                       │
+│           └──────┬──────┘                                       │
+│   ┌──────────────▼───────────────────────────┐                  │
+│   │  OPENCLAW (Mac Mini)           Free      │                  │
+│   │  ├── Telegram Bot                        │                  │
+│   │  ├── Discord Bot                         │                  │
+│   │  └── SMS Gateway                         │                  │
+│   └──────────────────────────────────────────┘                  │
+│                                                                  │
+│   TOTAL: $100/month + ~$1,500 hardware (Session 5)              │
+└─────────────────────────────────────────────────────────────────┘</div>
+  </div>
+</div>
+
+<div class="footer">
+  Software Overview · AI Native Operator Training · Andrew Nolan · 2026
+</div>
+
+</body>
+</html>

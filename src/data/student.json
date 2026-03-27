@@ -152,6 +152,10 @@
         {
           "heading": "Windows Note",
           "body": "If you're on Windows (like Matt), everything in the curriculum works \u2014 Claude Desktop, Claude Code via PowerShell, Git, and MCP connectors. The main differences: terminal commands use PowerShell syntax, and you'll use winget or direct installers instead of Homebrew. The Setup Guide PDF covers the Windows-specific install paths in full."
+        },
+        {
+          "heading": "Full Reference",
+          "body": "See the complete Hardware Overview page with device specs, cost breakdown, and setup diagram for the detailed version of this reference."
         }
       ]
     },
@@ -179,6 +183,10 @@
         {
           "heading": "Cowork Mode",
           "body": "A special capability in Claude Desktop that gives Claude control of your browser and desktop apps. You can say 'go to our CRM and pull the last 5 provider applications' and it will navigate, click, read, and report back. Powerful for tasks that live in GUIs rather than APIs \u2014 no code required on your end."
+        },
+        {
+          "heading": "Full Reference",
+          "body": "See the complete Software Overview page with tool descriptions, costs, connector details, and architecture diagram for the detailed version of this reference."
         }
       ]
     }
@@ -279,6 +287,26 @@
       "type": "html",
       "filename": "powershell_quick_reference.html",
       "tags": ["reference", "terminal", "windows"],
+      "sessions": [],
+      "global": true
+    },
+    {
+      "id": "ref-hardware",
+      "title": "Hardware Overview",
+      "description": "Matt's device setup — Windows PC, Mac Mini, iPhone, and how they connect",
+      "type": "html",
+      "filename": "hardware_overview.html",
+      "tags": ["reference", "hardware", "setup-guide"],
+      "sessions": [],
+      "global": true
+    },
+    {
+      "id": "ref-software",
+      "title": "Software Overview",
+      "description": "The complete AI operator stack — tools, costs, and architecture diagram",
+      "type": "html",
+      "filename": "software_overview.html",
+      "tags": ["reference", "software", "setup-guide"],
       "sessions": [],
       "global": true
     }
