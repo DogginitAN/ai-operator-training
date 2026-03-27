@@ -325,7 +325,7 @@ const REF_ICON: Record<string, React.ElementType> = {
   'sw-overview': Layers,
 };
 
-function ReferenceContent({ ref: reference }: { ref: CurriculumReference }) {
+function ReferenceContent({ reference }: { reference: CurriculumReference }) {
   const Icon = REF_ICON[reference.id] ?? Layers;
 
   return (
@@ -493,7 +493,7 @@ export default function CurriculumTrack({
               {selectedResolved.kind === 'session' ? (
                 <SessionContent session={selectedResolved.session} />
               ) : (
-                <ReferenceContent ref={selectedResolved.ref} />
+                <ReferenceContent reference={selectedResolved.ref} />
               )}
             </div>
           ) : (
