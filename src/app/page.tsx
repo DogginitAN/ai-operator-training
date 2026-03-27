@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { BookOpen, LayoutGrid, Archive, Sparkles, Sun, Moon } from 'lucide-react';
 import studentData from '@/data/student.json';
 import { loadTaskStatuses, saveTaskStatuses } from '@/lib/store';
@@ -24,11 +24,15 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState<Task[]>(studentData.tasks as Task[]);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  // Hydrate task statuses from localStorage
+  const didHydrate = useRef(false);
+
+  // Hydrate task statuses from localStorage once on mount
   useEffect(() => {
+    if (didHydrate.current) return;
+    didHydrate.current = true;
     const saved = loadTaskStatuses();
     if (Object.keys(saved).length > 0) {
-      setTasks(prev => prev.map(t => ({ ...t, status: saved[t.id] || t.status })));
+      setTasks(prev => prev.map(t => ({ ...t, status: saved[t.id] ?? t.status })));
     }
   }, []);
 
@@ -47,9 +51,9 @@ export default function Dashboard() {
 
   const handleTaskMove = useCallback((id: string, status: TaskStatus) => {
     setTasks(prev => {
-      const updated = prev.map(t => t.id === id ? { ...t, status } : t);
-      saveTaskStatuses(updated);
-      return updated;
+      const next = prev.map(t => t.id === id ? { ...t, status } : t);
+      saveTaskStatuses(next);
+      return next;
     });
   }, []);
 
