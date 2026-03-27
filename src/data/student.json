@@ -1,0 +1,179 @@
+{
+  "student": {
+    "name": "Matt Doumar",
+    "company": "HouseAccount",
+    "startDate": "2026-03-28",
+    "avatar": "MD"
+  },
+  "curriculum": [
+    {
+      "id": "s1",
+      "number": 1,
+      "title": "Becoming an AI Operator",
+      "subtitle": "Mental model, Desktop Commander, first demos, Projects",
+      "date": "2026-03-28",
+      "status": "completed",
+      "duration": "70 min",
+      "notes": "Completed: Claude Max signup, Desktop Commander + Filesystem connectors installed, organized contracts/agreements folder, photo-to-structured-data (handwritten note digitized to DOCX), Google Calendar + Drive + Gmail connectors enabled, created AI Native Operator Training project in Cowork with CLAUDE.md, scheduled Session 2 via natural language calendar integration. Git for Windows install started but needs verification.",
+      "keyTakeaways": [
+        "Claude Desktop with connectors = Claude has hands on your machine",
+        "Cowork mode handles desktop automation (file ops, browser, apps)",
+        "Projects + CLAUDE.md = persistent memory across conversations",
+        "Context window degrades past 75% — use session handoffs",
+        "Caps Lock = voice input for hands-free interaction"
+      ]
+    },
+    {
+      "id": "s2",
+      "number": 2,
+      "title": "Claude Code & The Build Reflex",
+      "subtitle": "Terminal workflow, building apps from sentences, iteration loops",
+      "date": "2026-04-03",
+      "status": "upcoming",
+      "duration": "60 min",
+      "notes": "",
+      "keyTakeaways": []
+    },
+    {
+      "id": "s3",
+      "number": 3,
+      "title": "Context as Infrastructure",
+      "subtitle": "CLAUDE.md deep dive, project architecture, session handoffs, batch mindset",
+      "date": null,
+      "status": "locked",
+      "duration": null,
+      "notes": "",
+      "keyTakeaways": []
+    },
+    {
+      "id": "s4",
+      "number": 4,
+      "title": "The HouseAccount Agent Map",
+      "subtitle": "Provider Sales, Customer Intake, Pricing Estimate, Concierge — what to automate vs. keep human",
+      "date": null,
+      "status": "locked",
+      "duration": null,
+      "notes": "",
+      "keyTakeaways": []
+    },
+    {
+      "id": "s5",
+      "number": 5,
+      "title": "Always-On AI",
+      "subtitle": "Mac Mini setup, messaging gateway, ambient access from anywhere",
+      "date": null,
+      "status": "locked",
+      "duration": null,
+      "notes": "",
+      "keyTakeaways": []
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "title": "Install Git for Windows",
+      "description": "Download from git-scm.com, install with defaults ('Add Git to PATH' stays checked), verify with 'git --version' in a fresh PowerShell window.",
+      "session": "s1",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t2",
+      "title": "Verify Claude Code in terminal",
+      "description": "Fresh PowerShell → 'claude --version'. If not recognized, run: irm https://claude.ai/install.ps1 | iex — then close and reopen terminal.",
+      "session": "s1",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t3",
+      "title": "Build tip calculator (Code tab)",
+      "description": "Claude Desktop → Code tab → 'Build a tip calculator app with bill splitting. Clean design, mobile-friendly. Save to Desktop and open in browser.'",
+      "session": "s1",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t4",
+      "title": "Build tip calculator (Terminal)",
+      "description": "PowerShell → mkdir $HOME\\ai-demo → cd $HOME\\ai-demo → claude → same prompt. Experience the terminal workflow difference.",
+      "session": "s1",
+      "status": "todo",
+      "priority": "medium"
+    },
+    {
+      "id": "t5",
+      "title": "Create 'HouseAccount Builder' project",
+      "description": "Claude Desktop → Projects → New → 'HouseAccount Builder'. Add instructions describing HA, your role, team, the 4 agents, and that you're on Windows.",
+      "session": "s1",
+      "status": "todo",
+      "priority": "medium"
+    },
+    {
+      "id": "t6",
+      "title": "3 real tasks per day in Claude",
+      "description": "Provider emails, customer analysis, document review — actual HouseAccount work. Use Chat or Cowork, whichever feels natural.",
+      "session": "s1",
+      "status": "todo",
+      "priority": "medium"
+    },
+    {
+      "id": "t7",
+      "title": "Upload a dense document for analysis",
+      "description": "Drop in a vendor contract, long email chain, or competitor's terms. Ask Claude to extract the 3 things that matter and flag anything unusual.",
+      "session": "s1",
+      "status": "todo",
+      "priority": "low"
+    },
+    {
+      "id": "t8",
+      "title": "Try Caps Lock voice input",
+      "description": "Hold Caps Lock → talk a real problem → let go. Use it for at least one actual task this week. Notice how different it feels.",
+      "session": "s1",
+      "status": "todo",
+      "priority": "low"
+    }
+  ],
+  "resources": [
+    {
+      "id": "setup-guide",
+      "title": "AI Operator Setup Guide",
+      "description": "Hardware, subscriptions, Claude Code install, MCP setup — zero to running",
+      "type": "pdf",
+      "filename": "AI_Operator_Setup_Guide.pdf",
+      "session": "s1"
+    },
+    {
+      "id": "homework-s1",
+      "title": "Session 1 Homework",
+      "description": "Git install, tip calculator (two paths), HouseAccount Builder project, daily reps",
+      "type": "html",
+      "filename": "session1_homework.html",
+      "session": "s1"
+    },
+    {
+      "id": "lesson-plan-s1",
+      "title": "Session 1 Lesson Plan",
+      "description": "Coaching plan: demos, mental model, exercises, homework structure",
+      "type": "html",
+      "filename": "lesson_plan.html",
+      "session": "s1"
+    },
+    {
+      "id": "ref-commands",
+      "title": "Windows PowerShell Quick Reference",
+      "description": "Essential terminal commands, Claude Code shortcuts, and troubleshooting",
+      "type": "reference",
+      "filename": null,
+      "session": "s1"
+    }
+  ],
+  "mantras": [
+    "The models are intelligence. When you're doing something that requires thinking, that's a signal to test a model with it.",
+    "Brain, Hands, Memory. Claude thinks. Claude Code acts. CLAUDE.md remembers.",
+    "If you're doing it more than twice, it should be a prompt. If it's a prompt you run more than twice, it should be automated.",
+    "Context is everything. A model with no context is smart but useless. A model with your business context is a teammate.",
+    "You're not learning a tool. You're building a new reflex.",
+    "The best AI operator isn't the best prompter. It's the person who knows what to hand off and what to keep."
+  ]
+}
