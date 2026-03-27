@@ -96,37 +96,62 @@
 <div class="section">
   <div class="section-header">
     <span class="section-num path-a">THE BRAIN</span>
-    <span class="section-title">Claude Desktop</span>
+    <span class="section-title">Claude Desktop — Your Daily Driver</span>
   </div>
   <div class="section-body">
-    <p>The interface most people start with — but far more powerful than a chat window. Claude Desktop has four distinct modes, each suited to different kinds of work.</p>
+    <p>Claude Desktop has three modes — Chat, Cowork, and Code — all running the same model with access to the same connectors. The difference between modes isn't what Claude can access — it's how much autonomy Claude has.</p>
 
     <div class="step">
-      <div class="step-label tool">CHAT MODE</div>
-      <p><strong>What:</strong> Conversational AI — thinking, writing, analyzing, brainstorming</p>
-      <p><strong>Use for:</strong> Strategy, document review, email drafting, research, problem-solving</p>
+      <div class="step-label tool">CHAT MODE (CONVERSATIONAL + CONNECTORS)</div>
+      <p><strong>What:</strong> Back-and-forth conversation with Claude, with full access to all your MCP connectors — Desktop Commander, Filesystem, Google Calendar, Gmail, Drive, Chrome extension. You prompt, Claude responds, you guide the next step.</p>
+      <p><strong>Use for:</strong> Day-to-day work — drafting emails, analyzing documents, checking your calendar, reviewing contracts, brainstorming strategy. Claude has hands (via connectors) but you're directing every move.</p>
+      <p><strong>Why it's the default:</strong> Lower token consumption than Cowork, more control over each step, and you still get full tool access. This is where most operators spend most of their time.</p>
       <p><strong>Cost:</strong> Included with subscription</p>
     </div>
 
     <div class="step">
-      <div class="step-label tool">COWORK MODE</div>
-      <p><strong>What:</strong> Claude controls your browser and desktop apps — clicks, navigates, reads screens</p>
-      <p><strong>Use for:</strong> CRM lookups, form filling, GUI-based workflows, browser automation</p>
-      <p><strong>Cost:</strong> Included with subscription</p>
+      <div class="step-label tool">COWORK MODE (AUTONOMOUS AGENT)</div>
+      <p><strong>What:</strong> Same model, same connectors, but Claude works autonomously. You describe an outcome — "organize my Downloads folder," "research these five competitors and produce a report" — and Claude plans, executes multi-step workflows, and delivers finished work. You step away, come back to results.</p>
+      <p><strong>Extras only in Cowork:</strong> Scheduled tasks (Claude runs something every Friday morning without you asking), Dispatch (assign tasks from your phone while Claude works on your desktop), computer use (Claude controls your mouse and keyboard when no connector exists for what you need), and Cowork Projects with persistent memory.</p>
+      <p><strong>Tradeoff:</strong> Burns through your usage allocation faster — multi-step autonomous tasks are compute-intensive. Use Chat for back-and-forth work, Cowork for "do this whole thing and tell me when it's done."</p>
+      <p><strong>Cost:</strong> Included with subscription (uses more of your quota)</p>
     </div>
 
     <div class="step">
       <div class="step-label tool">CODE TAB</div>
-      <p><strong>What:</strong> Claude Code embedded in the Claude Desktop window — no terminal needed</p>
-      <p><strong>Use for:</strong> Quick builds, file creation, code iteration when you don't want to open a terminal</p>
+      <p><strong>What:</strong> Claude Code embedded in the Claude Desktop window — a terminal-based coding agent without needing to open PowerShell.</p>
+      <p><strong>Use for:</strong> Quick builds, file creation, code iteration when you don't want to open a separate terminal window.</p>
       <p><strong>Cost:</strong> Included with subscription</p>
     </div>
 
     <div class="step">
       <div class="step-label tool">PROJECTS</div>
-      <p><strong>What:</strong> Persistent context containers — instructions + documents that carry across every conversation inside the project</p>
-      <p><strong>Use for:</strong> HouseAccount context, CLAUDE.md files, business-specific AI memory</p>
+      <p><strong>What:</strong> Persistent context containers — instructions + documents that carry across every conversation inside the project. Work in Chat, Cowork, and Code.</p>
+      <p><strong>Use for:</strong> HouseAccount context, CLAUDE.md files, business-specific AI memory. "Every conversation in this Project knows who HouseAccount is and how we operate."</p>
       <p><strong>Cost:</strong> Included with subscription</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="step">
+      <div class="step-label tool">WHEN TO USE WHICH</div>
+      <table class="cost-table" style="margin-top: 0.5rem;">
+        <thead>
+          <tr>
+            <th>You want to...</th>
+            <th>Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Draft an email, review a doc, check your calendar</td><td>Chat</td></tr>
+          <tr><td>Think through strategy, brainstorm, analyze</td><td>Chat</td></tr>
+          <tr><td>Have Claude organize 200 files while you're in a meeting</td><td>Cowork</td></tr>
+          <tr><td>Set up a recurring task (e.g. weekly report)</td><td>Cowork</td></tr>
+          <tr><td>Assign work from your phone</td><td>Cowork (Dispatch)</td></tr>
+          <tr><td>Build a web app or tool from scratch</td><td>Code</td></tr>
+          <tr><td>Quick code edits or file generation</td><td>Code</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -239,7 +264,7 @@
         <tr class="total"><td><strong>Monthly total</strong></td><td><strong>$100/month</strong></td><td></td></tr>
       </tbody>
     </table>
-    <div class="callout">Your entire AI operator stack costs $100/month. Everything else is free. The Mac Mini hardware (~$1,500) is the only other cost, and that's a Session 5 purchase.</div>
+    <div class="callout">Your entire AI operator stack costs $100/month. Everything else is free. All three modes — Chat, Cowork, and Code — share the same connectors and the same intelligence. The only difference is how much autonomy you give Claude. The Mac Mini hardware (~$1,500) is the only other cost, and that's a Session 5 purchase.</div>
   </div>
 </div>
 
@@ -259,9 +284,9 @@
 │     ▼                                                            │
 │   ┌──────────────────────────────────────────┐                  │
 │   │  CLAUDE DESKTOP          $100/mo         │                  │
-│   │  ├── Chat      (Brain — thinking)        │                  │
-│   │  ├── Cowork    (Hands — GUI control)     │                  │
-│   │  └── Code Tab  (Hands — building)        │                  │
+│   │  ├── Chat      (Conversational + tools)  │                  │
+│   │  ├── Cowork    (Autonomous + tools)      │                  │
+│   │  └── Code Tab  (Build software)          │                  │
 │   └──────────────┬───────────────────────────┘                  │
 │                  │                                               │
 │   ┌──────────────▼───────────────────────────┐                  │
