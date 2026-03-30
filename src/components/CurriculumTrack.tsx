@@ -194,6 +194,7 @@ const MAT_TYPE_CONFIG: Record<string, { icon: React.ElementType; color: string; 
   pdf:       { icon: FileText,     color: 'text-red-500',    bg: 'bg-red-50 dark:bg-red-950/30'       },
   html:      { icon: ExternalLink, color: 'text-blue-500',   bg: 'bg-blue-50 dark:bg-blue-950/30'     },
   reference: { icon: BookOpen,     color: 'text-violet-500', bg: 'bg-violet-50 dark:bg-violet-950/30' },
+  link:      { icon: ExternalLink, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
 };
 
 const MAT_ACTION_BTN = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold border transition-all duration-200 bg-brand-50 dark:bg-brand-950/20 text-brand-600 dark:text-brand-400 border-brand-100 dark:border-brand-800/30 hover:bg-gradient-to-r hover:from-brand-500 hover:to-violet-500 hover:text-white hover:border-transparent';
@@ -215,7 +216,8 @@ function SessionMaterials({ sessionId }: { sessionId: string }) {
     const cfg = MAT_TYPE_CONFIG[resource.type] ?? MAT_TYPE_CONFIG.reference;
     const Icon = cfg.icon;
     const hasFile = resource.filename !== null;
-    const url = hasFile ? `/docs/${resource.filename}` : null;
+    const hasUrl = (resource as any).url != null;
+    const url = hasFile ? `/docs/${resource.filename}` : hasUrl ? (resource as any).url : null;
     const openFile = () => { if (url) window.open(url, '_blank', 'noopener,noreferrer'); };
     const handleOpen = (e: React.MouseEvent) => { e.stopPropagation(); openFile(); };
     const handleDownload = (e: React.MouseEvent) => {
@@ -230,7 +232,7 @@ function SessionMaterials({ sessionId }: { sessionId: string }) {
     return (
       <div
         key={resource.id}
-        onClick={hasFile ? openFile : undefined}
+        onClick={(hasFile || hasUrl) ? openFile : undefined}
         className={`bg-surface-50 dark:bg-night-900/40 rounded-xl border border-surface-200 dark:border-night-600 p-3 flex items-center gap-3 transition-all duration-200 ${
           hasFile ? 'cursor-pointer hover:border-brand-300 dark:hover:border-brand-700/50' : ''
         }`}
@@ -242,7 +244,7 @@ function SessionMaterials({ sessionId }: { sessionId: string }) {
           <h4 className="font-medium text-surface-900 dark:text-night-100 text-sm leading-snug">{resource.title}</h4>
           <p className="text-xs text-surface-300 dark:text-night-400 mt-0.5">{resource.description}</p>
         </div>
-        {hasFile && (
+        {(hasFile || hasUrl) && (
           <div className="flex items-center gap-2 flex-shrink-0">
             {resource.type === 'pdf' && (
               <>
@@ -256,7 +258,7 @@ function SessionMaterials({ sessionId }: { sessionId: string }) {
                 </button>
               </>
             )}
-            {resource.type === 'html' && (
+            {(resource.type === 'html' || resource.type === 'link') && (
               <button onClick={handleOpen} className={MAT_ACTION_BTN}>
                 <ExternalLink size={12} />
                 Open
@@ -264,7 +266,7 @@ function SessionMaterials({ sessionId }: { sessionId: string }) {
             )}
           </div>
         )}
-        {!hasFile && (
+        {!hasFile && !hasUrl && (
           <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-surface-300 dark:text-night-400 bg-surface-100 dark:bg-night-700 px-2.5 py-1 rounded-lg border border-surface-200 dark:border-night-600 flex-shrink-0">
             {resource.type}
           </span>
@@ -277,21 +279,22 @@ function SessionMaterials({ sessionId }: { sessionId: string }) {
     const cfg = MAT_TYPE_CONFIG[resource.type] ?? MAT_TYPE_CONFIG.reference;
     const Icon = cfg.icon;
     const hasFile = resource.filename !== null;
-    const url = hasFile ? `/docs/${resource.filename}` : null;
+    const hasUrl = (resource as any).url != null;
+    const url = hasFile ? `/docs/${resource.filename}` : hasUrl ? (resource as any).url : null;
     const openFile = () => { if (url) window.open(url, '_blank', 'noopener,noreferrer'); };
     const actionLabel = resource.type === 'pdf' ? 'Preview' : 'Open';
 
     return (
       <div
         key={resource.id}
-        onClick={hasFile ? openFile : undefined}
+        onClick={(hasFile || hasUrl) ? openFile : undefined}
         className={`flex items-center gap-2.5 py-1.5 ${hasFile ? 'cursor-pointer group' : ''}`}
       >
         <Icon size={14} className={cfg.color} />
         <span className="flex-1 text-xs font-medium text-surface-800 dark:text-night-100 truncate">
           {resource.title}
         </span>
-        {hasFile && (
+        {(hasFile || hasUrl) && (
           <span className="text-xs text-brand-500 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 flex-shrink-0">
             {actionLabel}
           </span>
