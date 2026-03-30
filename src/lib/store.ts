@@ -40,6 +40,7 @@ export interface Resource {
   description: string;
   type: string;
   filename: string | null;
+  url?: string | null;
   tags: string[];
   sessions: string[];
   global: boolean;
@@ -57,6 +58,7 @@ export interface CurriculumReference {
   title: string;
   subtitle: string;
   filename: string | null;
+  url?: string | null;
   sections: ReferenceSection[];
 }
 
