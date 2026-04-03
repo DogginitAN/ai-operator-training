@@ -303,17 +303,12 @@
     {
       "id": "setup-guide",
       "title": "AI Operator Setup Guide",
-      "description": "Hardware, subscriptions, Claude Code install, MCP setup \u2014 zero to running",
+      "description": "Hardware, subscriptions, Claude Code install, MCP setup — zero to running",
       "type": "pdf",
       "filename": "AI_Operator_Setup_Guide.pdf",
-      "tags": [
-        "setup-guide",
-        "onboarding"
-      ],
-      "sessions": [
-        "s1"
-      ],
-      "global": false,
+      "tags": ["guide"],
+      "sessions": ["s1"],
+      "global": true,
       "category": "guide"
     },
     {
@@ -322,12 +317,8 @@
       "description": "Git install, tip calculator (two paths), HouseAccount Builder project, daily reps",
       "type": "html",
       "filename": "session1_homework.html",
-      "tags": [
-        "homework"
-      ],
-      "sessions": [
-        "s1"
-      ],
+      "tags": ["homework"],
+      "sessions": ["s1"],
       "global": false,
       "category": "homework"
     },
@@ -337,58 +328,53 @@
       "description": "Coaching plan: demos, mental model, exercises, homework structure",
       "type": "html",
       "filename": "lesson_plan.html",
-      "tags": [
-        "lesson-plan"
-      ],
-      "sessions": [
-        "s1"
-      ],
+      "tags": ["lesson-plan"],
+      "sessions": ["s1"],
       "global": false,
       "category": "lesson-plan"
     },
     {
-      "id": "ref-commands",
+      "id": "ref-powershell",
       "title": "Windows PowerShell Quick Reference",
-      "description": "Essential terminal commands, Claude Code shortcuts, and troubleshooting",
+      "description": "Essential terminal commands and troubleshooting for Windows operators",
       "type": "html",
       "filename": "powershell_quick_reference.html",
-      "tags": [
-        "reference",
-        "terminal",
-        "windows"
-      ],
+      "tags": ["reference"],
       "sessions": [],
       "global": true,
-      "category": "guide"
+      "category": "reference"
+    },
+    {
+      "id": "ref-claude-code",
+      "title": "Claude Code Quick Reference",
+      "description": "Launch flags, slash commands, keyboard shortcuts, context management, permissions",
+      "type": "html",
+      "filename": "claude_code_reference.html",
+      "tags": ["reference"],
+      "sessions": [],
+      "global": true,
+      "category": "reference"
     },
     {
       "id": "ref-hardware",
       "title": "Hardware Overview",
-      "description": "Matt's device setup \u2014 Windows PC, Mac Mini, iPhone, and how they connect",
+      "description": "Recommended machine specs and setup for AI-native work",
       "type": "html",
       "filename": "hardware_overview.html",
-      "tags": [
-        "reference",
-        "hardware",
-        "setup-guide"
-      ],
+      "tags": ["reference"],
       "sessions": [],
-      "global": false,
+      "global": true,
       "category": "reference"
     },
     {
       "id": "ref-software",
       "title": "Software Overview",
-      "description": "The complete AI operator stack \u2014 tools, costs, and architecture diagram",
+      "description": "The AI operator stack — Brain, Hands, Memory and how they connect",
       "type": "html",
       "filename": "software_overview.html",
-      "tags": [
-        "reference",
-        "software",
-        "setup-guide"
-      ],
+      "tags": ["reference"],
       "sessions": [],
-      "global": false,
+      "global": true,
       "category": "reference"
     },
     {
@@ -397,12 +383,8 @@
       "description": "Claude Code deep dive, context window management, building real tools",
       "type": "html",
       "filename": "session2_lesson_plan.html",
-      "tags": [
-        "lesson-plan"
-      ],
-      "sessions": [
-        "s2"
-      ],
+      "tags": ["lesson-plan"],
+      "sessions": ["s2"],
       "global": false,
       "category": "lesson-plan"
     },
@@ -412,29 +394,20 @@
       "description": "Solo build, context management practice, CLAUDE.md, batch list",
       "type": "html",
       "filename": "session2_homework.html",
-      "tags": [
-        "homework"
-      ],
-      "sessions": [
-        "s2"
-      ],
+      "tags": ["homework"],
+      "sessions": ["s2"],
       "global": false,
       "category": "homework"
     },
     {
       "id": "session1-notes",
-      "title": "Session 1 \u2014 Call Notes & Transcript",
-      "description": "Full meeting notes, detailed summary, and transcript from the March 28 coaching session",
+      "title": "Session 1 — Call Notes & Transcript",
+      "description": "Full meeting notes and transcript from the March 28 coaching session",
       "type": "link",
       "filename": null,
       "url": "https://docs.google.com/document/d/1fMAor_5KCsjq94gDKRAdiOW1EAXb-65P_sQ4byEZksc/edit?usp=sharing",
-      "tags": [
-        "session-notes",
-        "transcript"
-      ],
-      "sessions": [
-        "s1"
-      ],
+      "tags": ["lesson-plan"],
+      "sessions": ["s1"],
       "global": false,
       "category": "lesson-plan"
     }
