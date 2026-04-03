@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Quick Reference — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  .header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+</style>
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
+  .section-num.launch   { background: var(--green-dim);  color: var(--green);  }
+  .section-num.session  { background: var(--blue-dim);   color: var(--blue);   }
+  .section-num.context  { background: var(--accent-dim); color: var(--accent); }
+  .section-num.model    { background: var(--purple-dim); color: var(--purple); }
+  .section-num.nav      { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.keys     { background: var(--green-dim);  color: var(--green);  }
+  .section-num.advanced { background: var(--red-dim);     color: var(--red);    }
+  .section-num.ref      { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .cmd-row { display: flex; gap: 1rem; align-items: baseline; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+  .cmd-row:last-child { border-bottom: none; }
+  .cmd { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--cyan); flex-shrink: 0; min-width: 280px; }
+  .cmd-desc { font-size: 0.9rem; color: var(--text-muted); }
+  .sub-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; margin: 1rem 0 0.4rem; }
+  .sub-label.do { color: var(--green); }
+  .sub-label.note { color: var(--accent); }
+  .sub-label.type { color: var(--blue); }
+  .sub-label.warn { color: var(--red); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); display: inline; word-break: break-all; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Claude Code Quick Reference</h1>
+  <div class="sub">Every command and shortcut you need — nothing you don't</div>
+</div>
+
+
+<!-- ─── LAUNCHING CLAUDE CODE ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num launch">LAUNCH</span>
+    <span class="section-title">Starting &amp; Resuming Sessions</span>
+  </div>
+  <div class="section-body">
+    <p>How you launch Claude Code determines what it knows, what it can do, and how it behaves. Always <code>cd</code> into your project folder first.</p>
+    <div class="cmd-row"><span class="cmd">claude</span><span class="cmd-desc">Start a new interactive session in the current folder</span></div>
+    <div class="cmd-row"><span class="cmd">claude "your prompt here"</span><span class="cmd-desc">Start a session with an opening prompt already loaded</span></div>
+    <div class="cmd-row"><span class="cmd">claude -c</span><span class="cmd-desc">Continue your most recent session in this directory</span></div>
+    <div class="cmd-row"><span class="cmd">claude --resume</span><span class="cmd-desc">Pick from a list of past sessions to resume</span></div>
+    <div class="cmd-row"><span class="cmd">claude -p "query"</span><span class="cmd-desc">One-shot mode — run a prompt, print the answer, exit (no interactive session)</span></div>
+    <div class="cmd-row"><span class="cmd">claude --version</span><span class="cmd-desc">Check which version you're running</span></div>
+    <div class="cmd-row"><span class="cmd">claude update</span><span class="cmd-desc">Update Claude Code to the latest version</span></div>
+    <div class="callout"><strong>Windows rule:</strong> After installing or updating anything, close and reopen your terminal. Windows doesn't reload PATH in an existing window.</div>
+  </div>
+</div>
+
+
+<!-- ─── LAUNCH FLAGS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num launch">FLAGS</span>
+    <span class="section-title">Launch Flags — Set Behavior Before the Session Starts</span>
+  </div>
+  <div class="section-body">
+    <p>Flags go after <code>claude</code> when you start a session. They configure how the session runs. You can combine multiple flags.</p>
+    <div class="cmd-row"><span class="cmd">--dangerously-skip-permissions</span><span class="cmd-desc">Auto-approve all file writes and commands. Use on your personal machine for trusted tasks. The name is a reminder — you're giving Claude full autonomy</span></div>
+    <div class="cmd-row"><span class="cmd">--model sonnet</span><span class="cmd-desc">Start with a specific model. Use <code>sonnet</code> or <code>opus</code> as shorthand, or the full model name</span></div>
+    <div class="cmd-row"><span class="cmd">--effort high</span><span class="cmd-desc">Set thinking effort: <code>low</code>, <code>medium</code>, <code>high</code>, or <code>max</code> (Opus only). Higher = slower but more thorough</span></div>
+    <div class="cmd-row"><span class="cmd">--add-dir ../other-folder</span><span class="cmd-desc">Give Claude access to additional directories beyond the current one</span></div>
+    <div class="cmd-row"><span class="cmd">--permission-mode plan</span><span class="cmd-desc">Start in plan mode — Claude thinks and plans but won't execute until you approve. Options: <code>default</code>, <code>plan</code>, <code>acceptEdits</code>, <code>bypassPermissions</code></span></div>
+    <div class="cmd-row"><span class="cmd">--worktree feature-name</span><span class="cmd-desc">Start Claude in an isolated git worktree — great for parallel work without branch conflicts</span></div>
+    <div class="divider"></div>
+    <p><strong>Common combos:</strong></p>
+    <div class="cmd-row"><span class="cmd">claude --dangerously-skip-permissions --model opus</span><span class="cmd-desc">Full autonomy with the smartest model — use for complex builds on your machine</span></div>
+    <div class="cmd-row"><span class="cmd">claude --permission-mode plan --model opus</span><span class="cmd-desc">Think-before-acting mode with Opus — for architecture and planning work</span></div>
+  </div>
+</div>
+
+
+<!-- ─── CONTEXT MANAGEMENT ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num context">CONTEXT</span>
+    <span class="section-title">Context Window Management — Your #1 Skill</span>
+  </div>
+  <div class="section-body">
+    <p>The context window is Claude's working memory. Everything you say, everything Claude says, every file it reads — all takes up space. When it fills up, quality degrades. These commands help you manage it.</p>
+    <div class="cmd-row"><span class="cmd">/status</span><span class="cmd-desc">Your fuel gauge — shows context window usage, model, version, and account info. Check this regularly</span></div>
+    <div class="cmd-row"><span class="cmd">/context</span><span class="cmd-desc">Visual grid showing exactly what's eating your context. Gives optimization suggestions</span></div>
+    <div class="cmd-row"><span class="cmd">/compact</span><span class="cmd-desc">Compress the conversation — keeps meaning, frees space. Use at 50% context. You can add focus instructions: <code>/compact focus on the auth module</code></span></div>
+    <div class="cmd-row"><span class="cmd">/clear</span><span class="cmd-desc">Wipe conversation history completely. Files on disk stay intact. Use when switching tasks in the same project</span></div>
+    <div class="cmd-row"><span class="cmd">/cost</span><span class="cmd-desc">Show token usage and cost for the current session</span></div>
+    <div class="callout"><strong>Rules of thumb:</strong> Check <code>/status</code> periodically. Compact at 50%. Start thinking about a fresh session at 75%. Never paste a whole document when you can paste the relevant section.</div>
+  </div>
+</div>
+
+<!-- ─── MODEL & EFFORT ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num model">MODEL</span>
+    <span class="section-title">Model &amp; Effort — Mid-Session Switching</span>
+  </div>
+  <div class="section-body">
+    <p>You can change models and effort levels without restarting your session.</p>
+    <div class="cmd-row"><span class="cmd">/model</span><span class="cmd-desc">Open interactive model picker. Use arrow keys to select. Takes effect immediately</span></div>
+    <div class="cmd-row"><span class="cmd">/model opus</span><span class="cmd-desc">Switch directly to Opus (smartest, slower). Also accepts full model names</span></div>
+    <div class="cmd-row"><span class="cmd">/model sonnet</span><span class="cmd-desc">Switch to Sonnet (fast, capable, good for most tasks)</span></div>
+    <div class="cmd-row"><span class="cmd">/effort high</span><span class="cmd-desc">Set thinking effort: <code>low</code> (quick answers), <code>medium</code> (default), <code>high</code> (thorough), <code>max</code> (Opus only, deepest reasoning)</span></div>
+    <div class="cmd-row"><span class="cmd">/fast</span><span class="cmd-desc">Toggle fast mode on/off — prioritizes speed over thoroughness</span></div>
+  </div>
+</div>
+
+
+<!-- ─── SESSION NAVIGATION ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num nav">SESSION</span>
+    <span class="section-title">Session Navigation &amp; History</span>
+  </div>
+  <div class="section-body">
+    <div class="cmd-row"><span class="cmd">/resume</span><span class="cmd-desc">Browse and resume past sessions. Same as launching with <code>claude --resume</code></span></div>
+    <div class="cmd-row"><span class="cmd">/diff</span><span class="cmd-desc">Interactive diff viewer — see what changed in your files, per-turn and overall</span></div>
+    <div class="cmd-row"><span class="cmd">/rewind</span><span class="cmd-desc">Rewind conversation and/or code to a previous point. Your undo button</span></div>
+    <div class="cmd-row"><span class="cmd">/copy</span><span class="cmd-desc">Copy Claude's last response to clipboard. Add a number for older: <code>/copy 2</code> gets the second-to-last</span></div>
+    <div class="cmd-row"><span class="cmd">/export</span><span class="cmd-desc">Export the full conversation as plain text — useful for handoffs or records</span></div>
+    <div class="cmd-row"><span class="cmd">/rename my-project</span><span class="cmd-desc">Name the current session so you can find it later with <code>/resume</code></span></div>
+    <div class="cmd-row"><span class="cmd">/exit</span><span class="cmd-desc">Leave Claude Code and return to your normal terminal</span></div>
+  </div>
+</div>
+
+<!-- ─── PROJECT MEMORY ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num model">MEMORY</span>
+    <span class="section-title">Project Memory — CLAUDE.md &amp; Init</span>
+  </div>
+  <div class="section-body">
+    <p>CLAUDE.md is how your project remembers context between sessions. Claude reads it automatically every time you start a session in that folder.</p>
+    <div class="cmd-row"><span class="cmd">/init</span><span class="cmd-desc">Scan the current project and generate a starter CLAUDE.md file. Great for getting the memory layer going quickly</span></div>
+    <div class="cmd-row"><span class="cmd">/memory</span><span class="cmd-desc">Edit CLAUDE.md files, toggle auto-memory on/off, and view auto-generated memory entries</span></div>
+    <div class="cmd-row"><span class="cmd">/add-dir ../other-folder</span><span class="cmd-desc">Give Claude access to another directory mid-session (files only, not config)</span></div>
+    <div class="callout"><strong>Memory hierarchy:</strong> Global (<code>~/.claude/CLAUDE.md</code>) applies everywhere. Project (<code>./CLAUDE.md</code>) applies to that folder. Both are loaded automatically — global first, then project-specific on top.</div>
+  </div>
+</div>
+
+
+<!-- ─── KEYBOARD SHORTCUTS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num keys">KEYS</span>
+    <span class="section-title">Keyboard Shortcuts — Inside a Session</span>
+  </div>
+  <div class="section-body">
+    <p>These work while you're inside an active Claude Code session.</p>
+    <div class="cmd-row"><span class="cmd">Ctrl+C</span><span class="cmd-desc">Stop what Claude is currently doing. Conversation stays alive — you can give a new instruction</span></div>
+    <div class="cmd-row"><span class="cmd">Ctrl+D</span><span class="cmd-desc">Exit Claude Code entirely (same as <code>/exit</code>)</span></div>
+    <div class="cmd-row"><span class="cmd">Shift+Tab</span><span class="cmd-desc">Cycle through permission modes: default → plan → acceptEdits → (bypassPermissions if enabled). Press twice quickly to jump</span></div>
+    <div class="cmd-row"><span class="cmd">Alt+T / Option+T</span><span class="cmd-desc">Toggle extended thinking on/off</span></div>
+    <div class="cmd-row"><span class="cmd">Alt+P / Option+P</span><span class="cmd-desc">Quick model picker</span></div>
+    <div class="cmd-row"><span class="cmd">Ctrl+G</span><span class="cmd-desc">Open your external editor to compose a longer prompt</span></div>
+    <div class="cmd-row"><span class="cmd">Tab</span><span class="cmd-desc">Autocomplete slash commands (type <code>/</code> then Tab)</span></div>
+    <div class="cmd-row"><span class="cmd">↑ / ↓</span><span class="cmd-desc">Scroll through your command history</span></div>
+  </div>
+</div>
+
+<!-- ─── PERMISSIONS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num advanced">PERMISSIONS</span>
+    <span class="section-title">Permission Modes — How Much Autonomy Claude Gets</span>
+  </div>
+  <div class="section-body">
+    <p>Permission modes control whether Claude asks before acting. You set them at launch or cycle through them with <code>Shift+Tab</code>.</p>
+    <div class="cmd-row"><span class="cmd">default</span><span class="cmd-desc">Claude asks before file writes and shell commands. The safe starting point</span></div>
+    <div class="cmd-row"><span class="cmd">plan</span><span class="cmd-desc">Claude thinks and plans but won't execute anything until you approve. Good for architecture</span></div>
+    <div class="cmd-row"><span class="cmd">acceptEdits</span><span class="cmd-desc">Auto-approves file edits but still asks before running shell commands</span></div>
+    <div class="cmd-row"><span class="cmd">bypassPermissions</span><span class="cmd-desc">Auto-approve everything. This is what <code>--dangerously-skip-permissions</code> enables. Personal machine only</span></div>
+    <div class="cmd-row"><span class="cmd">/permissions</span><span class="cmd-desc">Manage fine-grained allow/deny rules for specific tools mid-session</span></div>
+  </div>
+</div>
+
+
+<!-- ─── USEFUL EXTRAS ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num ref">EXTRAS</span>
+    <span class="section-title">Other Useful Commands</span>
+  </div>
+  <div class="section-body">
+    <div class="cmd-row"><span class="cmd">/help</span><span class="cmd-desc">Show all available commands, including any custom ones you've created</span></div>
+    <div class="cmd-row"><span class="cmd">/skills</span><span class="cmd-desc">List available skills (built-in and custom)</span></div>
+    <div class="cmd-row"><span class="cmd">/config</span><span class="cmd-desc">Open settings UI to adjust theme, model defaults, output style, and preferences</span></div>
+    <div class="cmd-row"><span class="cmd">/doctor</span><span class="cmd-desc">Diagnose and verify your Claude Code installation — use when things feel broken</span></div>
+    <div class="cmd-row"><span class="cmd">/voice</span><span class="cmd-desc">Toggle push-to-talk voice dictation inside Claude Code</span></div>
+    <div class="cmd-row"><span class="cmd">/plan fix the auth bug</span><span class="cmd-desc">Enter plan mode with a task description — Claude will plan the approach without executing</span></div>
+    <div class="cmd-row"><span class="cmd">/btw quick question</span><span class="cmd-desc">Ask a side question without adding it to the main conversation context</span></div>
+    <div class="cmd-row"><span class="cmd">/stats</span><span class="cmd-desc">Visualize your usage: daily activity, session history, streaks, model preferences</span></div>
+    <div class="cmd-row"><span class="cmd">/usage</span><span class="cmd-desc">Check your plan limits and rate limit status</span></div>
+    <div class="cmd-row"><span class="cmd">/theme</span><span class="cmd-desc">Change the color theme (light, dark, colorblind-accessible variants)</span></div>
+    <div class="cmd-row"><span class="cmd">/vim</span><span class="cmd-desc">Toggle between Vim and normal editing mode</span></div>
+    <div class="cmd-row"><span class="cmd">/release-notes</span><span class="cmd-desc">See what's new in the latest Claude Code version</span></div>
+  </div>
+</div>
+
+<!-- ─── INSTALL ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num advanced">INSTALL</span>
+    <span class="section-title">Install, Update &amp; Auth</span>
+  </div>
+  <div class="section-body">
+    <div class="sub-label do">WINDOWS (POWERSHELL)</div>
+    <div class="cmd-row"><span class="cmd">irm https://claude.ai/install.ps1 | iex</span><span class="cmd-desc">Install or reinstall Claude Code</span></div>
+    <div class="divider"></div>
+    <div class="sub-label do">MACOS / LINUX</div>
+    <div class="cmd-row"><span class="cmd">npm install -g @anthropic-ai/claude-code</span><span class="cmd-desc">Install via npm (requires Node.js 18+)</span></div>
+    <div class="divider"></div>
+    <div class="sub-label type">ALL PLATFORMS</div>
+    <div class="cmd-row"><span class="cmd">claude update</span><span class="cmd-desc">Update to the latest version</span></div>
+    <div class="cmd-row"><span class="cmd">claude auth login</span><span class="cmd-desc">Sign in to your Anthropic account</span></div>
+    <div class="cmd-row"><span class="cmd">claude auth logout</span><span class="cmd-desc">Sign out</span></div>
+    <div class="cmd-row"><span class="cmd">claude auth status</span><span class="cmd-desc">Check if you're logged in and which account</span></div>
+    <div class="cmd-row"><span class="cmd">git --version</span><span class="cmd-desc">Verify Git is installed (required for Claude Code on Windows)</span></div>
+    <div class="cmd-row"><span class="cmd">claude --version</span><span class="cmd-desc">Verify Claude Code is installed and check version</span></div>
+    <div class="callout"><strong>Prerequisite:</strong> Git must be installed before Claude Code will work on Windows. Download from <strong>git-scm.com/download/win</strong> — keep all defaults, especially "Add Git to PATH."</div>
+  </div>
+</div>
+
+<div class="footer">
+  Claude Code Quick Reference · AI Native Operator Training · Andrew Nolan · 2026<br>
+  Full docs: <strong>code.claude.com/docs</strong>
+</div>
+
+</body>
+</html>
