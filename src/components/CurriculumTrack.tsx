@@ -4,7 +4,8 @@ import {
   Check, Clock, Lock, Lightbulb, ChevronDown, ChevronUp,
   Monitor, Layers, FolderOpen, FileText, BookOpen, ExternalLink, Eye, Download,
 } from 'lucide-react';
-import type { Session, CurriculumTheme, CurriculumReference, ThemeItem, Resource, Jotting } from '@/lib/store';
+import type { Session, CurriculumTheme, CurriculumReference, ThemeItem, Resource } from '@/lib/store';
+import type { Jotting } from '@/lib/jottings-api';
 import studentData from '@/data/student.json';
 import SessionJottings from '@/components/SessionJottings';
 
@@ -599,18 +600,18 @@ export default function CurriculumTrack({
   sessions,
   themes,
   references,
-  studentJottings,
-  coachJottings,
+  jottings,
+  isCoach,
   onAddJotting,
   onDeleteJotting,
 }: {
   sessions: Session[];
   themes: CurriculumTheme[];
   references: CurriculumReference[];
-  studentJottings: Jotting[];
-  coachJottings: Jotting[];
-  onAddJotting: (j: Jotting) => void;
-  onDeleteJotting: (id: string) => void;
+  jottings: Jotting[];
+  isCoach: boolean;
+  onAddJotting: (data: { author: 'student' | 'coach'; text: string; url?: string; pinnedTo?: string }) => Promise<void>;
+  onDeleteJotting: (id: string) => Promise<void>;
 }) {
   const [selectedId, setSelectedId] = useState(() => getDefaultId(themes, sessions));
 
@@ -675,9 +676,9 @@ export default function CurriculumTrack({
         {/* ── Session jottings column ──────────────────────────────────────── */}
         <SessionJottings
           sessionId={selectedResolved?.kind === 'session' ? selectedResolved.session.id : null}
-          studentJottings={studentJottings}
-          coachJottings={coachJottings}
+          jottings={jottings}
           sessions={sessions}
+          isCoach={isCoach}
           onAdd={onAddJotting}
           onDelete={onDeleteJotting}
         />

@@ -1,9 +1,12 @@
 'use client';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { BookOpen, LayoutGrid, Archive, Sparkles, Sun, Moon, StickyNote } from 'lucide-react';
 import studentData from '@/data/student.json';
-import { loadTaskStatuses, saveTaskStatuses, loadStudentJottings, saveStudentJottings } from '@/lib/store';
-import type { Task, TaskStatus, Session, Resource, CurriculumTheme, CurriculumReference, Jotting } from '@/lib/store';
+import { loadTaskStatuses, saveTaskStatuses } from '@/lib/store';
+import type { Task, TaskStatus, Session, Resource, CurriculumTheme, CurriculumReference } from '@/lib/store';
+import { fetchJottings, createJotting, deleteJotting } from '@/lib/jottings-api';
+import type { Jotting } from '@/lib/jottings-api';
 import ProgressRing from '@/components/ProgressRing';
 import CurriculumTrack from '@/components/CurriculumTrack';
 import TaskBoard from '@/components/TaskBoard';
@@ -13,19 +16,25 @@ import JottingsBoard from '@/components/JottingsBoard';
 
 const TABS = [
   { key: 'curriculum', label: 'Curriculum', icon: BookOpen },
-  { key: 'tasks', label: 'Homework', icon: LayoutGrid },
-  { key: 'jottings', label: 'Jottings', icon: StickyNote },
-  { key: 'resources', label: 'Resources', icon: Archive },
-  { key: 'principles', label: 'Principles', icon: Sparkles },
+  { key: 'tasks',      label: 'Homework',   icon: LayoutGrid },
+  { key: 'jottings',  label: 'Jottings',   icon: StickyNote },
+  { key: 'resources', label: 'Resources',  icon: Archive },
+  { key: 'principles',label: 'Principles', icon: Sparkles },
 ] as const;
 
 type TabKey = typeof TABS[number]['key'];
 
-export default function Dashboard() {
+// ─── main dashboard (needs Suspense for useSearchParams) ──────────────────────
+
+function Dashboard() {
+  const searchParams = useSearchParams();
+  const isCoach = searchParams.get('role') === 'coach';
+
   const [activeTab, setActiveTab] = useState<TabKey>('curriculum');
   const [tasks, setTasks] = useState<Task[]>(studentData.tasks as Task[]);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [studentJottings, setStudentJottings] = useState<Jotting[]>([]);
+  const [jottings, setJottings] = useState<Jotting[]>([]);
+  const [jottingsLoading, setJottingsLoading] = useState(true);
 
   const didHydrate = useRef(false);
 
@@ -39,9 +48,12 @@ export default function Dashboard() {
     }
   }, []);
 
-  // Hydrate jottings from localStorage
+  // Fetch jottings from API on mount
   useEffect(() => {
-    setStudentJottings(loadStudentJottings());
+    fetchJottings().then(data => {
+      setJottings(data);
+      setJottingsLoading(false);
+    });
   }, []);
 
   // Hydrate theme from localStorage
@@ -65,23 +77,36 @@ export default function Dashboard() {
     });
   }, []);
 
-  const handleAddJotting = useCallback((jotting: Jotting) => {
-    setStudentJottings(prev => {
-      const next = [...prev, jotting];
-      saveStudentJottings(next);
-      return next;
-    });
+  // Optimistic add: insert temp jotting immediately, replace/revert after API resolves
+  const handleAddJotting = useCallback(async (
+    data: { author: 'student' | 'coach'; text: string; url?: string; pinnedTo?: string }
+  ) => {
+    const tempId = `temp-${Date.now()}`;
+    const optimistic: Jotting = {
+      id: tempId,
+      author: data.author,
+      text: data.text,
+      url: data.url ?? null,
+      pinnedTo: data.pinnedTo ?? null,
+      createdAt: new Date().toISOString(),
+    };
+    setJottings(prev => [optimistic, ...prev]);
+
+    const result = await createJotting(data);
+    if (result) {
+      setJottings(prev => prev.map(j => j.id === tempId ? result : j));
+    } else {
+      setJottings(prev => prev.filter(j => j.id !== tempId));
+    }
   }, []);
 
-  const handleDeleteJotting = useCallback((id: string) => {
-    setStudentJottings(prev => {
-      const next = prev.filter(j => j.id !== id);
-      saveStudentJottings(next);
-      return next;
-    });
-  }, []);
-
-  const coachJottings = (studentData as any).coachJottings as Jotting[];
+  // Optimistic delete: remove immediately, revert if API fails
+  const handleDeleteJotting = useCallback(async (id: string) => {
+    const prev = jottings;
+    setJottings(jottings.filter(j => j.id !== id));
+    const success = await deleteJotting(id);
+    if (!success) setJottings(prev);
+  }, [jottings]);
 
   const completedSessions = (studentData.curriculum as Session[]).filter(s => s.status === 'completed').length;
   const totalSessions = studentData.curriculum.length;
@@ -105,6 +130,11 @@ export default function Dashboard() {
                   <span className="text-[10px] font-mono font-semibold bg-brand-100 text-brand-700 dark:bg-brand-950/40 dark:text-brand-400 px-2 py-0.5 rounded-full">
                     {studentData.student.company}
                   </span>
+                  {isCoach && (
+                    <span className="text-[10px] font-mono font-semibold bg-violet-100 text-violet-700 dark:bg-violet-950/40 dark:text-violet-400 px-2 py-0.5 rounded-full">
+                      Coach View
+                    </span>
+                  )}
                 </div>
                 <p className="text-sm text-surface-300 dark:text-night-400 mt-0.5">
                   AI Native Operator Training · Started {new Date(studentData.student.startDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -175,24 +205,31 @@ export default function Dashboard() {
             sessions={studentData.curriculum as Session[]}
             themes={studentData.themes as CurriculumTheme[]}
             references={studentData.references as CurriculumReference[]}
-            studentJottings={studentJottings}
-            coachJottings={coachJottings}
+            jottings={jottings}
+            isCoach={isCoach}
             onAddJotting={handleAddJotting}
             onDeleteJotting={handleDeleteJotting}
           />
         )}
-        {activeTab === 'tasks' && <TaskBoard tasks={tasks} sessions={studentData.curriculum as Session[]} onMove={handleTaskMove} />}
+        {activeTab === 'tasks' && (
+          <TaskBoard tasks={tasks} sessions={studentData.curriculum as Session[]} onMove={handleTaskMove} />
+        )}
         {activeTab === 'jottings' && (
           <JottingsBoard
-            studentJottings={studentJottings}
-            coachJottings={coachJottings}
+            jottings={jottings}
             sessions={studentData.curriculum as Session[]}
+            isCoach={isCoach}
             onAdd={handleAddJotting}
             onDelete={handleDeleteJotting}
+            isLoading={jottingsLoading}
           />
         )}
-        {activeTab === 'resources' && <ResourceLibrary resources={studentData.resources as Resource[]} />}
-        {activeTab === 'principles' && <MantrasPanel mantras={studentData.mantras} />}
+        {activeTab === 'resources' && (
+          <ResourceLibrary resources={studentData.resources as Resource[]} />
+        )}
+        {activeTab === 'principles' && (
+          <MantrasPanel mantras={studentData.mantras} />
+        )}
       </main>
 
       {/* Footer */}
@@ -202,5 +239,15 @@ export default function Dashboard() {
         </div>
       </footer>
     </div>
+  );
+}
+
+// ─── page export (Suspense required for useSearchParams in App Router) ────────
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-surface-50 dark:bg-night-900" />}>
+      <Dashboard />
+    </Suspense>
   );
 }
