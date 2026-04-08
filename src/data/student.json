@@ -412,6 +412,15 @@
       "category": "lesson-plan"
     }
   ],
+  "coachJottings": [
+    {
+      "id": "cj1",
+      "author": "coach",
+      "text": "You built a working app from scratch in under 5 minutes. That instinct — plan first, build fast — is the core reflex. Keep feeding it.",
+      "pinnedTo": "s2",
+      "createdAt": "2026-04-02T14:30:00Z"
+    }
+  ],
   "mantras": [
     "The models are intelligence. When you're doing something that requires thinking, that's a signal to test a model with it.",
     "Brain, Hands, Memory. Claude thinks. Claude Code acts. CLAUDE.md remembers.",

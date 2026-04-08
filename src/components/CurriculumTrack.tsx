@@ -4,8 +4,9 @@ import {
   Check, Clock, Lock, Lightbulb, ChevronDown, ChevronUp,
   Monitor, Layers, FolderOpen, FileText, BookOpen, ExternalLink, Eye, Download,
 } from 'lucide-react';
-import type { Session, CurriculumTheme, CurriculumReference, ThemeItem, Resource } from '@/lib/store';
+import type { Session, CurriculumTheme, CurriculumReference, ThemeItem, Resource, Jotting } from '@/lib/store';
 import studentData from '@/data/student.json';
+import SessionJottings from '@/components/SessionJottings';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -598,10 +599,18 @@ export default function CurriculumTrack({
   sessions,
   themes,
   references,
+  studentJottings,
+  coachJottings,
+  onAddJotting,
+  onDeleteJotting,
 }: {
   sessions: Session[];
   themes: CurriculumTheme[];
   references: CurriculumReference[];
+  studentJottings: Jotting[];
+  coachJottings: Jotting[];
+  onAddJotting: (j: Jotting) => void;
+  onDeleteJotting: (id: string) => void;
 }) {
   const [selectedId, setSelectedId] = useState(() => getDefaultId(themes, sessions));
 
@@ -662,6 +671,16 @@ export default function CurriculumTrack({
             </div>
           )}
         </div>
+
+        {/* ── Session jottings column ──────────────────────────────────────── */}
+        <SessionJottings
+          sessionId={selectedResolved?.kind === 'session' ? selectedResolved.session.id : null}
+          studentJottings={studentJottings}
+          coachJottings={coachJottings}
+          sessions={sessions}
+          onAdd={onAddJotting}
+          onDelete={onDeleteJotting}
+        />
 
       </div>
     </div>

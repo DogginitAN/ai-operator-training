@@ -1,18 +1,20 @@
 'use client';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { BookOpen, LayoutGrid, Archive, Sparkles, Sun, Moon } from 'lucide-react';
+import { BookOpen, LayoutGrid, Archive, Sparkles, Sun, Moon, StickyNote } from 'lucide-react';
 import studentData from '@/data/student.json';
-import { loadTaskStatuses, saveTaskStatuses } from '@/lib/store';
-import type { Task, TaskStatus, Session, Resource, CurriculumTheme, CurriculumReference } from '@/lib/store';
+import { loadTaskStatuses, saveTaskStatuses, loadStudentJottings, saveStudentJottings } from '@/lib/store';
+import type { Task, TaskStatus, Session, Resource, CurriculumTheme, CurriculumReference, Jotting } from '@/lib/store';
 import ProgressRing from '@/components/ProgressRing';
 import CurriculumTrack from '@/components/CurriculumTrack';
 import TaskBoard from '@/components/TaskBoard';
 import ResourceLibrary from '@/components/ResourceLibrary';
 import MantrasPanel from '@/components/MantrasPanel';
+import JottingsBoard from '@/components/JottingsBoard';
 
 const TABS = [
   { key: 'curriculum', label: 'Curriculum', icon: BookOpen },
   { key: 'tasks', label: 'Homework', icon: LayoutGrid },
+  { key: 'jottings', label: 'Jottings', icon: StickyNote },
   { key: 'resources', label: 'Resources', icon: Archive },
   { key: 'principles', label: 'Principles', icon: Sparkles },
 ] as const;
@@ -23,6 +25,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<TabKey>('curriculum');
   const [tasks, setTasks] = useState<Task[]>(studentData.tasks as Task[]);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [studentJottings, setStudentJottings] = useState<Jotting[]>([]);
 
   const didHydrate = useRef(false);
 
@@ -34,6 +37,11 @@ export default function Dashboard() {
     if (Object.keys(saved).length > 0) {
       setTasks(prev => prev.map(t => ({ ...t, status: saved[t.id] ?? t.status })));
     }
+  }, []);
+
+  // Hydrate jottings from localStorage
+  useEffect(() => {
+    setStudentJottings(loadStudentJottings());
   }, []);
 
   // Hydrate theme from localStorage
@@ -57,6 +65,24 @@ export default function Dashboard() {
     });
   }, []);
 
+  const handleAddJotting = useCallback((jotting: Jotting) => {
+    setStudentJottings(prev => {
+      const next = [...prev, jotting];
+      saveStudentJottings(next);
+      return next;
+    });
+  }, []);
+
+  const handleDeleteJotting = useCallback((id: string) => {
+    setStudentJottings(prev => {
+      const next = prev.filter(j => j.id !== id);
+      saveStudentJottings(next);
+      return next;
+    });
+  }, []);
+
+  const coachJottings = (studentData as any).coachJottings as Jotting[];
+
   const completedSessions = (studentData.curriculum as Session[]).filter(s => s.status === 'completed').length;
   const totalSessions = studentData.curriculum.length;
   const todoCount = tasks.filter(t => t.status === 'todo').length;
@@ -66,7 +92,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-surface-50 dark:bg-night-900 transition-colors duration-200">
       {/* Header */}
       <header className="bg-white dark:bg-night-800 border-b border-surface-200 dark:border-night-600 transition-colors duration-200">
-        <div className="max-w-4xl mx-auto px-6 py-6">
+        <div className="max-w-6xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               {/* Avatar */}
@@ -115,7 +141,7 @@ export default function Dashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="flex gap-0">
             {TABS.map(tab => {
               const Icon = tab.icon;
@@ -143,22 +169,35 @@ export default function Dashboard() {
       </header>
 
       {/* Content */}
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main className="max-w-6xl mx-auto px-6 py-8">
         {activeTab === 'curriculum' && (
           <CurriculumTrack
             sessions={studentData.curriculum as Session[]}
             themes={studentData.themes as CurriculumTheme[]}
             references={studentData.references as CurriculumReference[]}
+            studentJottings={studentJottings}
+            coachJottings={coachJottings}
+            onAddJotting={handleAddJotting}
+            onDeleteJotting={handleDeleteJotting}
           />
         )}
         {activeTab === 'tasks' && <TaskBoard tasks={tasks} sessions={studentData.curriculum as Session[]} onMove={handleTaskMove} />}
+        {activeTab === 'jottings' && (
+          <JottingsBoard
+            studentJottings={studentJottings}
+            coachJottings={coachJottings}
+            sessions={studentData.curriculum as Session[]}
+            onAdd={handleAddJotting}
+            onDelete={handleDeleteJotting}
+          />
+        )}
         {activeTab === 'resources' && <ResourceLibrary resources={studentData.resources as Resource[]} />}
         {activeTab === 'principles' && <MantrasPanel mantras={studentData.mantras} />}
       </main>
 
       {/* Footer */}
       <footer className="border-t border-surface-200 dark:border-night-600 bg-white dark:bg-night-800 mt-12 transition-colors duration-200">
-        <div className="max-w-4xl mx-auto px-6 py-4 text-center">
+        <div className="max-w-6xl mx-auto px-6 py-4 text-center">
           <p className="text-xs font-mono text-surface-300 dark:text-night-400">AI Native Operator Training · Andrew Nolan · 2026</p>
         </div>
       </footer>

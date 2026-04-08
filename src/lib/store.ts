@@ -75,6 +75,15 @@ export interface CurriculumTheme {
   items: ThemeItem[];
 }
 
+export interface Jotting {
+  id: string;
+  author: 'student' | 'coach';
+  text: string;
+  url?: string;
+  pinnedTo?: string;
+  createdAt: string;
+}
+
 export interface StoreData {
   student: Student;
   curriculum: Session[];
@@ -83,6 +92,22 @@ export interface StoreData {
   tasks: Task[];
   resources: Resource[];
   mantras: string[];
+  coachJottings: Jotting[];
+}
+
+const JOTTINGS_KEY = 'ai-operator-jottings';
+
+export function loadStudentJottings(): Jotting[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const saved = localStorage.getItem(JOTTINGS_KEY);
+    return saved ? JSON.parse(saved) : [];
+  } catch { return []; }
+}
+
+export function saveStudentJottings(jottings: Jotting[]) {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(JOTTINGS_KEY, JSON.stringify(jottings));
 }
 
 export function loadStore(): StoreData {
