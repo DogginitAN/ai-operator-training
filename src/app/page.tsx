@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { BookOpen, LayoutGrid, Archive, Sparkles, Sun, Moon, StickyNote } from 'lucide-react';
 import studentData from '@/data/student.json';
 import { loadTaskStatuses, saveTaskStatuses } from '@/lib/store';
@@ -26,11 +26,17 @@ type TabKey = typeof TABS[number]['key'];
 
 // ─── main dashboard (needs Suspense for useSearchParams) ──────────────────────
 
+const TAB_KEYS = new Set(TABS.map(t => t.key));
+
 function Dashboard() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const isCoach = searchParams.get('role') === 'coach';
 
-  const [activeTab, setActiveTab] = useState<TabKey>('curriculum');
+  const tabParam = searchParams.get('tab');
+  const initialTab: TabKey = TAB_KEYS.has(tabParam as TabKey) ? (tabParam as TabKey) : 'curriculum';
+
+  const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
   const [tasks, setTasks] = useState<Task[]>(studentData.tasks as Task[]);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [jottings, setJottings] = useState<Jotting[]>([]);
@@ -99,6 +105,13 @@ function Dashboard() {
       setJottings(prev => prev.filter(j => j.id !== tempId));
     }
   }, []);
+
+  const handleTabChange = useCallback((tab: TabKey) => {
+    setActiveTab(tab);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', tab);
+    router.replace(`?${params.toString()}`);
+  }, [router, searchParams]);
 
   // Optimistic delete: remove immediately, revert if API fails
   const handleDeleteJotting = useCallback(async (id: string) => {
@@ -177,7 +190,7 @@ function Dashboard() {
               const Icon = tab.icon;
               const isActive = activeTab === tab.key;
               return (
-                <button key={tab.key} onClick={() => setActiveTab(tab.key)}
+                <button key={tab.key} onClick={() => handleTabChange(tab.key)}
                   className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-all duration-150 ${
                     isActive
                       ? 'border-brand-500 text-brand-600 dark:text-brand-400'
