@@ -411,6 +411,17 @@
       "category": "lesson-plan"
     },
     {
+      "id": "homework-s3",
+      "title": "Session 3 Homework",
+      "description": "CLAUDE.md refinement, write a skill, cold-start tests, team thinking",
+      "type": "html",
+      "filename": "session3_homework.html",
+      "tags": ["homework"],
+      "sessions": ["s3"],
+      "global": false,
+      "category": "homework"
+    },
+    {
       "id": "session1-notes",
       "title": "Session 1 — Call Notes & Transcript",
       "description": "Full meeting notes and transcript from the March 28 coaching session",

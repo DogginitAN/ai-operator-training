@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 3 Homework — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  .header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
+  .section-num.context  { background: var(--blue-dim);   color: var(--blue);   }
+  .section-num.skill    { background: var(--green-dim);  color: var(--green);  }
+  .section-num.test     { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.daily    { background: var(--accent-dim); color: var(--accent); }
+  .section-num.think    { background: var(--purple-dim); color: var(--purple); }
+  .section-num.ref      { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.help     { background: var(--red-dim);    color: var(--red);    }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .step { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.75rem 0; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .step-label.do     { color: var(--green); }
+  .step-label.type   { color: var(--blue); }
+  .step-label.expect { color: var(--purple); }
+  .step-label.note   { color: var(--accent); }
+  .step-label.test   { color: var(--cyan); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); display: inline; word-break: break-all; }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.35rem; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Homework: Make It Durable</h1>
+  <div class="sub">Session 3 follow-up — due before Session 4</div>
+</div>
+
+
+<!-- ─── 1: CLAUDE.MD ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num context">CONTEXT</span>
+    <span class="section-title">Refine Your CLAUDE.md</span>
+  </div>
+  <div class="section-body">
+    <p>We improved your Railway project's CLAUDE.md during the session. This assignment is about finishing the job — making it comprehensive enough that a fresh Claude session can be productive immediately.</p>
+
+    <div class="step">
+      <div class="step-label do">STEP 1 — REVIEW AND EXPAND</div>
+      Open your Railway project's CLAUDE.md. Read through what we wrote on the call. Add anything that's missing — architecture decisions, service connections, environment variables, deployment steps, data model, known limitations. Spend 15 minutes. It doesn't need to be perfect, it needs to be useful.
+    </div>
+
+    <div class="step">
+      <div class="step-label test">STEP 2 — RUN THE "FUTURE YOU" TEST</div>
+      Close any existing Claude Code sessions in this project. Open a completely fresh one:
+      <div class="code-block">cd [your-railway-project-folder]
+claude --dangerously-skip-permissions</div>
+      Then ask Claude — with no other context:
+      <div class="code-block">Describe this project. What does it do, what's the tech stack, and how is it deployed?</div>
+      Compare Claude's answer to reality. Every mistake or gap is something to add to the CLAUDE.md. Fix it, then run the test again until Claude gets it right.
+    </div>
+
+    <div class="step">
+      <div class="step-label note">WHY THIS MATTERS</div>
+      Every minute you spend on the CLAUDE.md saves you five minutes of re-explaining things in future sessions. It's the highest-leverage 15 minutes you can spend on a project. And it compounds — as the project grows, the CLAUDE.md keeps every new conversation starting from a higher baseline.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── 2: WRITE A SKILL ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num skill">SKILL</span>
+    <span class="section-title">Write a Second Skill</span>
+  </div>
+  <div class="section-body">
+    <p>We built one skill together on the call — your Railway deployment pattern. Now write a second one on your own. Pick any process you've done more than once.</p>
+
+    <div class="step">
+      <div class="step-label do">STEP 1 — PICK YOUR PROCESS</div>
+      Look for something repeatable in your week. Some ideas:
+      <ul>
+        <li>A provider outreach or follow-up workflow</li>
+        <li>How you set up a new Claude Desktop Project with HouseAccount context</li>
+        <li>A data analysis pattern you've used in Metabase or with Claude</li>
+        <li>A customer intake process — how a homeowner request becomes a provider brief</li>
+        <li>How you debug and iterate on a Claude Code build</li>
+      </ul>
+      It doesn't have to be technical. Any process that lives in your head and could be written down counts.
+    </div>
+
+    <div class="step">
+      <div class="step-label type">STEP 2 — WRITE IT AS A SKILL FILE</div>
+      Use the format from the session. Create a new markdown file — in your project folder, on your Desktop, wherever works. The template:
+      <div class="code-block"># Skill: [Name]
+
+## When to use
+[The trigger — when would you reach for this?]
+
+## Inputs needed
+- [What you need before starting]
+- [Credentials, project name, data files, etc]
+
+## Steps
+1. [First step — detailed enough for Claude to execute]
+2. [Second step]
+3. [...]
+
+## Expected output
+[What the result should look like when done]
+
+## Gotchas
+- [Common failure and how to handle it]
+- [Edge case to watch for]</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label test">STEP 3 — TEST IT</div>
+      Hand the skill to Claude — either paste it into a Chat conversation or into Claude Code. Ask Claude to execute it (or walk through it step by step). Does it make sense? Does Claude ask clarifying questions that reveal gaps in the instructions? If so, update the skill.
+    </div>
+
+    <div class="callout"><strong>The bar is low on purpose.</strong> A rough skill that exists is better than a perfect template that doesn't. Your first few skills will be imperfect. That's fine — they improve with use, just like everything else in this process.</div>
+  </div>
+</div>
+
+
+<!-- ─── 3: COLD-START ANOTHER PROJECT ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num test">TEST</span>
+    <span class="section-title">Cold-Start Test a Different Project</span>
+  </div>
+  <div class="section-body">
+    <p>You tested your Railway project on the call. Now try the same thing with a different project folder.</p>
+
+    <div class="step">
+      <div class="step-label do">PICK A PROJECT</div>
+      Your HouseAccount Builder folder, a side project, or any folder where you've used Claude Code before. Navigate to it in your terminal and launch a fresh session:
+      <div class="code-block">cd [project-folder]
+claude --dangerously-skip-permissions</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label test">RUN THE TEST</div>
+      Ask Claude:
+      <div class="code-block">What is this project? What's in here and how does it work?</div>
+      How well does it orient itself? If there's no CLAUDE.md, Claude is guessing from file names and code alone. Note what it gets right and what it misses — that's your gap list.
+    </div>
+
+    <div class="step">
+      <div class="step-label do">FIX THE GAPS</div>
+      If the project doesn't have a CLAUDE.md, create one. You can start with <code>/init</code> to generate a skeleton, then add the missing context manually. Or just tell Claude: "Based on what you see in this project, write a CLAUDE.md that would help a future session understand what this is and how it works." Review and refine the output.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── 4: THINK ABOUT YOUR TEAM ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num think">THINK</span>
+    <span class="section-title">Think About Your Team</span>
+  </div>
+  <div class="section-body">
+    <p>This one is just thinking — no building required. But it sets up Session 4.</p>
+
+    <p>If you were going to give a HouseAccount employee their own Claude setup — fully connected to your company's Drive, Mail, and Slack — what would they need to be productive on day one?</p>
+
+    <ul>
+      <li>What Project Instructions would their Claude Desktop need?</li>
+      <li>What CLAUDE.md files should exist in their project folders?</li>
+      <li>What skills would save them the most time?</li>
+      <li>What context about HouseAccount is in your head that should be written down?</li>
+    </ul>
+
+    <p>You don't need to build any of this yet. Just notice what comes to mind. Jot it down in the Jottings tab if you want — pin it to Session 4. We'll use this thinking when we map out the agent architecture.</p>
+  </div>
+</div>
+
+
+<!-- ─── 5: DAILY ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">DAILY</span>
+    <span class="section-title">This Week's Reps</span>
+  </div>
+  <div class="section-body">
+    <ul>
+      <li><strong>3 real tasks per day in Claude.</strong> Actual HouseAccount work — provider communications, data analysis, document review, prototype iteration.</li>
+      <li><strong>When you solve a problem, ask: "Would this be useful again?"</strong> If yes, spend 2 minutes writing it down — as a CLAUDE.md addition, a skill file, or even just a note in Jottings. The habit of capturing is more important than the format.</li>
+      <li><strong>Check <code>/status</code> in every Claude Code session.</strong> Context management should be automatic by now. If it's not, keep practicing.</li>
+      <li><strong>Keep iterating on your Railway prototype.</strong> Every improvement is a chance to practice the workflow — and every session where Claude already knows the project context (because the CLAUDE.md is good) is proof that the system works.</li>
+    </ul>
+
+    <div class="callout"><strong>The mindset shift this week:</strong> You've been building. Now start noticing what you build on top of — the context, the patterns, the decisions. The infrastructure underneath the prototype is what makes the next one faster. Feed it.</div>
+  </div>
+</div>
+
+
+<!-- ─── 6: REF ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num ref">REF</span>
+    <span class="section-title">Quick Reference</span>
+  </div>
+  <div class="section-body">
+    <p><strong>The Context Stack:</strong></p>
+    <ul>
+      <li><strong>Layer 1 — CLAUDE.md:</strong> Project memory. Auto-read on launch.</li>
+      <li><strong>Layer 2 — Project Instructions:</strong> Business context in Claude Desktop.</li>
+      <li><strong>Layer 3 — Session Handoffs:</strong> Bridge between conversations.</li>
+      <li><strong>Layer 4 — In-Conversation:</strong> What you paste or upload. Temporary.</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>The Three Cold-Start Tests:</strong></p>
+    <ul>
+      <li><strong>Future You:</strong> Fresh session, same folder. Can Claude orient itself?</li>
+      <li><strong>The Teammate:</strong> What would a new person need that isn't in the code?</li>
+      <li><strong>The Next Build:</strong> What's reusable? That's a skill.</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>Skill Template:</strong></p>
+    <div class="code-block"># Skill: [Name]
+
+## When to use
+## Inputs needed
+## Steps
+## Expected output
+## Gotchas</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Commands:</strong></p>
+    <ul>
+      <li><code>/status</code> — context window usage</li>
+      <li><code>/compact</code> — compress conversation</li>
+      <li><code>/init</code> — generate CLAUDE.md</li>
+      <li><code>claude --dangerously-skip-permissions</code> — auto-approve mode</li>
+      <li><code>claude --resume</code> — pick up last session</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ─── 7: HELP ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num help">HELP</span>
+    <span class="section-title">If Something Goes Wrong</span>
+  </div>
+  <div class="section-body">
+    <p><strong>"Claude doesn't understand my project even with a CLAUDE.md"</strong> — Check that the file is named exactly <code>CLAUDE.md</code> (case-sensitive) and is in the root of the project folder. Run <code>/init</code> if you're not sure — it will either create one or tell you one exists.</p>
+    <div class="divider"></div>
+    <p><strong>"I don't know what to put in the CLAUDE.md"</strong> — Start by telling Claude Code: "Look at this project and write a CLAUDE.md that describes what it is, the tech stack, how to run it, and how to deploy it." Review the output and add anything it missed — especially decisions and context that aren't obvious from the code.</p>
+    <div class="divider"></div>
+    <p><strong>"My skill doesn't work when I give it to Claude"</strong> — The steps are probably too vague. Claude needs specifics — exact commands, file names, configuration values. If Claude asks a clarifying question when running the skill, the answer to that question should be added to the skill.</p>
+    <div class="divider"></div>
+    <p><strong>"I'm not sure what counts as a skill"</strong> — If you've explained it to Claude more than once, it's a skill. If you've copy-pasted the same setup instructions into multiple conversations, it's a skill. If a new teammate would ask you "how do I do X?" — the answer is a skill.</p>
+    <div class="divider"></div>
+    <p><strong>Anything else breaks</strong> — Screenshot the error, paste it into Claude Chat, and say: "I'm trying to [what you were doing] and hit this. What should I do?" Or drop it in the Jottings tab and we'll troubleshoot at the start of Session 4.</p>
+  </div>
+</div>
+
+
+<div class="footer">
+  Session 3 Homework · AI Native Operator Training · Andrew Nolan · April 2026<br>
+  Next session: Session 4 — The HouseAccount Agent Map
+</div>
+
+</body>
+</html>
