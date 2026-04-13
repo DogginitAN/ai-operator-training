@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 3 — From Prototype to System</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .header { text-align: center; padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; }
+  .header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .header .meta { margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.85rem; color: var(--text-muted); }
+  .header .meta span { background: var(--surface); padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid var(--border); }
+  .arc-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.8rem; margin-bottom: 2rem; }
+  .arc-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.9rem; }
+  .arc-flow { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+  .arc-step { display: flex; align-items: center; gap: 0.4rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem 0.7rem; font-size: 0.85rem; font-weight: 500; }
+  .arc-step-num { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 3px; }
+  .arc-step-num.s1 { background: var(--blue-dim); color: var(--blue); }
+  .arc-step-num.s2 { background: var(--cyan-dim); color: var(--cyan); }
+  .arc-step-num.s3 { background: var(--green-dim); color: var(--green); }
+  .arc-step-num.s4 { background: var(--purple-dim); color: var(--purple); }
+  .arc-step-num.s5 { background: var(--accent-dim); color: var(--accent); }
+  .arc-arrow { color: var(--text-muted); font-size: 0.8rem; padding: 0 0.1rem; }
+  .overview { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem 2rem; margin-bottom: 2.5rem; }
+  .overview h2 { font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .overview p { font-size: 0.95rem; margin-bottom: 0.75rem; }
+  .overview p:last-child { margin-bottom: 0; }
+  .principle { padding: 0.9rem 0; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: flex-start; }
+  .principle:last-child { border-bottom: none; }
+  .principle-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); background: var(--accent-dim); padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; margin-top: 0.15rem; }
+  .principle-num.new { color: var(--green); background: var(--green-dim); }
+  .principle-text { font-size: 1.05rem; font-weight: 500; }
+  .principle-context { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .block-header { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .block-time { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; padding: 0.25rem 0.6rem; border-radius: 5px; flex-shrink: 0; font-weight: 500; }
+  .block-time.setup { background: var(--blue-dim); color: var(--blue); }
+  .block-time.demo { background: var(--cyan-dim); color: var(--cyan); }
+  .block-time.mental { background: var(--purple-dim); color: var(--purple); }
+  .block-time.exercise { background: var(--green-dim); color: var(--green); }
+  .block-time.wrap { background: var(--accent-dim); color: var(--accent); }
+  .block-time.ref { background: var(--cyan-dim); color: var(--cyan); }
+  .block-title { font-size: 1.15rem; font-weight: 600; }
+  .block-body { padding: 1.2rem 1.5rem; }
+  .block-body p { margin-bottom: 0.75rem; font-size: 0.95rem; }
+  .block-body p:last-child { margin-bottom: 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .concept { background: var(--purple-dim); border-left: 3px solid var(--purple); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .concept::before { content: "KEY CONCEPT:"; display: block; font-size: 0.7rem; font-weight: 600; color: var(--purple); letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  .exercise { background: var(--green-dim); border-left: 3px solid var(--green); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .exercise::before { content: "EXERCISE:"; display: block; font-size: 0.7rem; font-weight: 600; color: var(--green); letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  .prep { background: var(--blue-dim); border-left: 3px solid var(--blue); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .prep::before { content: "COME PREPARED:"; display: block; font-size: 0.7rem; font-weight: 600; color: var(--blue); letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  .divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+  ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.4rem; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--surface-2); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--border); }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 2rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Session 3: From Prototype to System</h1>
+  <div class="sub">Reproducibility, context infrastructure, and building your first skill</div>
+  <div class="meta">
+    <span>Wednesday TBD</span>
+    <span>~75 minutes</span>
+    <span>Session 3 of ongoing</span>
+  </div>
+</div>
+
+<div class="arc-banner">
+  <div class="arc-label">Session Arc</div>
+  <div class="arc-flow">
+    <div class="arc-step"><span class="arc-step-num s1">s1</span> Show &amp; Tell</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s2">s2</span> Context Audit</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s3">s3</span> Cold-Start Tests</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s4">s4</span> Build a Skill</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s5">s5</span> Homework + Next</div>
+  </div>
+</div>
+
+<!-- ─── OVERVIEW ─── -->
+<div class="overview">
+  <h2>What This Session Is About</h2>
+  <p>You built a production prototype. It works. Real users are on it. That's a significant milestone — and it shows the build reflex from Session 2 is working.</p>
+  <p>This session asks the harder question: <strong>is what you built durable?</strong> If you need to add a major feature in three weeks, how much setup will you have to redo? If a teammate needs to extend it, can they? If you want to build a second prototype with the same architecture, how much of the process would you have to figure out again?</p>
+  <p>We'll start by reviewing your prototype together, then stress-test its context infrastructure, and finish by packaging what you learned into a reusable <strong>skill</strong> — a set of instructions that Claude can execute on demand, so the next build goes faster.</p>
+
+  <div class="divider"></div>
+
+  <h2>New Principles</h2>
+  <div class="principle">
+    <span class="principle-num new">NEW</span>
+    <div>
+      <div class="principle-text">"If you did it once, write it down. If you wrote it down, make it a skill. If it's a skill, anyone can run it."</div>
+      <div class="principle-context">The reproducibility ladder. Knowledge that stays in your head evaporates. Knowledge in a file compounds.</div>
+    </div>
+  </div>
+  <div class="principle">
+    <span class="principle-num new">NEW</span>
+    <div>
+      <div class="principle-text">"The best test of your context infrastructure: can a fresh Claude session pick up your project cold and be productive in 60 seconds?"</div>
+      <div class="principle-context">We'll run this test live during the session. Every failure is a gap to fix.</div>
+    </div>
+  </div>
+  <div class="principle">
+    <span class="principle-num">03</span>
+    <div>
+      <div class="principle-text">"Context is everything. A model with no context is smart but useless. A model with your business context is a teammate."</div>
+      <div class="principle-context">Introduced in Session 1 — today it becomes structural. We'll build the context layers that make every future session start smarter.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PREP ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time setup">BEFORE</span>
+    <span class="block-title">Come Prepared</span>
+  </div>
+  <div class="block-body">
+    <div class="prep">Be ready to share your screen and walk through your Railway prototype — both the app itself and the project folder. We'll be opening it in Claude Code during the session, so make sure you can navigate to the project directory in your terminal.</div>
+    <p>Think about these questions ahead of time:</p>
+    <ul>
+      <li>How did you structure your build process? Did you plan in Chat first, or go straight to Code?</li>
+      <li>How many Claude sessions did it take? Did you use any session handoffs?</li>
+      <li>Does the project have a CLAUDE.md file? If so, what's in it?</li>
+      <li>If you had to rebuild this from scratch tomorrow, what would be hardest to remember?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─── BLOCK 1 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time setup">0–15 min</span>
+    <span class="block-title">Show &amp; Tell</span>
+  </div>
+  <div class="block-body">
+    <p>We'll start with a walkthrough of your prototype — the app from the user's perspective, then the architecture and build process behind it.</p>
+    <p>Topics we'll cover:</p>
+    <ul>
+      <li>What does the prototype do? Live demo.</li>
+      <li>The tech stack — Metabase, Google OAuth, Anthropic API, Railway — and how they connect.</li>
+      <li>Your build process: what tools and workflows you used, and how Session 2 skills (context management, handoffs, CLAUDE.md) played a role.</li>
+      <li>What was harder than expected? What would you do differently next time?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─── BLOCK 2 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time demo">15–30 min</span>
+    <span class="block-title">The Context Audit</span>
+  </div>
+  <div class="block-body">
+    <p>We'll open the project together and evaluate its <strong>context infrastructure</strong> — the layers of information that help Claude (and future-you) understand what this project is and how it works.</p>
+
+    <div class="concept">There are four layers of context, from most persistent to most temporary. The higher the layer, the less you repeat yourself.<br><br>
+    <strong>Layer 1 — CLAUDE.md</strong> (project memory): Lives in the project folder. Claude reads it automatically on launch. Contains what this project is, how it works, architecture decisions, key patterns.<br><br>
+    <strong>Layer 2 — Project Instructions</strong> (Claude Desktop): Persistent instructions inside a Claude Desktop Project. Contains business context — who you are, what the company does, terminology, preferences.<br><br>
+    <strong>Layer 3 — Session Handoffs</strong> (between conversations): The bridge when a conversation fills up. Contains what was discussed, decided, built, and what's still open.<br><br>
+    <strong>Layer 4 — In-Conversation Context</strong> (temporary): What you paste, upload, or discuss in a single chat. Dies when the conversation ends.<br><br>
+    Most people only use Layer 4. AI-native operators build all four.</div>
+
+    <p>We'll check each layer against your Railway project:</p>
+    <ul>
+      <li>Does a CLAUDE.md exist? Is it comprehensive or a bare skeleton?</li>
+      <li>Do you have a Claude Desktop Project for this build? What's in the instructions?</li>
+      <li>Are key decisions documented — why Railway? Why Metabase? Why this OAuth setup?</li>
+      <li>If a fresh Claude session opened this folder, what would it already know vs. what would it miss?</li>
+    </ul>
+
+    <div class="exercise">We'll improve the CLAUDE.md together in real-time — you describe the project, we'll structure it together. This typically takes 5–10 minutes and has an outsized impact on every future session.</div>
+  </div>
+</div>
+
+<!-- ─── BLOCK 3 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time exercise">30–50 min</span>
+    <span class="block-title">Cold-Start Tests</span>
+  </div>
+  <div class="block-body">
+    <p>Three tests that make reproducibility concrete. Each simulates a real situation and reveals specific gaps to fix.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>Test 1: "Future You"</strong></p>
+    <p>Exit your current Claude Code session. Launch a completely fresh one in the same project folder — no preamble, no setup. Ask Claude to describe the project and add a small feature.</p>
+    <p>If the CLAUDE.md is solid, Claude orients itself immediately. If not, we see exactly where the gaps are and fix them on the spot. This simulates coming back to a project after a few weeks away.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>Test 2: "The Teammate"</strong></p>
+    <p>If you hired someone tomorrow and said "extend this prototype" — what would they need to know that isn't obvious from the code?</p>
+    <ul>
+      <li>How to run the project locally</li>
+      <li>How to deploy (the Railway process)</li>
+      <li>Where credentials and environment variables live</li>
+      <li>What the data model looks like</li>
+      <li>What's intentional architecture vs. a quick fix that should be cleaned up</li>
+    </ul>
+    <p>Answering this question IS the documentation process. We'll capture the answers directly in the CLAUDE.md or a README.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>Test 3: "The Next Build"</strong></p>
+    <p>You connected OAuth, Metabase, and the Anthropic API to a Railway deployment. If you needed to spin up a second prototype with the same stack but different functionality — how much of that setup process would you have to figure out again?</p>
+    <p>Whatever is reusable gets extracted into a <strong>skill</strong> in the next block.</p>
+
+    <div class="callout"><strong>The pattern:</strong> every test failure is a gap in context infrastructure. Every gap we fix makes the project more robust — and it's not extra work, it's capturing work that already happened.</div>
+  </div>
+</div>
+
+<!-- ─── BLOCK 4 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time mental">50–65 min</span>
+    <span class="block-title">Build a Skill</span>
+  </div>
+  <div class="block-body">
+    <p>A <strong>skill</strong> is a set of instructions — written in plain language — that tells Claude how to do something repeatable. Think of it as a recipe. Once written, you or anyone on your team can hand it to Claude and get a consistent result every time.</p>
+    <p>Skills are the natural output of the reproducibility mindset: once you've identified something reusable, you package it so it never has to be figured out again.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>Skill format:</strong></p>
+    <div class="code-block"># Skill: [Name]
+
+## When to use
+[The trigger — when would you reach for this?]
+
+## Inputs needed
+- [What you need before starting]
+- [Credentials, project name, data files, etc]
+
+## Steps
+1. [First step — detailed enough for Claude to execute]
+2. [Second step]
+3. [...]
+
+## Expected output
+[What the result should look like when done]
+
+## Gotchas
+- [Common failure and how to handle it]
+- [Edge case to watch for]</div>
+
+    <div class="exercise">We'll build one together from your Railway prototype process. You walk through what you did from zero to deployed, step by step, and we'll format it as a skill document — a single markdown file that someone could hand to Claude Code and say "set up a new prototype using this pattern."</div>
+
+    <p><strong>Where skills can live:</strong></p>
+    <ul>
+      <li><strong>In a project folder:</strong> Save skill files in a <code>/skills</code> or <code>/docs</code> directory. Reference them from CLAUDE.md so Claude knows they're available.</li>
+      <li><strong>In Project Instructions:</strong> For smaller skills, paste them directly into Claude Desktop Project instructions — always in context.</li>
+      <li><strong>As standalone files:</strong> Save in a shared Drive folder or a dedicated skills directory. Copy-paste into conversations when needed.</li>
+    </ul>
+    <p>There's no single right answer for where to store them yet. The important thing is that the skill exists as a file, not as a memory.</p>
+  </div>
+</div>
+
+<!-- ─── BLOCK 5 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time wrap">65–75 min</span>
+    <span class="block-title">Homework &amp; What's Next</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Homework (due before Session 4):</strong></p>
+    <ul>
+      <li><strong>Refine the CLAUDE.md</strong> on your Railway project based on what we improved in the session. Spend 15 minutes making it comprehensive, then run the "Future You" test again — fresh Claude Code session, ask it to describe the project. If it gets anything wrong, fix the CLAUDE.md.</li>
+      <li><strong>Write a second skill.</strong> Pick any process you've done more than once — a HouseAccount workflow, a coding pattern, a deployment step, a provider communication template. Write it using the skill format from this session.</li>
+      <li><strong>Cold-start test a different project.</strong> Open your HouseAccount Builder folder (or any other project folder) in a fresh Claude Code session. How well does Claude orient itself? What's missing?</li>
+      <li><strong>Continue daily reps.</strong> 3 real tasks per day in Claude.</li>
+      <li><strong>Think about your team.</strong> If you were going to give an employee access to Claude with full HouseAccount context, what would they need? What Project Instructions, what CLAUDE.md, what skills? Don't build it yet — just think about it.</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>Looking Ahead — Session 4: The HouseAccount Agent Map</strong></p>
+    <p>Next session we step back from building and look at HouseAccount from above. You've now built tools, connected services, and shipped a production prototype. Session 4 is about the agent map — which parts of HouseAccount should be AI-automated, which should stay human, and how they connect. We'll revisit the four agents scoped early on (Provider Sales, Customer Intake, Pricing Estimate, Concierge) with fresh eyes and figure out the right build order.</p>
+  </div>
+</div>
+
+<!-- ─── REFERENCE ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time ref">REF</span>
+    <span class="block-title">Quick Reference</span>
+  </div>
+  <div class="block-body">
+    <p><strong>The Context Stack (most persistent → most temporary):</strong></p>
+    <ul>
+      <li><strong>Layer 1 — CLAUDE.md:</strong> Project memory. Auto-read on launch. What this project is, how it works, key decisions.</li>
+      <li><strong>Layer 2 — Project Instructions:</strong> Business context in Claude Desktop. Who you are, what the company does, terminology.</li>
+      <li><strong>Layer 3 — Session Handoffs:</strong> Bridge between conversations. What was discussed, decided, built, what's open.</li>
+      <li><strong>Layer 4 — In-Conversation:</strong> What you paste or upload in a single chat. Temporary.</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>The Three Cold-Start Tests:</strong></p>
+    <ul>
+      <li><strong>Future You:</strong> Fresh Claude Code session, same folder. Can Claude describe the project and be productive without preamble?</li>
+      <li><strong>The Teammate:</strong> What would a new person need to know that isn't in the code? That's the documentation gap.</li>
+      <li><strong>The Next Build:</strong> What parts of this process are reusable? That's the skill.</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>Skill File Template:</strong></p>
+    <div class="code-block"># Skill: [Name]
+
+## When to use
+[The trigger — when would you reach for this?]
+
+## Inputs needed
+- [What you need before starting]
+
+## Steps
+1. [First step]
+2. [Second step]
+3. [...]
+
+## Expected output
+[What the result should look like]
+
+## Gotchas
+- [Common failure and fix]</div>
+
+    <div class="divider"></div>
+
+    <p><strong>Relevant Commands (from Session 2):</strong></p>
+    <ul>
+      <li><code>/status</code> — context window usage</li>
+      <li><code>/compact</code> — compress conversation</li>
+      <li><code>/init</code> — generate CLAUDE.md</li>
+      <li><code>claude --dangerously-skip-permissions</code> — auto-approve mode</li>
+      <li><code>claude --resume</code> — pick up last session</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  Session 3 · AI Native Operator Training · Andrew Nolan · April 2026
+</div>
+
+</body>
+</html>

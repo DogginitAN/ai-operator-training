@@ -38,10 +38,10 @@
       "id": "s3",
       "number": 3,
       "title": "Context as Infrastructure",
-      "subtitle": "CLAUDE.md deep dive, project architecture, session handoffs, batch mindset",
+      "subtitle": "Reproducibility, context infrastructure, and building your first skill",
       "date": null,
-      "status": "locked",
-      "duration": null,
+      "status": "upcoming",
+      "duration": "75 min",
       "notes": "",
       "keyTakeaways": []
     },
@@ -398,6 +398,17 @@
       "sessions": ["s2"],
       "global": false,
       "category": "homework"
+    },
+    {
+      "id": "lesson-plan-s3",
+      "title": "Session 3 Lesson Plan",
+      "description": "Reproducibility, context audit, cold-start tests, and building skills",
+      "type": "html",
+      "filename": "session3_lesson_plan.html",
+      "tags": ["lesson-plan"],
+      "sessions": ["s3"],
+      "global": false,
+      "category": "lesson-plan"
     },
     {
       "id": "session1-notes",
