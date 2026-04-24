@@ -34,13 +34,12 @@
   .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
   .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
   .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
-  .section-num.fetch   { background: var(--blue-dim);   color: var(--blue);   }
-  .section-num.compete  { background: var(--cyan-dim);   color: var(--cyan);   }
-  .section-num.skill    { background: var(--green-dim);  color: var(--green);  }
-  .section-num.explore  { background: var(--purple-dim); color: var(--purple); }
-  .section-num.daily    { background: var(--accent-dim); color: var(--accent); }
-  .section-num.ref      { background: var(--cyan-dim);   color: var(--cyan);   }
-  .section-num.help     { background: var(--red-dim);    color: var(--red);    }
+  .section-num.run     { background: var(--blue-dim);   color: var(--blue);   }
+  .section-num.improve { background: var(--green-dim);  color: var(--green);  }
+  .section-num.stretch { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.feed    { background: var(--purple-dim); color: var(--purple); }
+  .section-num.daily   { background: var(--accent-dim); color: var(--accent); }
+  .section-num.help    { background: var(--red-dim);    color: var(--red);    }
   .section-title { font-size: 1.1rem; font-weight: 600; }
   .section-body { padding: 1.2rem 1.5rem; }
   .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
@@ -65,151 +64,128 @@
 <body>
 
 <div class="header">
-  <h1>Homework: Go Get What You Need</h1>
+  <h1>Homework: Point It at Everything</h1>
   <div class="sub">Session 4 follow-up — due before Session 5</div>
 </div>
 
 </body>
 </html>
-<!-- ─── 1: PROCESS 3 SOURCES ─── -->
+<!-- ─── 1: RUN TWO MORE TOPICS ─── -->
 <div class="section">
   <div class="section-header">
-    <span class="section-num fetch">FETCH</span>
-    <span class="section-title">Process 3 External Sources</span>
+    <span class="section-num run">RUN</span>
+    <span class="section-title">Run the Engine on 2 More Topics</span>
   </div>
   <div class="section-body">
-    <p>Find three things relevant to HouseAccount that you'd normally skim and forget. Articles, podcasts, competitor sites, industry reports — anything from outside your own data.</p>
+    <p>We built the research engine together on the call and ran it on one topic. Now put it to work on two more real questions for HouseAccount.</p>
 
     <div class="step">
-      <div class="step-label do">STEP 1 — PICK YOUR SOURCES</div>
-      They don't all need to be the same type. Try a mix — maybe one article, one competitor website, one podcast transcript or YouTube video. The only rule: it should be something that could inform a decision you're making at HouseAccount.
-    </div>
-
-    <div class="step">
-      <div class="step-label type">STEP 2 — FEED AND EXTRACT</div>
-      For each source, use the prompting pattern from the session:
-      <div class="code-block">Here's [source — paste URL, upload PDF, or paste transcript].
-
-I run HouseAccount — a home services marketplace connecting homeowners with providers. We handle job intake, provider matching, pricing, and fulfillment monitoring.
-
-Extract:
-1. Key insights relevant to our business
-2. Anything about pricing, provider management, or fulfillment
-3. Ideas I should test or investigate
-
-Format as a brief I can reference later.</div>
-    </div>
-
-    <div class="step">
-      <div class="step-label do">STEP 3 — SAVE THE OUTPUT</div>
-      Don't let the briefs disappear into chat history. Save each one somewhere persistent — a markdown file in your project folder, a Google Doc, even a Jotting pinned to Session 4. The point is that you can find it again in two weeks.
-    </div>
-
-    <div class="callout"><strong>Starter sources if you're stuck:</strong> Google "home services marketplace trends 2026", search YouTube for marketplace founder interviews, look at how Thumbtack or Angi describe their provider matching, or find a franchise disclosure document for a handyman franchise (they're public filings — full of operational data).</div>
-  </div>
-</div>
-
-
-<!-- ─── 2: COMPETITIVE BRIEF ─── -->
-<div class="section">
-  <div class="section-header">
-    <span class="section-num compete">COMPETE</span>
-    <span class="section-title">Build a Competitive Brief</span>
-  </div>
-  <div class="section-body">
-    <p>Pick 2–3 companies in or adjacent to home services. Analyze each one through Claude and compile the results into a single document you can reference.</p>
-
-    <div class="step">
-      <div class="step-label do">PICK YOUR TARGETS</div>
-      Direct competitors, companies you admire, or adjacent plays in home services. Could be Thumbtack, Angi, Taskrabbit, a local handyman franchise, or a vertical SaaS serving contractors. You're looking for companies where their approach to any part of the value chain — intake, matching, pricing, fulfillment — could teach you something.
-    </div>
-
-    <div class="step">
-      <div class="step-label type">ANALYZE EACH ONE</div>
-      For each company, feed Claude their website (homepage, pricing page, "how it works" page) and ask for structured extraction:
-      <div class="code-block">Analyze [company website URL] as a competitor to HouseAccount.
-
-Extract:
-- Their positioning (who they serve, how they describe themselves)
-- Service categories and geographic coverage
-- Pricing model (how do they charge? flat fee, percentage, subscription?)
-- Provider acquisition (how do they recruit providers?)
-- Any notable tech or AI features
-- What they do better than us / what we do better</div>
-    </div>
-
-    <div class="step">
-      <div class="step-label expect">COMPILE INTO ONE DOCUMENT</div>
-      Ask Claude to take the individual analyses and merge them into a single competitive landscape brief. Side-by-side comparison. This should be something you could show an investor, an advisor, or a teammate to explain where HouseAccount sits in the market.
-    </div>
-  </div>
-</div>
-
-
-<!-- ─── 3: RESEARCH SKILL ─── -->
-<div class="section">
-  <div class="section-header">
-    <span class="section-num skill">SKILL</span>
-    <span class="section-title">Write a Research Skill</span>
-  </div>
-  <div class="section-body">
-    <p>Take the fetch-and-synthesize pattern you practiced and turn it into a reusable skill file. Same format as Session 3.</p>
-
-    <div class="step">
-      <div class="step-label do">WRITE THE SKILL</div>
-      <div class="code-block"># Skill: [Name — e.g., "Competitor Analysis" or "Article Intelligence Brief"]
-
-## When to use
-[When would you reach for this? What triggers it?]
-
-## Inputs needed
-- [URL, PDF, transcript, etc]
-- [Business context if not already in project instructions]
-
-## Steps
-1. [How to feed the source to Claude]
-2. [What to ask for — the extraction prompt]
-3. [How to structure the output]
-4. [Where to save it]
-
-## Expected output
-[What the result should look like]
-
-## Gotchas
-- [What goes wrong? Paywalled articles? Transcripts too long?]</div>
-    </div>
-
-    <div class="step">
-      <div class="step-label test">TEST IT</div>
-      Open a fresh Chat conversation. Paste the skill in. Give it a URL or source you haven't processed yet. Does it produce a useful result without you having to explain anything extra? If Claude asks questions, those gaps go back into the skill.
-    </div>
-  </div>
-</div>
-
-
-<!-- ─── 4: SURPRISE YOURSELF ─── -->
-<div class="section">
-  <div class="section-header">
-    <span class="section-num explore">EXPLORE</span>
-    <span class="section-title">Find Something That Surprises You</span>
-  </div>
-  <div class="section-body">
-    <p>This one's intentionally open-ended. Feed Claude a source you wouldn't normally read — something outside your usual information diet.</p>
-
-    <div class="step">
-      <div class="step-label do">IDEAS</div>
+      <div class="step-label do">STEP 1 — WRITE THE TOPIC FILES</div>
+      Create two new .md files in your <code>topics/</code> directory. Each one should frame a research question that matters to your business right now. Some ideas:
       <ul>
-        <li>A franchise disclosure document (FDD) for a handyman franchise — these are public filings and contain detailed operational and financial data</li>
-        <li>An academic paper on marketplace economics or two-sided platforms</li>
-        <li>A city building department's annual report on home renovation permits in one of your markets</li>
-        <li>A subreddit thread where homeowners complain about hiring contractors</li>
-        <li>A provider's perspective — find a contractor blog or forum where they talk about what platforms they like and hate</li>
+        <li>Pricing intelligence — what are competitors charging for common handyman services in your active markets?</li>
+        <li>Provider retention — how do other home services platforms keep their best providers from leaving?</li>
+        <li>Fulfillment optimization — what do marketplace operators say about reducing time-to-match?</li>
+        <li>Market expansion — which adjacent service categories are growing fastest?</li>
+        <li>Customer acquisition — how do home services marketplaces acquire homeowners cost-effectively?</li>
+      </ul>
+      Pick whatever's most useful to you. The topic file should include: the specific question, why it matters to HouseAccount, what you already know, and any starting sources if you have them.
+    </div>
+
+    <div class="step">
+      <div class="step-label type">STEP 2 — RUN EACH ONE</div>
+      Open Claude Code in your research engine directory. For each topic:
+      <div class="code-block">Research the topic in topics/[your-topic].md. Follow the methodology, extract using the schema, and produce a synthesis report in output/.</div>
+      Save the output. Read it. Is it useful? Would you make a decision based on it?
+    </div>
+
+    <div class="step">
+      <div class="step-label note">WHAT TO NOTICE</div>
+      Pay attention to what the engine does well and where it falls short. Are the sources relevant? Is the extraction schema capturing the right things? Is the synthesis at the right level of detail? Every observation is a potential improvement to the .md files.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── 2: IMPROVE THE SYSTEM ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num improve">IMPROVE</span>
+    <span class="section-title">Improve the System</span>
+  </div>
+  <div class="section-body">
+    <p>After running the engine a few times, you'll notice patterns in what works and what doesn't. This is the iteration step — but you're iterating on the <strong>system</strong>, not individual outputs.</p>
+
+    <div class="step">
+      <div class="step-label do">UPDATE THE .MD FILES</div>
+      Based on your runs, improve at least one of these:
+      <ul>
+        <li><strong>methodology.md</strong> — Are the right sources being prioritized? Should you add or remove source categories? Is the depth right?</li>
+        <li><strong>extraction.md</strong> — Are there fields you want that aren't being captured? Fields that are always empty or useless? Adjust the schema.</li>
+        <li><strong>synthesis.md</strong> — Is the report format useful? Too long? Too shallow? Missing a section you want?</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <div class="step-label test">RE-RUN AND COMPARE</div>
+      After updating, re-run one of your topics and compare the new output to the original. Is it better? The .md files should be noticeably improved by the end of the week compared to what we built on the call.
+    </div>
+
+    <div class="callout"><strong>This is the real skill.</strong> Anyone can ask Claude to research something. The operator advantage is building a system that gets better every time you use it. The .md files are your intellectual property — they encode your judgment about what matters and how to find it.</div>
+  </div>
+</div>
+
+
+<!-- ─── 3: TRY SOMETHING NON-HOUSEACCOUNT ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num stretch">STRETCH</span>
+    <span class="section-title">Point It at Something Else</span>
+  </div>
+  <div class="section-body">
+    <p>The engine should work on any topic, not just home services. Test that assumption.</p>
+
+    <div class="step">
+      <div class="step-label do">PICK A DIFFERENT DOMAIN</div>
+      Write a topic file for something unrelated to HouseAccount:
+      <ul>
+        <li>An investment thesis you're curious about</li>
+        <li>A technology trend (AI in field services, voice-first interfaces, etc)</li>
+        <li>A personal interest — a city you want to move to, a hobby, a health question</li>
+        <li>A business idea you've been kicking around</li>
       </ul>
     </div>
 
     <div class="step">
       <div class="step-label expect">WHAT TO LOOK FOR</div>
-      You're not looking for anything specific. You're practicing the reflex of feeding something unfamiliar to Claude and asking: "what's in here that I wouldn't have noticed on my own?" The best insights often come from sources your competitors aren't reading.
+      Does the engine produce something useful outside its original domain? If not, what broke? The methodology might be too HouseAccount-specific. The extraction schema might have fields that don't apply. This is how you learn which parts of the system are truly general-purpose and which need adapting per domain.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── 4: FEED IT A THOUGHT LEADER ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num feed">FEED</span>
+    <span class="section-title">Process a Thought Leader</span>
+  </div>
+  <div class="section-body">
+    <p>Find a podcast episode, a YouTube video, or a long blog post from someone whose thinking you respect. Instead of consuming it passively, run it through your engine.</p>
+
+    <div class="step">
+      <div class="step-label do">FIND THE SOURCE</div>
+      Could be a marketplace founder, a home services industry analyst, a tech leader talking about AI in operations, or anyone else whose ideas you'd want to capture. Get the transcript (YouTube auto-generates them; podcast apps often have them; or just paste the URL and let Claude fetch it).
+    </div>
+
+    <div class="step">
+      <div class="step-label type">RUN IT THROUGH THE ENGINE</div>
+      Write a topic file that frames the question: "What operational ideas from [person/episode] apply to HouseAccount?" Point the engine at the transcript. See what comes back — structured insights vs. what you would have absorbed from a casual listen.
+    </div>
+
+    <div class="step">
+      <div class="step-label note">THE POINT</div>
+      Most people listen to a podcast and retain maybe 10% of it. Running it through the engine captures the full signal — and formats it in a way you can reference later, share with your team, or feed into another research run. This is the difference between consuming information and building intelligence.
     </div>
   </div>
 </div>
@@ -223,13 +199,13 @@ Extract:
   </div>
   <div class="section-body">
     <ul>
-      <li><strong>3 real tasks per day in Claude.</strong> Keep building on the prototype, the provider health dashboard, or whatever's next. The build reflex stays sharp through use.</li>
-      <li><strong>When you read something interesting, feed it to Claude.</strong> Article in your inbox? Industry newsletter? Competitor announcement? Don't just read it — process it. Even a quick "summarize this and tell me what applies to HouseAccount" counts.</li>
-      <li><strong>Try the screenshot-paste-into-Code pattern.</strong> Next time you hit a bug and you know where it is, paste the error directly into Claude Code instead of going through Chat first. See the difference in speed.</li>
-      <li><strong>Try Plan mode in Claude Code.</strong> Shift+Tab twice. Let Code think through a problem before executing. Good middle ground between your current flow and letting Code run free.</li>
+      <li><strong>3 real tasks per day in Claude.</strong> Keep building on the prototype and the provider health dashboard. The build reflex stays sharp through use.</li>
+      <li><strong>Route interesting content through Claude.</strong> Article in your inbox? Industry newsletter? Competitor announcement? Don't just read it — process it. Even a quick extraction in Chat counts as a rep.</li>
+      <li><strong>Try the screenshot-paste-into-Code pattern.</strong> Next time you hit a bug and you know where it is, paste the error directly into Claude Code instead of going through Chat first. One turn instead of two.</li>
+      <li><strong>Try Plan mode in Claude Code.</strong> Shift+Tab twice. Let Code think through a problem before executing. Good middle ground for when you want to think before building.</li>
     </ul>
 
-    <div class="callout"><strong>The shift this week:</strong> You've been consuming information the same way for years — skim, absorb what sticks, forget the rest. Start routing everything through Claude first. Not because you can't read — because Claude catches what you miss and structures what you'd forget.</div>
+    <div class="callout"><strong>The shift this week:</strong> You've built tools that work with your internal data. Now you have a tool that works with the entire internet. Every interesting thing you encounter is potential input. Start treating information like raw material — something to process, not just consume.</div>
   </div>
 </div>
 
@@ -241,15 +217,17 @@ Extract:
     <span class="section-title">If Something Goes Wrong</span>
   </div>
   <div class="section-body">
-    <p><strong>"Claude can't access the URL I pasted"</strong> — Some sites block automated access. Try copy-pasting the article text directly instead. For PDFs, download and upload the file. For YouTube videos, search for the transcript and paste that.</p>
+    <p><strong>"Claude Code isn't following the .md files"</strong> — Make sure the CLAUDE.md is in the root of the research engine directory and explicitly references the other files. Claude Code reads CLAUDE.md on launch — if it doesn't know about methodology.md, it won't use it.</p>
     <div class="divider"></div>
-    <p><strong>"The output is too generic / not useful"</strong> — Your business context isn't specific enough in the prompt. Add more detail about HouseAccount — your markets, your pricing model, your current challenges. The more specific your context, the more specific Claude's extraction.</p>
+    <p><strong>"The research output is too shallow"</strong> — Your methodology is probably too broad. Narrow the scope: fewer sources, more depth per source. Or add a line to methodology.md saying "for each source, extract at least 5 specific data points" to push for depth over breadth.</p>
     <div class="divider"></div>
-    <p><strong>"I don't know what sources to look for"</strong> — Start with what you already consume. Industry newsletters, LinkedIn posts from people in home services, articles that cross your feed. The reflex isn't about finding new sources — it's about processing the ones you already see differently.</p>
+    <p><strong>"Claude can't access a URL"</strong> — Some sites block automated access. Download the content manually (save as PDF, copy the text, grab the transcript) and put it in the research directory. Point Claude at the local file instead.</p>
     <div class="divider"></div>
-    <p><strong>"The competitive brief feels shallow"</strong> — Feed Claude more pages from each competitor. Homepage alone gives you positioning. Add the pricing page, the provider signup page, their blog, their job postings (those reveal what they're investing in). More input = richer analysis.</p>
+    <p><strong>"The engine works for home services but not other topics"</strong> — Your extraction schema is probably too domain-specific. Create a more general version of extraction.md, or create domain-specific extraction files (extraction-home-services.md, extraction-investing.md) and have the topic file specify which one to use.</p>
     <div class="divider"></div>
-    <p><strong>Anything else breaks</strong> — Drop it in Jottings or bring it to the next session. That's what we're here for.</p>
+    <p><strong>"I don't know what to research"</strong> — Start with the decisions you're making right now at HouseAccount. Every decision has an information gap. "Should we expand to HVAC services?" → research HVAC marketplace demand. "Are we pricing competitively?" → research competitor pricing. The question is the topic file.</p>
+    <div class="divider"></div>
+    <p><strong>Anything else</strong> — Drop it in Jottings or bring it to the next session.</p>
   </div>
 </div>
 

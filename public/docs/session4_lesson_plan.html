@@ -87,7 +87,7 @@
 
 <div class="header">
   <h1>Session 4: The Research Reflex</h1>
-  <div class="sub">Using Claude to go out into the world, pull in intelligence, and turn it into something useful</div>
+  <div class="sub">Building a reusable research engine you can point at anything</div>
   <div class="meta">
     <span>TBD</span>
     <span>~75 minutes</span>
@@ -100,11 +100,11 @@
   <div class="arc-flow">
     <div class="arc-step"><span class="arc-step-num s1">s1</span> The Shift</div>
     <span class="arc-arrow">→</span>
-    <div class="arc-step"><span class="arc-step-num s2">s2</span> The Fetch</div>
+    <div class="arc-step"><span class="arc-step-num s2">s2</span> The Architecture</div>
     <span class="arc-arrow">→</span>
-    <div class="arc-step"><span class="arc-step-num s3">s3</span> The Synthesis</div>
+    <div class="arc-step"><span class="arc-step-num s3">s3</span> Build It</div>
     <span class="arc-arrow">→</span>
-    <div class="arc-step"><span class="arc-step-num s4">s4</span> Build a Pipeline</div>
+    <div class="arc-step"><span class="arc-step-num s4">s4</span> Run It</div>
     <span class="arc-arrow">→</span>
     <div class="arc-step"><span class="arc-step-num s5">s5</span> Homework + Next</div>
   </div>
@@ -116,8 +116,8 @@
 <div class="overview">
   <h2>What This Session Is About</h2>
   <p>Everything you've built so far has been <strong>inward-facing</strong> — your data, your providers, your rate book. Claude has been a builder. That's powerful, but it's half the picture.</p>
-  <p>This session introduces the other half: using Claude to go <strong>outward</strong>. Fetch articles, rip transcripts, scrape competitor sites, pull industry reports — and turn raw external information into structured intelligence you can act on.</p>
-  <p>The skill we're building is the reflex itself. When you encounter something interesting — a podcast, a competitor's pricing page, an industry report, a thought leader's blog post — your first instinct should be: <strong>feed it to Claude and ask "what can I do with this?"</strong></p>
+  <p>This session introduces the other half: using Claude to go <strong>outward</strong>. But we're not just going to Google some articles and ask for summaries. We're going to build a <strong>research engine</strong> — a directory of markdown files that turns Claude Code into a reusable tool you can point at any topic and get structured, actionable intelligence back.</p>
+  <p>The inspiration comes from Andrej Karpathy's "auto-research" concept — using AI to systematically fetch, process, and synthesize information from multiple sources into a coherent report. We're going to take that concept, strip it to what matters, and build a version of it that lives in your toolkit permanently. You'll be able to point it at pricing research, competitor analysis, market intelligence, provider data — anything.</p>
 
   <div class="divider"></div>
 
@@ -132,15 +132,15 @@
   <div class="principle">
     <span class="principle-num new">NEW</span>
     <div>
-      <div class="principle-text">"Raw input → structured output. That's the whole game."</div>
-      <div class="principle-context">A messy article, a 90-minute podcast transcript, a competitor's pricing page — Claude turns noise into signal. The reflex is knowing when to reach for it.</div>
+      <div class="principle-text">"A directory of markdown files is a tool. Claude Code is the engine."</div>
+      <div class="principle-context">You don't need to write code to build a tool. A well-structured set of .md files — defining the goal, methodology, and output format — turns Claude Code into a purpose-built machine. Point it at a topic and let it run.</div>
     </div>
   </div>
   <div class="principle">
-    <span class="principle-num">04</span>
+    <span class="principle-num">03</span>
     <div>
-      <div class="principle-text">"Context is everything."</div>
-      <div class="principle-context">From Session 1 — but now context isn't just your internal business data. It's the external world feeding your decision-making.</div>
+      <div class="principle-text">"If you did it once, write it down. If you wrote it down, make it a skill."</div>
+      <div class="principle-context">From Session 3 — today we go bigger. A research engine is a skill with structure. Same principle, higher leverage.</div>
     </div>
   </div>
 </div>
@@ -154,17 +154,14 @@
   </div>
   <div class="block-body">
     <p>Quick check-in on what's happened since last session — what you built, what broke, what surprised you. Then the reframe:</p>
-    <p>Up to now, every time you've opened Claude, you've had a <strong>task</strong> — build this feature, fix this bug, organize these files. That's the builder reflex, and it's working. But there's a second reflex that most people never develop: using Claude to go find things you didn't know you needed.</p>
+    <p>You've been using Claude to <strong>build things</strong> — a chat interface, a pricing engine, an admin dashboard. Every time you open Claude, you come with a task. That's the builder reflex, and it's working.</p>
+    <p>But think about how you consume information right now. You read an article, listen to a podcast, skim a competitor's site. Some of it sticks, most doesn't. What if every interesting thing you encountered got routed through Claude and came out the other side as something structured, searchable, and useful?</p>
 
-    <div class="concept">Think about how you consume information right now. You read an article, listen to a podcast, skim a competitor's site. Some of it sticks, most of it doesn't. The research reflex changes that: instead of passively consuming, you actively <strong>capture and structure</strong> everything through Claude. Every article becomes a briefing. Every podcast becomes searchable notes. Every competitor becomes a data point in a system.</div>
+    <div class="concept">The research reflex: when you encounter something interesting — an article, a podcast, a competitor's pricing page, a market report — your first instinct is to <strong>feed it to Claude and ask "what can I do with this?"</strong> Not read it. Process it.</div>
 
-    <p>Examples of what this looks like in practice:</p>
-    <ul>
-      <li>A home services industry report (PDF) → Claude extracts the 5 data points that matter for HouseAccount's pricing model</li>
-      <li>A competitor's website → Claude maps their service areas, pricing structure, and positioning into a comparison doc</li>
-      <li>A podcast interview with a marketplace founder → Claude pulls out the operational playbook buried in 90 minutes of conversation</li>
-      <li>A blog post about AI in field services → Claude identifies which ideas apply to your provider matching system</li>
-    </ul>
+    <p>That's the one-at-a-time version. Today we're going to build the <strong>system</strong> version — a research engine that does this at scale, on any topic, repeatable and improvable.</p>
+
+    <p>The concept comes from Andrej Karpathy — one of the original architects behind OpenAI, Tesla Autopilot, and a bunch of foundational AI work. He published a project called "auto-research" that uses Claude to systematically research a topic: define the question, fetch sources, extract findings, synthesize a report. We're going to take his architecture, simplify it, and build a version you own.</p>
   </div>
 </div>
 
@@ -172,32 +169,37 @@
 <div class="block">
   <div class="block-header">
     <span class="block-time demo">15–35 min</span>
-    <span class="block-title">The Fetch: Live Demo</span>
+    <span class="block-title">The Architecture: Markdown Files as a Machine</span>
   </div>
   <div class="block-body">
-    <p>We'll pick something real and relevant to your world and process it live. The goal is to show the full loop: find something → feed it to Claude → get structured output you can use.</p>
+    <p>Here's the core idea: <strong>a directory of markdown files IS a tool.</strong> Claude Code reads the directory, follows the instructions in the .md files, and produces structured output. No app to build. No code to write. Just well-written instructions in the right structure.</p>
 
-    <p><strong>Option A: Article or blog post.</strong> We find a recent article about home services marketplaces, AI in field services, or marketplace economics. Paste the URL into Claude. Ask it to extract the key takeaways, identify what applies to HouseAccount specifically, and flag any competitive intelligence.</p>
+    <p><strong>The anatomy of a research engine:</strong></p>
+    <div class="code-block">research-engine/
+├── CLAUDE.md           # The brain — what this tool does, how to run it
+├── methodology.md      # How to research — source types, search patterns, depth
+├── extraction.md       # What to extract — fields, format, structure
+├── synthesis.md        # How to combine findings into a final output
+├── topics/             # One .md per research topic
+│   ├── pricing.md      # "Research home services pricing in our markets"
+│   └── competitors.md  # "Map the competitive landscape"
+└── output/             # Where finished reports land
+    └── .gitkeep</div>
 
-    <p><strong>Option B: Podcast or video transcript.</strong> Take a YouTube video or podcast episode — a founder interview, an industry talk, a deep dive on marketplace operations. Claude can work with the transcript directly. We'll extract the operational insights and structure them as action items.</p>
+    <p>Each file has a job:</p>
+    <ul>
+      <li><strong>CLAUDE.md</strong> — the entry point. When you open this directory in Claude Code, it reads this first. It explains what the tool does and how to invoke it. "I want to research [topic]" triggers the whole workflow.</li>
+      <li><strong>methodology.md</strong> — defines how Claude should research. What kinds of sources to look for, how many, how deep to go, what to prioritize (primary sources over aggregators, recent over old, data over opinion).</li>
+      <li><strong>extraction.md</strong> — defines the output schema. What fields to pull from every source. This is what turns a messy article into a structured data point you can compare across sources.</li>
+      <li><strong>synthesis.md</strong> — defines how to combine individual extractions into a final report. The structure, the format, the level of analysis.</li>
+      <li><strong>topics/</strong> — one file per research question. Each file frames the specific question, provides business context, and lists any known sources to start from.</li>
+    </ul>
 
-    <p><strong>Option C: Competitor analysis.</strong> Pick a competitor or adjacent company — another home services marketplace, a handyman franchise, a provider matching platform. Feed Claude their website, their pricing page, their "how it works" flow. Get back a structured competitive brief.</p>
+    <div class="concept">This is the "skills" concept from Session 3, scaled up. A skill is one .md file that tells Claude how to do one thing. A research engine is a directory of .md files that tell Claude how to do something complex — with separation of concerns. The methodology doesn't change when you change the topic. The extraction schema doesn't change when you change the methodology. Each piece is independent and reusable.</div>
 
-    <div class="exercise">We'll do this together in your Chat project. You pick the source material, we process it live. The emphasis is on the <strong>prompting pattern</strong> — how to ask Claude to extract, structure, and apply external information to your specific business context.</div>
+    <p><strong>The model split:</strong> When we built our version, we used Opus to <strong>design</strong> the .md files — the methodology, the extraction schema, the synthesis logic. Then we used Sonnet to <strong>run</strong> the actual research sessions. Opus is the architect; Sonnet is the researcher. This keeps costs down and quality up — you don't need the most expensive model for fetching and extracting, but you want it for designing the system.</p>
 
-    <p><strong>The prompting pattern:</strong></p>
-    <div class="code-block">Here's [article / transcript / website content].
-
-I run HouseAccount — a home services marketplace connecting homeowners with providers. We handle job intake, provider matching, pricing, and fulfillment monitoring.
-
-Extract:
-1. Key insights relevant to our business
-2. Anything about pricing, provider management, or fulfillment rates
-3. Ideas I should test or investigate further
-
-Format as a brief I can reference later.</div>
-
-    <div class="callout"><strong>The pattern scales.</strong> This same prompt structure works whether you're processing one article or fifty. Change the source, keep the frame. That's what makes it a reflex — you don't have to think about how to ask, just what to feed it.</div>
+    <div class="callout"><strong>Why this matters beyond research:</strong> Once you understand that a directory of .md files is a tool, you'll start seeing it everywhere. Onboarding processes, sales playbooks, content generation workflows, data analysis pipelines — any repeatable process can be structured this way and handed to Claude Code. The research engine is the first one you build, not the last.</div>
   </div>
 </div>
 
@@ -205,75 +207,80 @@ Format as a brief I can reference later.</div>
 <!-- ─── BLOCK 3 ─── -->
 <div class="block">
   <div class="block-header">
-    <span class="block-time exercise">35–50 min</span>
-    <span class="block-title">The Synthesis: From Raw to Useful</span>
+    <span class="block-time exercise">35–55 min</span>
+    <span class="block-title">Build It: Your HouseAccount Research Engine</span>
   </div>
   <div class="block-body">
-    <p>Fetching is step one. The real value is in what happens next — turning raw inputs into something that compounds over time.</p>
+    <p>We're going to build this live. Not a demo — the actual tool you'll use going forward.</p>
 
-    <p><strong>Level 1: One-shot briefs.</strong> You read an article, feed it to Claude, get a summary. Useful, but it's a one-time thing. Most people stop here.</p>
+    <div class="exercise">Create a new directory on your machine — something like <code>houseaccount-research</code>. We'll build the .md files together, one at a time, talking through what each one should say before writing it.</div>
 
-    <p><strong>Level 2: Structured extraction.</strong> Instead of a summary, you ask Claude to extract specific fields — pricing data points, operational metrics, competitive positioning, customer acquisition strategies. Now it's data, not just notes. You can compare across sources.</p>
+    <p><strong>Step 1: The CLAUDE.md</strong></p>
+    <p>This is the file Claude Code reads first when you open this directory. We'll write it to explain what the tool does and how to invoke it. Something like: "This is a research engine for HouseAccount. When given a topic, follow the methodology in methodology.md, extract findings using the schema in extraction.md, and synthesize a report using synthesis.md."</p>
 
-    <p><strong>Level 3: Running intelligence.</strong> You build a project or a file where extracted insights accumulate. Every article, transcript, and competitor analysis adds to the same structured document. Over weeks, you have a living competitive intelligence brief that no one else in home services has — because it's built from your specific lens.</p>
+    <p><strong>Step 2: The methodology</strong></p>
+    <p>How should Claude research? What sources are credible for home services intelligence? We'll define tiers: primary sources (competitor websites, industry reports, franchise filings, government data) over secondary (blog posts, news articles) over tertiary (forums, social media). How many sources is enough? How recent should they be?</p>
 
-    <div class="concept">The difference between Level 1 and Level 3 is the difference between reading the news and running an intelligence operation. Same input, different system. The system is just a file that Claude updates every time you feed it something new.</div>
+    <p><strong>Step 3: The extraction schema</strong></p>
+    <p>What do you want from every source? For HouseAccount, this might include: company or source name, date, service categories mentioned, pricing data points, geographic coverage, provider acquisition approach, technology or AI usage, customer acquisition strategy, fulfillment model. Consistent fields across every source means you can compare apples to apples.</p>
 
-    <p>We'll take the output from the live demo and structure it for Level 2 — showing how the same content becomes more useful when you extract it into a consistent format rather than a narrative summary.</p>
+    <p><strong>Step 4: The synthesis template</strong></p>
+    <p>How should Claude combine findings? Executive summary, key findings by category, data table, recommendations, gaps to investigate further. This is the output format for every report the engine produces.</p>
 
-    <div class="exercise">Reprocess the source from Block 2, but this time ask Claude to extract into a structured format: a markdown table or a JSON object with consistent fields. Compare the two outputs — the narrative brief vs. the structured extraction. Which one would be more useful if you had 20 of them?</div>
+    <p><strong>Step 5: The first topic file</strong></p>
+    <p>We'll pick a real research question for HouseAccount and write the topic file together. This frames the specific question, provides business context (what HouseAccount does, what you already know, what decisions this research would inform), and optionally lists starting sources.</p>
+
+    <div class="callout"><strong>The meta-lesson:</strong> We're using Claude to build a tool made of instructions for Claude. The .md files are the product. Claude Code is the engine that runs them. You don't need to learn a programming language or build an app — you need to learn how to write clear, structured instructions. You've been doing that since Session 1.</div>
   </div>
 </div>
 
 <!-- ─── BLOCK 4 ─── -->
 <div class="block">
   <div class="block-header">
-    <span class="block-time mental">50–65 min</span>
-    <span class="block-title">Build a Pipeline</span>
+    <span class="block-time mental">55–70 min</span>
+    <span class="block-title">Run It: Point and Fire</span>
   </div>
   <div class="block-body">
-    <p>A research pipeline is just the fetch-and-synthesize pattern made repeatable. We'll sketch one together that's directly relevant to HouseAccount.</p>
+    <p>Time to test. We'll open the research engine directory in Claude Code and give it the topic we just wrote.</p>
 
-    <p><strong>Pick a research question that matters to your business right now.</strong> Some ideas:</p>
+    <div class="exercise">Open Claude Code in the <code>houseaccount-research</code> directory. Tell it: "Research the topic in topics/[your-topic].md — follow the methodology, extract using the schema, and produce a synthesis report in output/." Watch it work.</div>
+
+    <p><strong>What to watch for:</strong></p>
     <ul>
-      <li><strong>Pricing intelligence:</strong> What are competitors charging for common handyman services in your markets? How does your rate book compare?</li>
-      <li><strong>Provider acquisition:</strong> How do other home services platforms recruit and retain providers? What's working?</li>
-      <li><strong>Fulfillment optimization:</strong> What do marketplace operators say about reducing time-to-match and improving completion rates?</li>
-      <li><strong>Market expansion:</strong> Which adjacent service categories are growing fastest? Where should HouseAccount expand next?</li>
+      <li>Does Claude follow the methodology? Is it finding the right kinds of sources?</li>
+      <li>Is the extraction schema working? Are the fields being populated consistently?</li>
+      <li>Is the synthesis useful? Would you actually make a decision based on this report?</li>
+      <li>Where does it break? Every gap is a chance to improve the .md files.</li>
     </ul>
 
-    <p>Once you pick the question, we'll build the pipeline:</p>
-    <ul>
-      <li><strong>Sources:</strong> Where does this information live? Industry blogs, competitor sites, forums, job boards, public filings?</li>
-      <li><strong>Extraction template:</strong> What fields do you want from every source? Build a consistent schema.</li>
-      <li><strong>Output format:</strong> Where does the synthesized intelligence land? A markdown file in your project? A structured doc in Drive?</li>
-      <li><strong>Cadence:</strong> Is this a one-time deep dive or something you'd run weekly/monthly?</li>
-    </ul>
+    <p><strong>Iterate the system, not the output.</strong> If the report is too shallow, you don't rewrite the report — you improve the methodology or the extraction schema. If it's missing a category of information, you add it to the schema. The system gets better every time you run it.</p>
 
-    <div class="callout"><strong>This is how the research reflex becomes a system.</strong> The first time you do it manually in Chat. The second time you notice the pattern. The third time you write a skill for it. Sound familiar? Same ladder from Session 3 — repetition to automation — applied to research instead of building.</div>
+    <div class="concept">This is the repetition-to-automation ladder from the mantras, applied to research. First you do it manually (Session 3 skills). Then you build a system (this session). The system improves with use. Eventually, you schedule it — a weekly competitive intelligence brief that runs itself. But the manual reps come first.</div>
+
+    <p><strong>The versatility test:</strong> If time allows, we'll write a second topic file on a completely different subject — maybe provider pricing in a new market, or AI adoption in home services. Same engine, different input. The output should be equally useful. That's how you know the architecture works.</p>
   </div>
 </div>
 
 <!-- ─── BLOCK 5 ─── -->
 <div class="block">
   <div class="block-header">
-    <span class="block-time wrap">65–75 min</span>
+    <span class="block-time wrap">70–75 min</span>
     <span class="block-title">Homework &amp; What's Next</span>
   </div>
   <div class="block-body">
     <p><strong>Homework (due before Session 5):</strong></p>
     <ul>
-      <li><strong>Process 3 external sources.</strong> Find three articles, podcasts, competitor sites, or industry reports relevant to HouseAccount. Feed each one to Claude using the prompting pattern from this session. Save the outputs somewhere persistent — a project folder, a Drive doc, your Chat project.</li>
-      <li><strong>Build a competitive brief.</strong> Pick 2–3 companies in home services (competitors, adjacent players, or companies you admire). Have Claude analyze each one and compile the results into a single structured comparison document.</li>
-      <li><strong>Write a research skill.</strong> Take the fetch-and-synthesize pattern we practiced and write it up as a skill file (same format from Session 3). The skill should be specific enough that you could hand it to Claude in a fresh session and say "run this on [URL]" and get a consistent result.</li>
-      <li><strong>Find something that surprises you.</strong> Feed Claude a source you wouldn't normally read — an academic paper, a franchise disclosure document, a city planning report about home renovation permits. See what Claude finds that you wouldn't have noticed.</li>
-      <li><strong>Daily reps.</strong> Keep building on the HouseAccount prototype. When you hit a decision point — how should pricing work? what provider metrics matter? — try researching externally before deciding.</li>
+      <li><strong>Run the engine on 2 more topics.</strong> Write two new topic files for research questions that matter to HouseAccount right now — pricing in a new market, provider retention strategies, customer acquisition costs in home services, whatever's top of mind. Run each one and save the output.</li>
+      <li><strong>Improve the system.</strong> After running it a few times, you'll notice what's working and what's not. Update the methodology, extraction schema, or synthesis template based on what you learn. The .md files should be better at the end of the week than they are today.</li>
+      <li><strong>Try it on something non-HouseAccount.</strong> Point the engine at a personal interest — an investment thesis, a hobby, a technology you're curious about. Write a topic file, run it, see what comes back. This tests whether the architecture is truly general-purpose.</li>
+      <li><strong>Feed it a thought leader.</strong> Find a podcast episode, a YouTube video, or a long blog post from someone whose thinking you respect. Instead of reading or watching it, feed the transcript to Claude and extract the operational ideas using your research engine's schema. Compare what you get vs. what you would have absorbed passively.</li>
+      <li><strong>Daily reps + new habits.</strong> Keep building on the prototype. Try the screenshot-paste-into-Code pattern for bugs. Try Plan mode (Shift+Tab twice) before big changes. When you read something interesting, process it — don't just skim.</li>
     </ul>
 
     <div class="divider"></div>
 
     <p><strong>Looking Ahead — Session 5</strong></p>
-    <p>We'll build on the research reflex and the agent concepts from your prototype. The specific focus will depend on where you are — what you've built, what questions you're wrestling with, what's changed in HouseAccount. Come with whatever's top of mind.</p>
+    <p>We'll build on what you've learned and what's changed in HouseAccount. The specific focus will follow your momentum — what you've built, what questions you're wrestling with, what opportunities have surfaced from the research engine. Come with whatever's top of mind.</p>
   </div>
 </div>
 
@@ -285,40 +292,30 @@ Format as a brief I can reference later.</div>
     <span class="block-title">Quick Reference</span>
   </div>
   <div class="block-body">
-    <p><strong>The Research Reflex in One Line:</strong></p>
-    <p>Encounter something → feed it to Claude → get structured output → add it to your system.</p>
+    <p><strong>The Research Engine Architecture:</strong></p>
+    <div class="code-block">research-engine/
+├── CLAUDE.md           # Entry point — what this tool does, how to run it
+├── methodology.md      # How to research — sources, depth, priorities
+├── extraction.md       # What to extract — consistent fields per source
+├── synthesis.md        # How to combine findings into a report
+├── topics/             # One .md per research question
+└── output/             # Finished reports</div>
 
     <div class="divider"></div>
 
-    <p><strong>Three Levels of Research Processing:</strong></p>
+    <p><strong>The Model Split:</strong></p>
     <ul>
-      <li><strong>Level 1 — One-shot brief:</strong> Feed source, get summary. Useful but doesn't compound.</li>
-      <li><strong>Level 2 — Structured extraction:</strong> Extract into consistent fields. Now it's data you can compare.</li>
-      <li><strong>Level 3 — Running intelligence:</strong> Extractions accumulate in a living document. Compounds over time.</li>
+      <li><strong>Opus designs the system</strong> — methodology, extraction schema, synthesis logic. The architect.</li>
+      <li><strong>Sonnet runs the sessions</strong> — fetching, extracting, producing reports. The researcher.</li>
     </ul>
 
     <div class="divider"></div>
 
-    <p><strong>The Prompting Pattern:</strong></p>
-    <div class="code-block">Here's [source material].
-
-I run [your business] — [one-line description].
-
-Extract:
-1. Key insights relevant to my business
-2. [Specific data points you care about]
-3. Ideas to test or investigate
-
-Format as [brief / table / JSON / comparison].</div>
-
-    <div class="divider"></div>
-
-    <p><strong>Research Pipeline Components:</strong></p>
+    <p><strong>Three Levels of Research:</strong></p>
     <ul>
-      <li><strong>Sources:</strong> Where does the information live?</li>
-      <li><strong>Extraction template:</strong> What fields do you want from every source?</li>
-      <li><strong>Output format:</strong> Where does the result land?</li>
-      <li><strong>Cadence:</strong> One-time or recurring?</li>
+      <li><strong>Level 1 — One-shot:</strong> Feed Claude a source, get a summary. Useful but doesn't compound.</li>
+      <li><strong>Level 2 — Structured extraction:</strong> Extract into consistent fields. Now it's data you can compare.</li>
+      <li><strong>Level 3 — Research engine:</strong> A directory of .md files that does Level 2 at scale, on any topic, repeatably.</li>
     </ul>
 
     <div class="divider"></div>
@@ -326,7 +323,7 @@ Format as [brief / table / JSON / comparison].</div>
     <p><strong>Source Types Claude Can Process:</strong></p>
     <ul>
       <li>URLs (articles, blog posts, landing pages, pricing pages)</li>
-      <li>PDFs (reports, whitepapers, filings, franchise documents)</li>
+      <li>PDFs (reports, whitepapers, franchise filings)</li>
       <li>Transcripts (podcasts, YouTube videos, meeting recordings)</li>
       <li>Screenshots (competitor dashboards, error messages, UI patterns)</li>
       <li>Raw text (forum posts, email threads, Slack exports)</li>
@@ -345,6 +342,7 @@ Format as [brief / table / JSON / comparison].</div>
       <li>Chat is thinking. Cowork is delegating. Code is building.</li>
       <li>If you did it once, write it down. If you wrote it down, make it a skill.</li>
       <li><strong>Don't just build with what you have. Go get what you need.</strong></li>
+      <li><strong>A directory of markdown files is a tool. Claude Code is the engine.</strong></li>
     </ul>
   </div>
 </div>
