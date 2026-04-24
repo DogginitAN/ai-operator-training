@@ -37,22 +37,28 @@
     {
       "id": "s3",
       "number": 3,
-      "title": "Context as Infrastructure",
+      "title": "From Prototype to System",
       "subtitle": "Reproducibility, context infrastructure, and building your first skill",
-      "date": null,
-      "status": "upcoming",
+      "date": "2026-04-15",
+      "status": "completed",
       "duration": "75 min",
-      "notes": "",
-      "keyTakeaways": []
+      "notes": "Matt skipped formal homework because he built a full production prototype — customer-facing AI chat with job intake, rate book fuzzy matching, provider selection, pricing negotiation, photo upload, booking creation, and webhook integration. Deployed on Railway with Postgres, behind Google OAuth, using the Anthropic API. Session reframed to reverse-engineer what he built. Flattened session handoffs into organized persistent MD files (architecture, database, chatbot behavior, pricing logic, design system, API). Demonstrated Chat can make direct code changes through file connectors. Introduced syncing Chat project context with Claude Code CLAUDE.md. Docker/Postgres container issue at end (overnight reboot).",
+      "keyTakeaways": [
+        "Flatten session handoffs into focused, persistent MD files — not one growing document",
+        "Chat with file connectors can make direct code changes, not just generate prompts for Code",
+        "Sync Chat project context with Claude Code's CLAUDE.md for a unified brain across tools",
+        "Skills = reusable markdown instruction files that make patterns reproducible",
+        "The cold-start test: can a fresh Claude session pick up your project in 60 seconds?"
+      ]
     },
     {
       "id": "s4",
       "number": 4,
-      "title": "The HouseAccount Agent Map",
-      "subtitle": "Provider Sales, Customer Intake, Pricing Estimate, Concierge \u2014 what to automate vs. keep human",
+      "title": "The Research Reflex",
+      "subtitle": "Using Claude to fetch external intelligence and turn it into structured, actionable output",
       "date": null,
-      "status": "locked",
-      "duration": null,
+      "status": "upcoming",
+      "duration": "75 min",
       "notes": "",
       "keyTakeaways": []
     },
@@ -297,6 +303,46 @@
       "session": "s2",
       "status": "todo",
       "priority": "medium"
+    },
+    {
+      "id": "t15",
+      "title": "Step 1: Process 3 external sources",
+      "description": "Find 3 articles, podcasts, competitor sites, or reports relevant to HouseAccount. Feed each to Claude using the research prompting pattern. Save outputs somewhere persistent.",
+      "session": "s4",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t16",
+      "title": "Step 2: Build a competitive brief",
+      "description": "Pick 2\u20133 companies in home services. Have Claude analyze each one (website, pricing, how it works) and compile into a single structured comparison document.",
+      "session": "s4",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t17",
+      "title": "Step 3: Write a research skill",
+      "description": "Package the fetch-and-synthesize pattern as a reusable skill file. Test it in a fresh session \u2014 hand it a URL and see if it produces a useful result without extra context.",
+      "session": "s4",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t18",
+      "title": "Step 4: Find something surprising",
+      "description": "Feed Claude a source outside your normal information diet \u2014 FDD, academic paper, building permit data, contractor forum. Ask: what\u2019s in here that I wouldn\u2019t have noticed?",
+      "session": "s4",
+      "status": "todo",
+      "priority": "medium"
+    },
+    {
+      "id": "t19",
+      "title": "Step 5: Try screenshot-paste and Plan mode",
+      "description": "Next bug: paste the error directly into Claude Code instead of going through Chat. Try Shift+Tab twice for Plan mode. Both reduce the Chat\u2192Code round-trip.",
+      "session": "s4",
+      "status": "todo",
+      "priority": "medium"
     }
   ],
   "resources": [
@@ -418,6 +464,28 @@
       "filename": "session3_homework.html",
       "tags": ["homework"],
       "sessions": ["s3"],
+      "global": false,
+      "category": "homework"
+    },
+    {
+      "id": "lesson-plan-s4",
+      "title": "Session 4 Lesson Plan",
+      "description": "The Research Reflex — fetching external intelligence and structured synthesis",
+      "type": "html",
+      "filename": "session4_lesson_plan.html",
+      "tags": ["lesson-plan"],
+      "sessions": ["s4"],
+      "global": false,
+      "category": "lesson-plan"
+    },
+    {
+      "id": "homework-s4",
+      "title": "Session 4 Homework",
+      "description": "Process 3 sources, competitive brief, research skill, find something surprising",
+      "type": "html",
+      "filename": "session4_homework.html",
+      "tags": ["homework"],
+      "sessions": ["s4"],
       "global": false,
       "category": "homework"
     },

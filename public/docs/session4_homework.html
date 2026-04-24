@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 4 Homework — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  .header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
+  .section-num.fetch   { background: var(--blue-dim);   color: var(--blue);   }
+  .section-num.compete  { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.skill    { background: var(--green-dim);  color: var(--green);  }
+  .section-num.explore  { background: var(--purple-dim); color: var(--purple); }
+  .section-num.daily    { background: var(--accent-dim); color: var(--accent); }
+  .section-num.ref      { background: var(--cyan-dim);   color: var(--cyan);   }
+  .section-num.help     { background: var(--red-dim);    color: var(--red);    }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .step { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.75rem 0; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .step-label.do     { color: var(--green); }
+  .step-label.type   { color: var(--blue); }
+  .step-label.expect { color: var(--purple); }
+  .step-label.note   { color: var(--accent); }
+  .step-label.test   { color: var(--cyan); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); display: inline; word-break: break-all; }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.35rem; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Homework: Go Get What You Need</h1>
+  <div class="sub">Session 4 follow-up — due before Session 5</div>
+</div>
+
+</body>
+</html>
+<!-- ─── 1: PROCESS 3 SOURCES ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num fetch">FETCH</span>
+    <span class="section-title">Process 3 External Sources</span>
+  </div>
+  <div class="section-body">
+    <p>Find three things relevant to HouseAccount that you'd normally skim and forget. Articles, podcasts, competitor sites, industry reports — anything from outside your own data.</p>
+
+    <div class="step">
+      <div class="step-label do">STEP 1 — PICK YOUR SOURCES</div>
+      They don't all need to be the same type. Try a mix — maybe one article, one competitor website, one podcast transcript or YouTube video. The only rule: it should be something that could inform a decision you're making at HouseAccount.
+    </div>
+
+    <div class="step">
+      <div class="step-label type">STEP 2 — FEED AND EXTRACT</div>
+      For each source, use the prompting pattern from the session:
+      <div class="code-block">Here's [source — paste URL, upload PDF, or paste transcript].
+
+I run HouseAccount — a home services marketplace connecting homeowners with providers. We handle job intake, provider matching, pricing, and fulfillment monitoring.
+
+Extract:
+1. Key insights relevant to our business
+2. Anything about pricing, provider management, or fulfillment
+3. Ideas I should test or investigate
+
+Format as a brief I can reference later.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label do">STEP 3 — SAVE THE OUTPUT</div>
+      Don't let the briefs disappear into chat history. Save each one somewhere persistent — a markdown file in your project folder, a Google Doc, even a Jotting pinned to Session 4. The point is that you can find it again in two weeks.
+    </div>
+
+    <div class="callout"><strong>Starter sources if you're stuck:</strong> Google "home services marketplace trends 2026", search YouTube for marketplace founder interviews, look at how Thumbtack or Angi describe their provider matching, or find a franchise disclosure document for a handyman franchise (they're public filings — full of operational data).</div>
+  </div>
+</div>
+
+
+<!-- ─── 2: COMPETITIVE BRIEF ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num compete">COMPETE</span>
+    <span class="section-title">Build a Competitive Brief</span>
+  </div>
+  <div class="section-body">
+    <p>Pick 2–3 companies in or adjacent to home services. Analyze each one through Claude and compile the results into a single document you can reference.</p>
+
+    <div class="step">
+      <div class="step-label do">PICK YOUR TARGETS</div>
+      Direct competitors, companies you admire, or adjacent plays in home services. Could be Thumbtack, Angi, Taskrabbit, a local handyman franchise, or a vertical SaaS serving contractors. You're looking for companies where their approach to any part of the value chain — intake, matching, pricing, fulfillment — could teach you something.
+    </div>
+
+    <div class="step">
+      <div class="step-label type">ANALYZE EACH ONE</div>
+      For each company, feed Claude their website (homepage, pricing page, "how it works" page) and ask for structured extraction:
+      <div class="code-block">Analyze [company website URL] as a competitor to HouseAccount.
+
+Extract:
+- Their positioning (who they serve, how they describe themselves)
+- Service categories and geographic coverage
+- Pricing model (how do they charge? flat fee, percentage, subscription?)
+- Provider acquisition (how do they recruit providers?)
+- Any notable tech or AI features
+- What they do better than us / what we do better</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label expect">COMPILE INTO ONE DOCUMENT</div>
+      Ask Claude to take the individual analyses and merge them into a single competitive landscape brief. Side-by-side comparison. This should be something you could show an investor, an advisor, or a teammate to explain where HouseAccount sits in the market.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── 3: RESEARCH SKILL ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num skill">SKILL</span>
+    <span class="section-title">Write a Research Skill</span>
+  </div>
+  <div class="section-body">
+    <p>Take the fetch-and-synthesize pattern you practiced and turn it into a reusable skill file. Same format as Session 3.</p>
+
+    <div class="step">
+      <div class="step-label do">WRITE THE SKILL</div>
+      <div class="code-block"># Skill: [Name — e.g., "Competitor Analysis" or "Article Intelligence Brief"]
+
+## When to use
+[When would you reach for this? What triggers it?]
+
+## Inputs needed
+- [URL, PDF, transcript, etc]
+- [Business context if not already in project instructions]
+
+## Steps
+1. [How to feed the source to Claude]
+2. [What to ask for — the extraction prompt]
+3. [How to structure the output]
+4. [Where to save it]
+
+## Expected output
+[What the result should look like]
+
+## Gotchas
+- [What goes wrong? Paywalled articles? Transcripts too long?]</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label test">TEST IT</div>
+      Open a fresh Chat conversation. Paste the skill in. Give it a URL or source you haven't processed yet. Does it produce a useful result without you having to explain anything extra? If Claude asks questions, those gaps go back into the skill.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── 4: SURPRISE YOURSELF ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num explore">EXPLORE</span>
+    <span class="section-title">Find Something That Surprises You</span>
+  </div>
+  <div class="section-body">
+    <p>This one's intentionally open-ended. Feed Claude a source you wouldn't normally read — something outside your usual information diet.</p>
+
+    <div class="step">
+      <div class="step-label do">IDEAS</div>
+      <ul>
+        <li>A franchise disclosure document (FDD) for a handyman franchise — these are public filings and contain detailed operational and financial data</li>
+        <li>An academic paper on marketplace economics or two-sided platforms</li>
+        <li>A city building department's annual report on home renovation permits in one of your markets</li>
+        <li>A subreddit thread where homeowners complain about hiring contractors</li>
+        <li>A provider's perspective — find a contractor blog or forum where they talk about what platforms they like and hate</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <div class="step-label expect">WHAT TO LOOK FOR</div>
+      You're not looking for anything specific. You're practicing the reflex of feeding something unfamiliar to Claude and asking: "what's in here that I wouldn't have noticed on my own?" The best insights often come from sources your competitors aren't reading.
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── 5: DAILY ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">DAILY</span>
+    <span class="section-title">This Week's Reps</span>
+  </div>
+  <div class="section-body">
+    <ul>
+      <li><strong>3 real tasks per day in Claude.</strong> Keep building on the prototype, the provider health dashboard, or whatever's next. The build reflex stays sharp through use.</li>
+      <li><strong>When you read something interesting, feed it to Claude.</strong> Article in your inbox? Industry newsletter? Competitor announcement? Don't just read it — process it. Even a quick "summarize this and tell me what applies to HouseAccount" counts.</li>
+      <li><strong>Try the screenshot-paste-into-Code pattern.</strong> Next time you hit a bug and you know where it is, paste the error directly into Claude Code instead of going through Chat first. See the difference in speed.</li>
+      <li><strong>Try Plan mode in Claude Code.</strong> Shift+Tab twice. Let Code think through a problem before executing. Good middle ground between your current flow and letting Code run free.</li>
+    </ul>
+
+    <div class="callout"><strong>The shift this week:</strong> You've been consuming information the same way for years — skim, absorb what sticks, forget the rest. Start routing everything through Claude first. Not because you can't read — because Claude catches what you miss and structures what you'd forget.</div>
+  </div>
+</div>
+
+
+<!-- ─── 6: HELP ─── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num help">HELP</span>
+    <span class="section-title">If Something Goes Wrong</span>
+  </div>
+  <div class="section-body">
+    <p><strong>"Claude can't access the URL I pasted"</strong> — Some sites block automated access. Try copy-pasting the article text directly instead. For PDFs, download and upload the file. For YouTube videos, search for the transcript and paste that.</p>
+    <div class="divider"></div>
+    <p><strong>"The output is too generic / not useful"</strong> — Your business context isn't specific enough in the prompt. Add more detail about HouseAccount — your markets, your pricing model, your current challenges. The more specific your context, the more specific Claude's extraction.</p>
+    <div class="divider"></div>
+    <p><strong>"I don't know what sources to look for"</strong> — Start with what you already consume. Industry newsletters, LinkedIn posts from people in home services, articles that cross your feed. The reflex isn't about finding new sources — it's about processing the ones you already see differently.</p>
+    <div class="divider"></div>
+    <p><strong>"The competitive brief feels shallow"</strong> — Feed Claude more pages from each competitor. Homepage alone gives you positioning. Add the pricing page, the provider signup page, their blog, their job postings (those reveal what they're investing in). More input = richer analysis.</p>
+    <div class="divider"></div>
+    <p><strong>Anything else breaks</strong> — Drop it in Jottings or bring it to the next session. That's what we're here for.</p>
+  </div>
+</div>
+
+
+<div class="footer">
+  Session 4 Homework · AI Native Operator Training · Andrew Nolan · April 2026<br>
+  Next session: Session 5 — TBD based on where you are
+</div>
+
+</body>
+</html>
