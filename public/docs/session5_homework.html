@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 5 Homework — AI Operator Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #141419; --surface-2: #1c1c24; --border: #2a2a36;
+    --text: #e4e4eb; --text-muted: #8888a0; --accent: #f97316; --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.1); --green: #22c55e; --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7; --purple-dim: rgba(168,85,247,0.1); --red: #ef4444; --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4; --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 860px; margin: 0 auto; }
+  .header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; font-weight: 500; }
+  .section-num.connect { background: var(--blue-dim); color: var(--blue); }
+  .section-num.map     { background: var(--cyan-dim); color: var(--cyan); }
+  .section-num.hunt    { background: var(--green-dim); color: var(--green); }
+  .section-num.build   { background: var(--purple-dim); color: var(--purple); }
+  .section-num.daily   { background: var(--accent-dim); color: var(--accent); }
+  .section-num.help    { background: var(--red-dim); color: var(--red); }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 1.2rem 1.5rem; }
+  .section-body p { margin-bottom: 0.7rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .step { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.75rem 0; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .step-label.do { color: var(--green); } .step-label.type { color: var(--blue); }
+  .step-label.expect { color: var(--purple); } .step-label.note { color: var(--accent); }
+  .step-label.test { color: var(--cyan); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.35rem; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Homework: Pipeline or Agent?</h1>
+  <div class="sub">Session 5 follow-up — due before Session 6</div>
+</div>
+
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num connect">CONNECT</span>
+    <span class="section-title">Run the Agent on Real Data</span>
+  </div>
+  <div class="section-body">
+    <p>The session used sample data designed to illustrate the concepts. Now point it at reality.</p>
+    <div class="step">
+      <div class="step-label do">SWAP THE DATA</div>
+      Export your actual signed providers from Metabase. Match the fields to the sample format — name, hourly rate, specialties, service zips, rejection metrics, response time, fulfillment rate. Save as <code>sample_data/real_providers.json</code> (or overwrite providers.json).
+    </div>
+    <div class="step">
+      <div class="step-label type">RUN BOTH VERSIONS</div>
+      Run the pipeline and the agent on your real data. Compare the reports. Does the agent catch things the pipeline misses? Are there providers where the agent's judgment is clearly better than the formula?
+    </div>
+    <div class="step">
+      <div class="step-label note">WHAT TO NOTICE</div>
+      With real data, the agent's behavior will be less dramatic than the sample — real data is messier and more ambiguous. That's the point. Watch for cases where the agent hesitates, uses more tools, or expresses lower confidence. Those are the genuinely hard cases where the pipeline's fixed logic would get it wrong.
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num map">MAP</span>
+    <span class="section-title">Label Everything You've Built</span>
+  </div>
+  <div class="section-body">
+    <p>Go through every AI-powered system or workflow you've built or planned for HouseAccount. For each one, answer one question: <strong>who decides the control flow — you or the model?</strong></p>
+    <div class="step">
+      <div class="step-label do">MAKE THE LIST</div>
+      Write it out — a simple table or list:
+      <div class="code-block">[System/workflow] → Pipeline or Agent → Why
+
+Customer intake chatbot → Pipeline → I hardcoded the sequence
+Provider health outreach → Agent → I don't know the best action per provider yet
+Rate book matching → Pipeline → Deterministic fuzzy match
+...</div>
+    </div>
+    <div class="step">
+      <div class="step-label expect">WHAT YOU'LL FIND</div>
+      Most of your systems are pipelines. That's correct. The exercise isn't to turn everything into agents — it's to see clearly which problems are solved (pipeline) and which are still being figured out (agent).
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num hunt">HUNT</span>
+    <span class="section-title">Find the Repeating Patterns</span>
+  </div>
+  <div class="section-body">
+    <p>Run the agent 3 more times on different subsets of providers (or the full set). Read the reports each time.</p>
+    <div class="step">
+      <div class="step-label do">LOOK FOR REPETITION</div>
+      Which tool sequences show up every time? When the agent sees a pricing problem, does it always do the same thing? When it sees a healthy provider, does it always use the same two tools? Those are your candidate pipelines — the agent is telling you what the fixed sequence should be.
+    </div>
+    <div class="step">
+      <div class="step-label test">WRITE IT DOWN</div>
+      For any pattern you spot, write the sequence out: "When [condition], do [step 1] → [step 2] → [step 3]." That's a pipeline definition extracted from agent behavior. This is the collapse in action.
+    </div>
+    <div class="callout"><strong>This is the real skill:</strong> not building agents or building pipelines — but knowing when to use which, and knowing how to graduate from one to the other as the problem becomes clearer.</div>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num build">BUILD</span>
+    <span class="section-title">Pick One New Agent</span>
+  </div>
+  <div class="section-body">
+    <p>Find something at HouseAccount where you don't yet know the right sequence. Something where the problem isn't legible yet.</p>
+    <div class="step">
+      <div class="step-label do">SCOPE IT</div>
+      Write a CLAUDE.md and tools.md for it — same structure as the Provider Health agent. Define the goal, the available tools, and the constraints. Don't define the sequence. That's the whole point — let the agent figure it out.
+      <ul>
+        <li>Customer churn analysis — why do homeowners use HouseAccount once and not return?</li>
+        <li>Job categorization — when a homeowner describes a vague problem, which service category fits?</li>
+        <li>Provider recommendation — given a specific job, which provider is the best match (beyond just "can they do it")?</li>
+        <li>Group chat monitoring — interpreting the provider-customer text thread to detect fulfillment or problems</li>
+      </ul>
+    </div>
+    <div class="step">
+      <div class="step-label expect">RUN IT AND OBSERVE</div>
+      Don't try to make it perfect. Run it on a few examples and watch what it does. The goal isn't a production system — it's discovery. What sequence does the agent converge on? That's your future pipeline.
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num daily">DAILY</span>
+    <span class="section-title">This Week's Reps</span>
+  </div>
+  <div class="section-body">
+    <ul>
+      <li><strong>3 real tasks per day in Claude.</strong> Keep building. The build reflex doesn't stop because we're thinking about architecture.</li>
+      <li><strong>When you build something new, ask:</strong> pipeline or agent? Just the label. Build the awareness.</li>
+      <li><strong>Keep routing interesting content through Claude.</strong> The research reflex from Session 4 stacks with this — research is a pipeline (fixed extraction schema), but the decision of what to research next could be an agent.</li>
+    </ul>
+    <div class="callout"><strong>The shift this week:</strong> You're not just building tools anymore. You're thinking about which problems are solved and which are still being figured out. Solved problems get pipelines. Unsolved problems get agents. Agents eventually produce pipelines. That's the whole game.</div>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num help">HELP</span>
+    <span class="section-title">If Something Goes Wrong</span>
+  </div>
+  <div class="section-body">
+    <p><strong>"The agent does the same thing every time"</strong> — Your providers might be too similar, or your tools might be too narrow. Add more tools that give the agent more options. Or try a more diverse dataset.</p>
+    <div class="divider"></div>
+    <p><strong>"I can't get my Metabase data into the right format"</strong> — Export as CSV, then ask Claude to transform it into the providers.json format. Give it a sample of the target format and a sample of your export. This is a one-shot pipeline task — Claude fills in the blanks.</p>
+    <div class="divider"></div>
+    <p><strong>"I don't know what should be an agent vs. pipeline"</strong> — Ask yourself: can I write out the steps right now? If yes, pipeline. If you'd have to say "it depends" at any step, that "it depends" is where the agent lives.</p>
+    <div class="divider"></div>
+    <p><strong>"The agent makes bad decisions"</strong> — That's expected in Phase 1. The agent is exploring. Bad decisions with good logging are valuable — they tell you what the constraints should be. Add those constraints to the agent.md or tools.md and run again.</p>
+    <div class="divider"></div>
+    <p><strong>Anything else</strong> — Jottings or next session.</p>
+  </div>
+</div>
+
+
+<div class="footer">
+  Session 5 Homework · AI Native Operator Training · Andrew Nolan · May 2026<br>
+  Next session: Session 6 — TBD
+</div>
+
+</body>
+</html>

@@ -56,15 +56,31 @@
       "number": 4,
       "title": "The Research Reflex",
       "subtitle": "Using Claude to fetch external intelligence and turn it into structured, actionable output",
-      "date": null,
-      "status": "upcoming",
+      "date": "2026-04-29",
+      "status": "completed",
       "duration": "75 min",
-      "notes": "",
-      "keyTakeaways": []
+      "notes": "Introduced Karpathy's auto-research concept. Built a research engine directory (markdown files as a tool, Claude Code as the engine). Matt found the live build process overwhelming \u2014 lesson learned: pre-build infrastructure in Git, narrate the origin story on the call, spend session time running not configuring. Shifted delivery model going forward: pre-push to companion toolkit repo, Matt pulls, session time goes to concepts and execution.",
+      "keyTakeaways": [
+        "A directory of markdown files is a tool \u2014 Claude Code is the engine",
+        "Opus designs the system, Sonnet runs the sessions",
+        "Three levels: one-shot brief \u2192 structured extraction \u2192 research engine",
+        "Pre-build infrastructure, narrate the concept, run on the call"
+      ]
     },
     {
       "id": "s5",
       "number": 5,
+      "title": "Agents vs. Pipelines",
+      "subtitle": "Who decides what happens next \u2014 you or the model?",
+      "date": null,
+      "status": "upcoming",
+      "duration": "90 min",
+      "notes": "",
+      "keyTakeaways": []
+    },
+    {
+      "id": "s6",
+      "number": 6,
       "title": "Always-On AI",
       "subtitle": "Mac Mini setup, messaging gateway, ambient access from anywhere",
       "date": null,
@@ -108,6 +124,10 @@
         {
           "type": "session",
           "sessionId": "s5"
+        },
+        {
+          "type": "session",
+          "sessionId": "s6"
         }
       ]
     }
@@ -343,6 +363,38 @@
       "session": "s4",
       "status": "todo",
       "priority": "medium"
+    },
+    {
+      "id": "t20",
+      "title": "Step 1: Run the agent on real provider data",
+      "description": "Export signed providers from Metabase, format to match providers.json schema, run both pipeline and agent versions. Compare the reports side by side.",
+      "session": "s5",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t21",
+      "title": "Step 2: Label all your systems pipeline or agent",
+      "description": "For every AI-powered workflow at HouseAccount, ask: who decides the control flow \u2014 me or the model? Write the list. Most will be pipelines. That\u2019s correct.",
+      "session": "s5",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t22",
+      "title": "Step 3: Find the repeating patterns",
+      "description": "Run the agent 3 more times. Look for tool sequences that repeat across providers. Write them out as pipeline candidates. This is the collapse in action.",
+      "session": "s5",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t23",
+      "title": "Step 4: Build one new agent",
+      "description": "Pick an unsolved problem at HouseAccount. Write a CLAUDE.md and tools.md for it. Don\u2019t pipeline it \u2014 let the agent explore. Watch what sequence it converges on.",
+      "session": "s5",
+      "status": "todo",
+      "priority": "medium"
     }
   ],
   "resources": [
@@ -486,6 +538,28 @@
       "filename": "session4_homework.html",
       "tags": ["homework"],
       "sessions": ["s4"],
+      "global": false,
+      "category": "homework"
+    },
+    {
+      "id": "lesson-plan-s5",
+      "title": "Session 5 Lesson Plan",
+      "description": "Agents vs. Pipelines \u2014 who decides the control flow, the agent-to-pipeline lifecycle",
+      "type": "html",
+      "filename": "session5_lesson_plan.html",
+      "tags": ["lesson-plan"],
+      "sessions": ["s5"],
+      "global": false,
+      "category": "lesson-plan"
+    },
+    {
+      "id": "homework-s5",
+      "title": "Session 5 Homework",
+      "description": "Run agent on real data, label all systems pipeline/agent, find repeating patterns, build a new agent",
+      "type": "html",
+      "filename": "session5_homework.html",
+      "tags": ["homework"],
+      "sessions": ["s5"],
       "global": false,
       "category": "homework"
     },

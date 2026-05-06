@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 5 — Agents vs. Pipelines</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface-2: #1c1c24;
+    --border: #2a2a36;
+    --text: #e4e4eb;
+    --text-muted: #8888a0;
+    --accent: #f97316;
+    --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.1);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.1);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .header { text-align: center; padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; }
+  .header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .header .meta { margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.85rem; color: var(--text-muted); }
+  .header .meta span { background: var(--surface); padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid var(--border); }
+  .arc-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.8rem; margin-bottom: 2rem; }
+  .arc-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.9rem; }
+  .arc-flow { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+  .arc-step { display: flex; align-items: center; gap: 0.4rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem 0.7rem; font-size: 0.85rem; font-weight: 500; }
+  .arc-step-num { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 3px; }
+  .arc-step-num.s1 { background: var(--blue-dim); color: var(--blue); }
+  .arc-step-num.s2 { background: var(--cyan-dim); color: var(--cyan); }
+  .arc-step-num.s3 { background: var(--green-dim); color: var(--green); }
+  .arc-step-num.s4 { background: var(--purple-dim); color: var(--purple); }
+  .arc-step-num.s5 { background: var(--accent-dim); color: var(--accent); }
+  .arc-arrow { color: var(--text-muted); font-size: 0.8rem; padding: 0 0.1rem; }
+  .overview { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem 2rem; margin-bottom: 2.5rem; }
+  .overview h2 { font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .overview p { font-size: 0.95rem; margin-bottom: 0.75rem; }
+  .overview p:last-child { margin-bottom: 0; }
+  .principle { padding: 0.9rem 0; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: flex-start; }
+  .principle:last-child { border-bottom: none; }
+  .principle-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); background: var(--accent-dim); padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; margin-top: 0.15rem; }
+  .principle-num.new { color: var(--green); background: var(--green-dim); }
+  .principle-text { font-size: 1.05rem; font-weight: 500; }
+  .principle-context { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .block-header { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .block-time { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; padding: 0.25rem 0.6rem; border-radius: 5px; flex-shrink: 0; font-weight: 500; }
+  .block-time.setup { background: var(--blue-dim); color: var(--blue); }
+  .block-time.demo { background: var(--cyan-dim); color: var(--cyan); }
+  .block-time.mental { background: var(--purple-dim); color: var(--purple); }
+  .block-time.exercise { background: var(--green-dim); color: var(--green); }
+  .block-time.wrap { background: var(--accent-dim); color: var(--accent); }
+  .block-time.ref { background: var(--cyan-dim); color: var(--cyan); }
+  .block-title { font-size: 1.15rem; font-weight: 600; }
+  .block-body { padding: 1.2rem 1.5rem; }
+  .block-body p { margin-bottom: 0.75rem; font-size: 0.95rem; }
+  .block-body p:last-child { margin-bottom: 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .concept { background: var(--purple-dim); border-left: 3px solid var(--purple); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .concept::before { content: "KEY CONCEPT:"; display: block; font-size: 0.7rem; font-weight: 600; color: var(--purple); letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  .exercise { background: var(--green-dim); border-left: 3px solid var(--green); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .exercise::before { content: "EXERCISE:"; display: block; font-size: 0.7rem; font-weight: 600; color: var(--green); letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  .prep { background: var(--blue-dim); border-left: 3px solid var(--blue); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .prep::before { content: "BEFORE THE CALL:"; display: block; font-size: 0.7rem; font-weight: 600; color: var(--blue); letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  .divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+  ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.4rem; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--surface-2); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--border); }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 2rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Session 5: Agents vs. Pipelines</h1>
+  <div class="sub">Who decides what happens next — you or the model?</div>
+  <div class="meta">
+    <span>TBD</span>
+    <span>~90 minutes</span>
+    <span>Session 5 of ongoing</span>
+  </div>
+</div>
+
+<div class="arc-banner">
+  <div class="arc-label">Session Arc</div>
+  <div class="arc-flow">
+    <div class="arc-step"><span class="arc-step-num s1">s1</span> Discover</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s2">s2</span> Invert</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s3">s3</span> Observe</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s4">s4</span> Collapse</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s5">s5</span> Apply</div>
+  </div>
+</div>
+
+</body>
+</html>
+<!-- ─── PREP ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time setup">BEFORE</span>
+    <span class="block-title">Before the Call</span>
+  </div>
+  <div class="block-body">
+    <div class="prep">Pull the latest from the toolkit repo. Open the <code>session-05-agentics</code> directory and skim the CLAUDE.md to see what's inside. Don't run anything yet — we'll do that together.
+    <div class="code-block">cd ~/Projects/ai-operator-toolkit
+git pull
+cd session-05-agentics</div>
+    Glance at <code>sample_data/providers.json</code> — these are 8 fictional providers with curated data. Some are healthy, some have problems. The data is designed to make the difference between pipeline and agent behavior obvious.</div>
+  </div>
+</div>
+
+<!-- ─── OVERVIEW ─── -->
+<div class="overview">
+  <h2>What This Session Is About</h2>
+  <p>"Agent" has become a buzzword. Everyone says they're building agents. Most of them are building pipelines with LLM steps. That's not a bad thing — most production systems <strong>should</strong> be pipelines. But knowing the difference is what separates someone who can build AI-powered tools from someone who can architect AI-native systems.</p>
+  <p>This session makes the difference visceral. You're going to run the same problem — Provider Health Outreach for HouseAccount — through both architectures. Same data, same tools, same goal. The outputs will be different. And understanding <strong>why</strong> they're different is the whole lesson.</p>
+
+  <div class="divider"></div>
+
+  <h2>New Principles</h2>
+  <div class="principle">
+    <span class="principle-num new">NEW</span>
+    <div>
+      <div class="principle-text">"Pipeline: you decide what happens next. Agent: the model decides what happens next."</div>
+      <div class="principle-context">That's the whole distinction. Everything else is implementation detail.</div>
+    </div>
+  </div>
+  <div class="principle">
+    <span class="principle-num new">NEW</span>
+    <div>
+      <div class="principle-text">"Agents discover pipelines. Once the pattern is legible, collapse it."</div>
+      <div class="principle-context">Deploy an agent. Watch the logs. See what it does 90% of the time. Pipeline that path. Let the agent handle the remaining 10% of edge cases. Over time, the agent surface area shrinks.</div>
+    </div>
+  </div>
+  <div class="principle">
+    <span class="principle-num">06</span>
+    <div>
+      <div class="principle-text">"Judgment over technique."</div>
+      <div class="principle-context">From Session 1 — the judgment here is knowing which architecture fits which problem. Not everything needs an agent. Not everything should be a pipeline.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── BLOCK 1: DISCOVER ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time setup">0–20 min</span>
+    <span class="block-title">Discover: What You Already Built Is a Pipeline</span>
+  </div>
+  <div class="block-body">
+    <p>Start with what Matt knows. Walk through the HouseAccount chatbot — the intake flow he built and demoed in Session 3.</p>
+    <p>Ask the question: <strong>"At each step, who decided what happens next — you or Claude?"</strong></p>
+    <ul>
+      <li>Customer enters a request → Claude interprets it (LLM step) → but the system always goes to fuzzy match next (you decided)</li>
+      <li>Fuzzy match finds a rate book item → system always goes to provider selection next (you decided)</li>
+      <li>Provider selected → system always goes to pricing next (you decided)</li>
+      <li>Pricing presented → system always goes to negotiation next (you decided)</li>
+      <li>Customer accepts → system always goes to booking creation (you decided)</li>
+    </ul>
+    <p>Every step is predetermined. Claude is smart within each step — it interprets natural language, does fuzzy matching, handles negotiation. But it never <strong>chooses</strong> the next step. You hardcoded the sequence. That's a pipeline.</p>
+
+    <div class="concept"><strong>A pipeline</strong> is a system where you decide the control flow and the LLM fills in the blanks. <strong>An agent</strong> is a system where the LLM decides what to do next from a set of available tools. The distinction is one question: who's routing?</div>
+
+    <p>This isn't a criticism. Pipelines are <strong>good</strong>. They're predictable, debuggable, and fast. Most production systems should be pipelines. The point is to see it clearly before we show the alternative.</p>
+  </div>
+</div>
+
+<!-- ─── BLOCK 2: INVERT ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time demo">20–40 min</span>
+    <span class="block-title">Invert: Run the Same Problem Both Ways</span>
+  </div>
+  <div class="block-body">
+    <p>Now we run the Provider Health system. Same data, same goal, two architectures. You already pulled the repo — the materials are ready.</p>
+
+    <div class="exercise"><strong>Run the pipeline first.</strong> Open Claude Code in <code>session-05-agentics/</code>. Tell it:
+    <div class="code-block">Follow the instructions in pipeline.md. Process every provider in sample_data/providers.json through the fixed sequence. Save the report to output/pipeline_report.md.</div>
+    Watch it work. Every provider goes through the same six steps. Same formula, same thresholds, same template.</div>
+
+    <div class="exercise"><strong>Then run the agent.</strong> In a fresh Claude Code session (same directory):
+    <div class="code-block">Follow the instructions in agent.md. For each provider in sample_data/providers.json, assess the situation and decide what action to take using the tools in tools.md. Save the report to output/agent_report.md.</div>
+    Watch it work. This time, notice which tools it picks for each provider. Notice the order. Notice when it skips tools entirely.</div>
+
+    <p><strong>What you'll see:</strong></p>
+    <ul>
+      <li>The pipeline treats every provider the same. Eight providers, six steps each, identical structure.</li>
+      <li>The agent treats each provider differently. It might run two tools on a healthy provider and five on a troubled one. It might escalate one and update the database for another. The model is <strong>routing</strong>.</li>
+    </ul>
+
+    <div class="callout"><strong>The moment to watch for:</strong> When the agent does something the pipeline wouldn't — skips a step, combines two issues, catches a nuance in the notes field, or decides to escalate instead of outreach. That's the model making a judgment call. That's what makes it an agent.</div>
+  </div>
+</div>
+
+
+<!-- ─── BLOCK 3: OBSERVE ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time exercise">40–60 min</span>
+    <span class="block-title">Observe: Read the Reports Side by Side</span>
+  </div>
+  <div class="block-body">
+    <p>Open both reports — <code>output/pipeline_report.md</code> and <code>output/agent_report.md</code>. Compare them provider by provider.</p>
+
+    <p><strong>Questions to discuss:</strong></p>
+    <ul>
+      <li>Which providers got the same result from both systems? Those are the cases where the pipeline is sufficient — the fixed sequence arrived at the right answer.</li>
+      <li>Which providers got different results? What did the agent see that the pipeline missed?</li>
+      <li>Did the agent ever take an action the pipeline couldn't — like escalating, recommending a database update, or deciding no action was needed despite a mediocre health score?</li>
+      <li>Did the pipeline ever produce a result that feels wrong? A message sent when it shouldn't have been, or a problem categorized too simply?</li>
+    </ul>
+
+    <p><strong>Walk through the interesting providers:</strong></p>
+    <ul>
+      <li><strong>Mike's Plumbing (P-1002)</strong> — pricing AND geography problems interacting. The pipeline picks the most frequent rejection reason. The agent should see they're connected.</li>
+      <li><strong>RedLine (P-1004)</strong> — previous outreach went unanswered. The pipeline checks cooldown and skips. The agent should recognize unanswered outreach means escalation, not silence.</li>
+      <li><strong>AllPro (P-1006)</strong> — possibly disengaging entirely. A health score doesn't capture "this provider might be leaving." The agent should consider escalation.</li>
+      <li><strong>QuickFix (P-1008)</strong> — overextended, not unhealthy. Schedule conflicts aren't a sign of a bad provider, they're a sign of a popular one. The agent should handle this differently than the pipeline.</li>
+    </ul>
+
+    <div class="concept">The agent's advantage is <strong>judgment at the routing level</strong>. The LLM isn't just better at writing the outreach message — it's better at deciding whether outreach is even the right action. That's a fundamentally different capability than filling in a template.</div>
+  </div>
+</div>
+
+<!-- ─── BLOCK 4: COLLAPSE ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time mental">60–75 min</span>
+    <span class="block-title">Collapse: The Agent Discovers the Pipeline</span>
+  </div>
+  <div class="block-body">
+    <p>Here's the part most people miss. Look at the agent report again. How many providers did the agent handle the same way?</p>
+    <p>If you ran this agent on 100 providers instead of 8, you'd start seeing patterns. The agent would handle pricing problems the same way 80% of the time. Geography mismatches would follow a pattern. Healthy providers would get the same "no action needed" assessment.</p>
+
+    <div class="concept"><strong>The agent discovers pipelines.</strong> Once you can see the pattern — once the problem becomes legible — you pipeline it. The agent handles the 10-20% of cases that don't fit the pattern. Over time, the agent surface area shrinks as you codify more of its decisions into fixed sequences.</div>
+
+    <p><strong>The lifecycle:</strong></p>
+    <ul>
+      <li><strong>Phase 1:</strong> You don't know the right sequence. Deploy an agent. Let it explore.</li>
+      <li><strong>Phase 2:</strong> Watch the logs. See which tool sequences repeat. Those are your candidate pipelines.</li>
+      <li><strong>Phase 3:</strong> Pipeline the common paths. Keep the agent for edge cases and novel situations.</li>
+      <li><strong>Phase 4:</strong> The agent handles less and less over time. Most of the system is now deterministic pipelines that are fast, cheap, and predictable.</li>
+    </ul>
+
+    <p><strong>Apply this to HouseAccount:</strong></p>
+    <ul>
+      <li>The chatbot intake flow you built? That's Phase 4. You knew the sequence. It's a pipeline. Correct.</li>
+      <li>The Provider Health system? Today it's Phase 1. You don't yet know the best outreach strategy for every scenario. An agent explores the space.</li>
+      <li>Six months from now, with logs from hundreds of providers? You'll pipeline 80% of it and keep an agent for the weird cases.</li>
+    </ul>
+
+    <div class="callout"><strong>The capital-T truth about agents:</strong> They're a discovery tool for finding the pipeline you should have built. The goal isn't to have an agent running forever. The goal is to use the agent to make the problem legible, then collapse it into something deterministic. The best AI systems are mostly pipelines with agent layers where the problem is still being figured out.</div>
+  </div>
+</div>
+
+<!-- ─── BLOCK 5: APPLY ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time wrap">75–90 min</span>
+    <span class="block-title">Apply: Where Do Agents Belong in HouseAccount?</span>
+  </div>
+  <div class="block-body">
+    <p>Now that the distinction is clear, map it to the real business. Walk through the four agents Matt originally scoped and ask: is this actually an agent, or is it a pipeline with the agent label?</p>
+
+    <ul>
+      <li><strong>Provider Sales Agent</strong> — Outreach to potential providers. Is the sequence known? (Probably yes → pipeline with LLM-powered personalization.)</li>
+      <li><strong>Customer Intake Agent</strong> — Job scoping and matching. Is the sequence known? (Mostly yes → pipeline. But edge cases like multi-trade jobs or unusual requests might need agent routing.)</li>
+      <li><strong>Pricing Estimate Agent</strong> — Rate book matching and quote generation. (Pipeline. The logic is deterministic with LLM-powered fuzzy matching.)</li>
+      <li><strong>Concierge Agent</strong> — The orchestrator. This is the one that might be a real agent — it needs to decide: does this homeowner need pricing help? A different provider? An escalation? The routing is the value.</li>
+    </ul>
+
+    <p><strong>Homework assignment and looking ahead:</strong></p>
+    <ul>
+      <li><strong>Connect to real data.</strong> Swap <code>sample_data/providers.json</code> with a Metabase export of your actual providers. Run the agent on real data. What does it find?</li>
+      <li><strong>Map your HouseAccount systems.</strong> For every AI-powered thing you've built or want to build, write down: is the control flow decided by me or by the model? Label each one "pipeline" or "agent." Most will be pipelines. That's correct.</li>
+      <li><strong>Run the agent 3 more times on different subsets.</strong> Look for the repeating patterns. Which tool sequences show up over and over? Those are your candidate pipelines to collapse.</li>
+      <li><strong>Pick one thing that should be an agent.</strong> Something at HouseAccount where you don't yet know the right sequence — where the problem isn't legible yet. Write a CLAUDE.md and tools.md for it. Don't pipeline it. Let it explore.</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ─── REFERENCE ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time ref">REF</span>
+    <span class="block-title">Quick Reference</span>
+  </div>
+  <div class="block-body">
+    <p><strong>The One-Line Distinction:</strong></p>
+    <p>Pipeline = you decide the control flow. Agent = the model decides the control flow.</p>
+
+    <div class="divider"></div>
+
+    <p><strong>The Agent-to-Pipeline Lifecycle:</strong></p>
+    <ul>
+      <li><strong>Phase 1:</strong> Problem is ambiguous → deploy an agent to explore</li>
+      <li><strong>Phase 2:</strong> Watch logs → identify repeating tool sequences</li>
+      <li><strong>Phase 3:</strong> Pipeline the common paths → agent handles edge cases</li>
+      <li><strong>Phase 4:</strong> Most of the system is deterministic → agent surface area minimal</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>When to Use Which:</strong></p>
+    <ul>
+      <li><strong>Pipeline when:</strong> You know the sequence. The steps are predictable. Speed and cost matter. You want consistency.</li>
+      <li><strong>Agent when:</strong> You don't know the right sequence yet. The problem has branching paths. Different inputs need fundamentally different handling. You need discovery before optimization.</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>The HouseAccount Agent Map:</strong></p>
+    <ul>
+      <li>Customer Intake → Pipeline (with agent layer for edge cases)</li>
+      <li>Pricing Estimate → Pipeline</li>
+      <li>Provider Sales → Pipeline with LLM personalization</li>
+      <li>Provider Health → Agent (discovery phase) → will collapse into pipeline over time</li>
+      <li>Concierge → Agent (routing is the value)</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <p><strong>Mantras So Far:</strong></p>
+    <ul>
+      <li>The models are intelligence.</li>
+      <li>Brain, Hands, Memory.</li>
+      <li>If you're doing it more than twice, automate it.</li>
+      <li>Context is everything.</li>
+      <li>You're building a reflex, not learning a tool.</li>
+      <li>Judgment over technique.</li>
+      <li>Chat is thinking. Cowork is delegating. Code is building.</li>
+      <li>If you did it once, write it down. If you wrote it down, make it a skill.</li>
+      <li>Don't just build with what you have. Go get what you need.</li>
+      <li>A directory of markdown files is a tool. Claude Code is the engine.</li>
+      <li><strong>Pipeline: you decide. Agent: the model decides. Know which one you're building.</strong></li>
+      <li><strong>Agents discover pipelines. Collapse them once the pattern is legible.</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  Session 5 · AI Native Operator Training · Andrew Nolan · May 2026
+</div>
+
+</body>
+</html>
