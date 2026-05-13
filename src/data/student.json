@@ -72,15 +72,32 @@
       "number": 5,
       "title": "Agents vs. Pipelines",
       "subtitle": "Who decides what happens next \u2014 you or the model?",
-      "date": null,
-      "status": "upcoming",
-      "duration": "90 min",
-      "notes": "",
-      "keyTakeaways": []
+      "date": "2026-05-13",
+      "status": "completed",
+      "duration": "60 min",
+      "notes": "New delivery format worked \u2014 Matt pulled the toolkit repo, was in Claude Code in under 2 minutes. Ran pipeline then agent on sample provider data side by side. Eureka moment: Matt said 'I would have thought about this as an agent' while reading pipeline.md, then independently arrived at the collapse concept ('take this agent report and create me an MD file of exactly your steps'). His PM anecdote (building a session analysis pipeline in 30 min that the PM couldn't do in 2 days) showed pipeline thinking is now instinctive. Wants next session on skills implementation (UX/UI specifically) and multi-project management in terminal.",
+      "keyTakeaways": [
+        "Pipeline: you decide the control flow. Agent: the model decides the control flow.",
+        "Agents discover pipelines \u2014 once the pattern is legible, collapse it",
+        "Most production systems should be pipelines. Agents are for unsolved problems.",
+        "The agent-to-pipeline lifecycle: explore \u2192 observe \u2192 codify \u2192 shrink agent surface",
+        "Pre-built toolkit repo format works \u2014 git pull and go, no setup on call"
+      ]
     },
     {
       "id": "s6",
       "number": 6,
+      "title": "The Operator's Workbench",
+      "subtitle": "Skills on demand, multi-project terminal management, and building your daily cockpit",
+      "date": null,
+      "status": "upcoming",
+      "duration": "75 min",
+      "notes": "",
+      "keyTakeaways": []
+    },
+    {
+      "id": "s7",
+      "number": 7,
       "title": "Always-On AI",
       "subtitle": "Mac Mini setup, messaging gateway, ambient access from anywhere",
       "date": null,
@@ -128,6 +145,10 @@
         {
           "type": "session",
           "sessionId": "s6"
+        },
+        {
+          "type": "session",
+          "sessionId": "s7"
         }
       ]
     }
@@ -395,6 +416,46 @@
       "session": "s5",
       "status": "todo",
       "priority": "medium"
+    },
+    {
+      "id": "t24",
+      "title": "Step 1: UX skill review on 3 pages",
+      "description": "Run the UX design skill review on three HouseAccount screens. Implement the top recommendation from each. Compare before and after.",
+      "session": "s6",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t25",
+      "title": "Step 2: Write one custom skill",
+      "description": "Pick something you know deeply \u2014 provider evaluation, job pricing, intake quality. Write the skill MD file. Test it on real work. Iterate.",
+      "session": "s6",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t26",
+      "title": "Step 3: Find and install 2 more skills",
+      "description": "Search GitHub or Reddit for skills relevant to your work. Install one in Chat, one in Code. Test both on real tasks.",
+      "session": "s6",
+      "status": "todo",
+      "priority": "medium"
+    },
+    {
+      "id": "t27",
+      "title": "Step 4: Customize startup script + daily use",
+      "description": "Adapt the PowerShell startup script to your actual projects and paths. Use it every day. Terminal open \u2192 workspace ready \u2192 zero manual setup.",
+      "session": "s6",
+      "status": "todo",
+      "priority": "high"
+    },
+    {
+      "id": "t28",
+      "title": "Step 5: Multi-pane session",
+      "description": "Run at least one session with 3+ panes open. Claude Code, dev server, and logs or reference docs. Practice Alt+Arrow and Alt+Shift+D until they\u2019re muscle memory.",
+      "session": "s6",
+      "status": "todo",
+      "priority": "medium"
     }
   ],
   "resources": [
@@ -562,6 +623,17 @@
       "sessions": ["s5"],
       "global": false,
       "category": "homework"
+    },
+    {
+      "id": "lesson-plan-s6",
+      "title": "Session 6 Lesson Plan",
+      "description": "The Operator's Workbench \u2014 skills on demand, multi-project terminal management, startup scripts",
+      "type": "html",
+      "filename": "session6_lesson_plan.html",
+      "tags": ["lesson-plan"],
+      "sessions": ["s6"],
+      "global": false,
+      "category": "lesson-plan"
     },
     {
       "id": "session1-notes",

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 6 — The Operator's Workbench</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #141419; --surface-2: #1c1c24; --border: #2a2a36;
+    --text: #e4e4eb; --text-muted: #8888a0; --accent: #f97316; --accent-dim: rgba(249,115,22,0.12);
+    --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.1); --green: #22c55e; --green-dim: rgba(34,197,94,0.1);
+    --purple: #a855f7; --purple-dim: rgba(168,85,247,0.1); --red: #ef4444; --red-dim: rgba(239,68,68,0.08);
+    --cyan: #06b6d4; --cyan-dim: rgba(6,182,212,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .header { text-align: center; padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; }
+  .header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+  .header .sub { color: var(--text-muted); font-size: 0.95rem; }
+  .header .meta { margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.85rem; color: var(--text-muted); }
+  .header .meta span { background: var(--surface); padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid var(--border); }
+  .arc-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.8rem; margin-bottom: 2rem; }
+  .arc-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.9rem; }
+  .arc-flow { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+  .arc-step { display: flex; align-items: center; gap: 0.4rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem 0.7rem; font-size: 0.85rem; font-weight: 500; }
+  .arc-step-num { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 3px; }
+  .arc-step-num.s1 { background: var(--blue-dim); color: var(--blue); }
+  .arc-step-num.s2 { background: var(--cyan-dim); color: var(--cyan); }
+  .arc-step-num.s3 { background: var(--green-dim); color: var(--green); }
+  .arc-step-num.s4 { background: var(--purple-dim); color: var(--purple); }
+  .arc-step-num.s5 { background: var(--accent-dim); color: var(--accent); }
+  .arc-arrow { color: var(--text-muted); font-size: 0.8rem; }
+  .overview { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem 2rem; margin-bottom: 2.5rem; }
+  .overview h2 { font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .overview p { font-size: 0.95rem; margin-bottom: 0.75rem; }
+  .overview p:last-child { margin-bottom: 0; }
+  .principle { padding: 0.9rem 0; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: flex-start; }
+  .principle:last-child { border-bottom: none; }
+  .principle-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; flex-shrink: 0; margin-top: 0.15rem; }
+  .principle-num.new { color: var(--green); background: var(--green-dim); }
+  .principle-text { font-size: 1.05rem; font-weight: 500; }
+  .principle-context { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+  .block-header { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .block-time { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; padding: 0.25rem 0.6rem; border-radius: 5px; flex-shrink: 0; font-weight: 500; }
+  .block-time.setup { background: var(--blue-dim); color: var(--blue); }
+  .block-time.demo { background: var(--cyan-dim); color: var(--cyan); }
+  .block-time.mental { background: var(--purple-dim); color: var(--purple); }
+  .block-time.exercise { background: var(--green-dim); color: var(--green); }
+  .block-time.wrap { background: var(--accent-dim); color: var(--accent); }
+  .block-time.ref { background: var(--cyan-dim); color: var(--cyan); }
+  .block-title { font-size: 1.15rem; font-weight: 600; }
+  .block-body { padding: 1.2rem 1.5rem; }
+  .block-body p { margin-bottom: 0.75rem; font-size: 0.95rem; }
+  .block-body p:last-child { margin-bottom: 0; }
+  .callout { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .concept { background: var(--purple-dim); border-left: 3px solid var(--purple); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .concept::before { content: "KEY CONCEPT:"; display: block; font-size: 0.7rem; font-weight: 600; color: var(--purple); letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  .exercise { background: var(--green-dim); border-left: 3px solid var(--green); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+  .exercise::before { content: "EXERCISE:"; display: block; font-size: 0.7rem; font-weight: 600; color: var(--green); letter-spacing: 0.08em; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; }
+  .divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+  ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  li { font-size: 0.95rem; margin-bottom: 0.4rem; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--surface-2); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--border); }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background: var(--bg); padding: 0.8rem 1rem; border-radius: 6px; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  strong { font-weight: 600; }
+  .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 2rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Session 6: The Operator's Workbench</h1>
+  <div class="sub">Skills on demand, multi-project terminal management, and building your daily cockpit</div>
+  <div class="meta">
+    <span>TBD</span>
+    <span>~75 minutes</span>
+    <span>Session 6 of ongoing</span>
+  </div>
+</div>
+
+<div class="arc-banner">
+  <div class="arc-label">Session Arc</div>
+  <div class="arc-flow">
+    <div class="arc-step"><span class="arc-step-num s1">s1</span> What's a Skill</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s2">s2</span> Install & Run</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s3">s3</span> Build Your Workbench</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s4">s4</span> Startup Script</div>
+    <span class="arc-arrow">→</span>
+    <div class="arc-step"><span class="arc-step-num s5">s5</span> Homework</div>
+  </div>
+</div>
+
+</body>
+</html>
+<!-- ─── OVERVIEW ─── -->
+<div class="overview">
+  <h2>What This Session Is About</h2>
+  <p>Two things that are bottlenecking you right now: <strong>expertise on demand</strong> and <strong>managing multiple workstreams</strong>. Skills solve the first — they plug domain knowledge (UX design, code review, data analysis) into Claude so it stops being a generalist and becomes a specialist when you need it. The workbench solves the second — setting up your terminal so you can manage multiple projects, multiple Claude Code sessions, and multiple contexts without drowning in tabs.</p>
+  <p>Together they answer the question you asked last session: "How do I manage all of this at once?"</p>
+
+  <div class="divider"></div>
+
+  <h2>New Principles</h2>
+  <div class="principle">
+    <span class="principle-num new">NEW</span>
+    <div>
+      <div class="principle-text">"A skill turns a generalist into a specialist. Write it once, use it everywhere."</div>
+      <div class="principle-context">Claude is smart about everything, expert at nothing specific. An MD file with the right domain knowledge makes it an expert on demand. The best skills come from your own experience — nobody else has written the HouseAccount skill.</div>
+    </div>
+  </div>
+  <div class="principle">
+    <span class="principle-num new">NEW</span>
+    <div>
+      <div class="principle-text">"Your workspace is a tool. Design it like one."</div>
+      <div class="principle-context">The difference between an operator and someone who uses AI is the environment. An operator's terminal is a cockpit — organized, intentional, ready to go in one command.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── BLOCK 1 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time setup">0–15 min</span>
+    <span class="block-title">What's a Skill, Really?</span>
+  </div>
+  <div class="block-body">
+    <p>Check-in: what happened since last session? What did you build? Where did the agent vs. pipeline distinction show up in your work?</p>
+    <p>Then the concept: you mentioned that you downloaded a UX design skill from Reddit, referenced it in Chat, and it helped — but you couldn't figure out how to make Claude Code use it when executing. That gap is what we're closing today.</p>
+
+    <div class="concept">A skill is an MD file that gives Claude domain expertise. Claude is a generalist — it knows a little about UX, code review, data analysis, marketplace operations. A skill makes it a <strong>specialist</strong> by giving it: a role to play, principles to follow, a process to execute, and an output format to hit. Same Claude, dramatically different results.</div>
+
+    <p><strong>The anatomy of a skill:</strong></p>
+    <ul>
+      <li><strong>Role</strong> — who Claude is acting as (senior product designer, security engineer, data analyst)</li>
+      <li><strong>Principles</strong> — the standards to apply (accessibility, performance, mobile-first)</li>
+      <li><strong>Process</strong> — the steps to follow (review checklist, analysis framework)</li>
+      <li><strong>Output format</strong> — what the result looks like (structured report, annotated code)</li>
+    </ul>
+
+    <p><strong>Where skills live:</strong></p>
+    <ul>
+      <li><strong>Chat project</strong> — add the skill MD to your project instructions or upload it as a project file. Every conversation in that project gets the expertise.</li>
+      <li><strong>Claude Code</strong> — put the skill in your project directory. Reference it in CLAUDE.md: <code>When doing UI work, follow skills/ux-design.md</code>. Claude Code reads CLAUDE.md on launch.</li>
+      <li><strong>Both</strong> — if you want the same expertise in Chat and Code, install in both. They don't share brain.</li>
+    </ul>
+
+    <div class="callout"><strong>The gap Matt hit:</strong> A skill in Chat doesn't automatically apply in Code. They're separate contexts. Last session's mantra: "two different brains." The skill needs to exist in both places if you want both brains to have the expertise.</div>
+  </div>
+</div>
+
+<!-- ─── BLOCK 2 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time demo">15–35 min</span>
+    <span class="block-title">Install & Run: UX Design Skill Live</span>
+  </div>
+  <div class="block-body">
+    <p>We'll install the UX design skill from the toolkit repo and test it on something real from HouseAccount.</p>
+
+    <div class="exercise"><strong>Step 1:</strong> Open the <code>skills/ux-design.md</code> file from <code>session-06-workbench/</code>. Read through it together — role, principles, review process, output format. This is what an expert designer thinks about that you're not thinking about.</div>
+
+    <div class="exercise"><strong>Step 2:</strong> Install it in Claude Code. Copy the skill file into your HouseAccount project directory. Add a line to your CLAUDE.md: <code>When reviewing or building UI, follow the design principles in skills/ux-design.md</code></div>
+
+    <div class="exercise"><strong>Step 3:</strong> Test it. Open Claude Code in your HouseAccount project. Ask it to review one of your existing pages — the customer intake chat, the admin dashboard, whatever feels roughest. Compare the feedback you get now vs. what Claude would have said without the skill.</div>
+
+    <p><strong>What to notice:</strong> Without the skill, Claude gives generic feedback — "looks good, maybe add some padding." With the skill, it runs a structured review: first impression, information architecture, visual design, interaction design, edge cases. Same brain, different expertise plugged in.</p>
+
+    <div class="callout"><strong>Where to find more skills:</strong> GitHub (search "claude skill md"), Reddit (r/ClaudeAI), or build your own. The best skills come from your domain — nobody has written the "HouseAccount provider evaluation" skill except you. We'll talk about building custom skills in homework.</div>
+  </div>
+</div>
+
+<!-- ─── BLOCK 3 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time exercise">35–55 min</span>
+    <span class="block-title">Build Your Workbench</span>
+  </div>
+  <div class="block-body">
+    <p>You said the switching cost between projects is killing you. Let's fix that. Windows Terminal has everything you need — you just need to know the shortcuts and the mental model.</p>
+
+    <div class="concept">Think of your terminal as a cockpit. <strong>Tabs</strong> are projects or functions — one for HouseAccount, one for Provider Health, one for Git. <strong>Panes</strong> are views within a project — Claude Code on the left, dev server on the right. <strong>Rename every tab</strong> so you always know where you are.</div>
+
+    <p><strong>The shortcuts that matter:</strong></p>
+    <ul>
+      <li><code>Alt+Shift+D</code> — split pane vertical (side by side)</li>
+      <li><code>Alt+Shift+-</code> — split pane horizontal (top/bottom)</li>
+      <li><code>Alt+Arrow</code> — navigate between panes</li>
+      <li><code>Alt+Shift+Arrow</code> — resize pane</li>
+      <li><code>Ctrl+Alt+[1-9]</code> — jump to tab by number</li>
+      <li>Right-click tab → Rename</li>
+    </ul>
+
+    <div class="exercise"><strong>Build your layout live.</strong> We'll set up a workspace together:
+    <ul>
+      <li>Tab 1: "HouseAccount" — Claude Code left, dev server right</li>
+      <li>Tab 2: "Provider Health" — Claude Code full width</li>
+      <li>Tab 3: "Git" — staging, pushes, conflict resolution</li>
+      <li>Tab 4: "Toolkit" — skills, research, session materials</li>
+    </ul>
+    Practice switching between tabs and panes until the shortcuts are in your fingers.</div>
+
+    <p>This is your answer to the question "how do I run multiple threads on the same project?" — each thread gets a pane or a tab. They're all in front of you. No switching cost because you never leave the terminal.</p>
+  </div>
+</div>
+
+<!-- ─── BLOCK 4 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time mental">55–65 min</span>
+    <span class="block-title">The Startup Script</span>
+  </div>
+  <div class="block-body">
+    <p>Setting up your workspace manually every morning takes 5 minutes and 20 clicks. A startup script does it in one command.</p>
+
+    <div class="exercise">Open <code>startup-scripts/houseaccount-workspace.ps1</code> from the toolkit. Walk through it together — each line opens a tab, names it, cd's to the right directory, and optionally splits panes. Customize the paths for your machine. Run it and watch your full workspace appear.</div>
+
+    <p><strong>The unlock:</strong> You can add this to your PowerShell profile so it runs automatically when you open Terminal, or create a shortcut on your desktop. One click, full cockpit, ready to work.</p>
+
+    <div class="callout"><strong>This is the tmux equivalent for Windows.</strong> tmux has session persistence — you can detach and reattach. Windows Terminal doesn't do that natively. The startup script is your workaround — it doesn't restore state, but it recreates your workspace in seconds. For now, that's enough.</div>
+  </div>
+</div>
+
+<!-- ─── BLOCK 5 ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time wrap">65–75 min</span>
+    <span class="block-title">Homework &amp; What's Next</span>
+  </div>
+  <div class="block-body">
+    <ul>
+      <li><strong>Use the UX skill on 3 pages.</strong> Run the design review on three different HouseAccount screens. Implement the top recommendation from each. Compare before and after.</li>
+      <li><strong>Write one custom skill.</strong> Pick something you know deeply — provider evaluation, job pricing, customer intake quality. Write the skill MD. Test it. Iterate.</li>
+      <li><strong>Find and install 2 more skills.</strong> Search GitHub or Reddit. Install one in Chat and one in Code. Test both on real work.</li>
+      <li><strong>Use your startup script every day.</strong> Customize it until it matches your actual workflow. The goal: terminal open, workspace ready, zero manual setup.</li>
+      <li><strong>Run at least one session with 3+ panes open.</strong> Claude Code in one, dev server in another, reference docs or logs in the third. Practice the pane shortcuts until they're muscle memory.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─── REFERENCE ─── -->
+<div class="block">
+  <div class="block-header">
+    <span class="block-time ref">REF</span>
+    <span class="block-title">Quick Reference</span>
+  </div>
+  <div class="block-body">
+    <p><strong>Skill Anatomy:</strong> Role + Principles + Process + Output Format</p>
+    <div class="divider"></div>
+    <p><strong>Install Locations:</strong></p>
+    <ul>
+      <li>Chat → project instructions or uploaded file</li>
+      <li>Code → project directory, referenced in CLAUDE.md</li>
+      <li>Both → install in both (they don't share brain)</li>
+    </ul>
+    <div class="divider"></div>
+    <p><strong>Terminal Shortcuts:</strong></p>
+    <ul>
+      <li><code>Alt+Shift+D</code> — split vertical</li>
+      <li><code>Alt+Shift+-</code> — split horizontal</li>
+      <li><code>Alt+Arrow</code> — navigate panes</li>
+      <li><code>Ctrl+Alt+[1-9]</code> — switch tabs</li>
+    </ul>
+    <div class="divider"></div>
+    <p><strong>All Mantras:</strong></p>
+    <ul>
+      <li>The models are intelligence.</li>
+      <li>Brain, Hands, Memory.</li>
+      <li>If you're doing it more than twice, automate it.</li>
+      <li>Context is everything.</li>
+      <li>You're building a reflex, not learning a tool.</li>
+      <li>Judgment over technique.</li>
+      <li>Chat is thinking. Cowork is delegating. Code is building.</li>
+      <li>If you did it once, write it down. If you wrote it down, make it a skill.</li>
+      <li>Don't just build with what you have. Go get what you need.</li>
+      <li>A directory of markdown files is a tool. Claude Code is the engine.</li>
+      <li>Pipeline: you decide. Agent: the model decides.</li>
+      <li>Agents discover pipelines. Collapse them once legible.</li>
+      <li><strong>A skill turns a generalist into a specialist.</strong></li>
+      <li><strong>Your workspace is a tool. Design it like one.</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  Session 6 · AI Native Operator Training · Andrew Nolan · May 2026
+</div>
+
+</body>
+</html>
